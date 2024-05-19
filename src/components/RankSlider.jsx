@@ -84,6 +84,8 @@ const InputSlider = styled.input`
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 1;
+  display: none !important;
+
   &::-moz-range-thumb {
     width: ${({ theme }) => theme.sizing.s0};
     height: ${({ theme }) => theme.sizing.s0};
@@ -140,35 +142,29 @@ function RankSlider() {
         style={{ position: "relative", padding: theme.spacing.s32 }}
       >
         <SliderContainer>
-          <div style={{ backgroundColor: theme.palette.common.black }}>
-            Very Low
+          <div style={{ backgroundColor: theme.palette.common.red }}>Risk</div>
+          <div style={{ backgroundColor: theme.palette.common.blue }}>
+            Prime
           </div>
-          <div style={{ backgroundColor: theme.palette.common.grey }}>Low</div>
-          <div style={{ backgroundColor: theme.palette.common.yellow }}>
-            Medium
+          <div style={{ backgroundColor: theme.palette.common.green }}>
+            Ultimate
           </div>
-          <div style={{ backgroundColor: theme.palette.common.red }}>High</div>
+          <div style={{ backgroundColor: theme.palette.common.purple }}>
+            Elite
+          </div>
         </SliderContainer>
         <MainSlider className="main-slider">
           <ScaleWrapper className="">
             <Scale>
               <span>0</span>
               <SubScale>
-                <span style={{ borderTop: `2px solid lightgreen` }}></span>
-                <small style={{ borderLeft: `2px solid lightgreen` }}></small>
+                <span style={{ borderTop: `2px solid red` }}></span>
+                <small style={{ borderLeft: `2px solid red` }}></small>
               </SubScale>
               <span></span>
             </Scale>
             <Scale>
               <span>25</span>
-              <SubScale>
-                <span style={{ borderTop: `2px solid green` }}></span>
-                <small style={{ borderLeft: `2px solid green` }}></small>
-              </SubScale>
-              <span></span>
-            </Scale>
-            <Scale>
-              <span>50</span>
               <SubScale>
                 <span style={{ borderTop: `2px solid blue` }}></span>
                 <small style={{ borderLeft: `2px solid blue` }}></small>
@@ -176,10 +172,18 @@ function RankSlider() {
               <span></span>
             </Scale>
             <Scale>
+              <span>50</span>
+              <SubScale>
+                <span style={{ borderTop: `2px solid green` }}></span>
+                <small style={{ borderLeft: `2px solid green` }}></small>
+              </SubScale>
+              <span></span>
+            </Scale>
+            <Scale>
               <span>75</span>
               <SubScale>
-                <span style={{ borderTop: `2px solid red` }}></span>
-                <small style={{ borderLeft: `2px solid red` }}></small>
+                <span style={{ borderTop: `2px solid purple` }}></span>
+                <small style={{ borderLeft: `2px solid purple` }}></small>
               </SubScale>
               <span>100</span>
             </Scale>

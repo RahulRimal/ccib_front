@@ -10,57 +10,67 @@ import { flexRender } from "@tanstack/react-table";
 import { useTheme } from "styled-components";
 
 const LoanApplicationsTable = () => {
-    const { drawerWidth } = useContext(DrawerWidthContext);
-    const theme = useTheme();
-    const columnsToHide = ["idx"];
+  const { drawerWidth } = useContext(DrawerWidthContext);
+  const theme = useTheme();
+  const columnsToHide = ["idx"];
 
-    const loanApplicationsFromJson = (json) => {
-        return json.map((item) => {
-            const returnData = {
-                finance: item.finance.name,
-                idx: item.idx,
-                amount: item.loan_amount,
-                user: `${item.user.first_name} ${item.user.middle_name} ${item.user.last_name}`,
-                status: item.status,
-            };
-            return Object.fromEntries(
-                Object.entries(returnData).filter(([_, v]) => v != null)
-            );
-        });
-    };
-
-    const customRenderer = {
-        "status": info => {
-            const colors = {
-                "pending": theme.palette.warning.main,
-                "approved": theme.palette.success.main, 
-                "rejected": theme.palette.error.main,
-            }
-            const value = info.getValue()
-            return <p style={{ color: colors[value] }}>{humanizeString(info.getValue())}</p>
-        }
-    }
-
-    const { rowData, columns, loading } = useFetchTable({
-        url: `${mainUrl}/cooperative/loanapplications/`,
-        columnsToHide,
-        responseHandler: loanApplicationsFromJson,
-        customRenderer: customRenderer
+  const loanApplicationsFromJson = (json) => {
+    return json.map((item) => {
+      const returnData = {
+        finance: item.finance.name,
+        idx: item.idx,
+        amount: item.loan_amount,
+        user: `${item.user.first_name} ${
+          item.user.middle_name !== null ? item.user.middle_name : ""
+        } ${item.user.last_name}`,
+        status: item.status,
+      };
+      return Object.fromEntries(
+        Object.entries(returnData).filter(([_, v]) => v != null)
+      );
     });
+  };
 
-    if (loading) {
-        return (
-            <div style={{ textAlign: "center" }}>
-                <ClipLoader />
-            </div>
-        );
-    } else {
-        return (
-            <>
-                <BaseTable data={rowData} columns={columns} customRenderer={customRenderer} />
-            </>
-        );
-    }
+  const customRenderer = {
+    status: (info) => {
+      const colors = {
+        pending: theme.palette.warning.main,
+        approved: theme.palette.success.main,
+        rejected: theme.palette.error.main,
+      };
+      const value = info.getValue();
+      return (
+        <p style={{ color: colors[value] }}>
+          {humanizeString(info.getValue())}
+        </p>
+      );
+    },
+  };
+
+  const { rowData, columns, loading } = useFetchTable({
+    url: `${mainUrl}/cooperative/loanapplications/`,
+    columnsToHide,
+    responseHandler: loanApplicationsFromJson,
+    customRenderer: customRenderer,
+  });
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <ClipLoader />
+      </div>
+    );
+  } else {
+    return (
+      <>
+        <BaseTable
+          data={rowData}
+          columns={columns}
+          customRenderer={customRenderer}
+        />
+      </>
+    );
+  }
 };
 
 export default LoanApplicationsTable;
