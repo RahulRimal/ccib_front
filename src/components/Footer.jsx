@@ -2,7 +2,7 @@ import React from "react";
 import styled, { useTheme } from "styled-components";
 import InputField from "./Forms/InputField";
 import Button from "./Button";
-import { ContactInfo, FooterLinks } from "../constants.js";
+import { ContactInfo, FooterLinks } from "../data";
 import { Link } from "react-router-dom";
 import { BiCaretDownSquare, BiCaretUpSquare } from "react-icons/bi";
 

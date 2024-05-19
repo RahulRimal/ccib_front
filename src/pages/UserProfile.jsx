@@ -11,6 +11,7 @@ import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
 import { FaUser } from "react-icons/fa";
 import ReactECharts from "echarts-for-react";
 import IconButton from "../components/IconButton";
+import RankSlider from "../components/RankSlider";
 import { useParams } from "react-router-dom";
 import { mainUrl } from "../constants";
 import useFetch from "../custom_hooks/useFetch";
@@ -153,6 +154,7 @@ const UserProfile = () => {
   return (
     <Wrapper>
       <main>
+        <RankSlider/>
         <UserCreditHistoryChart />
         <LoanApplicationsTable />
         <UserRecordSummarized />
