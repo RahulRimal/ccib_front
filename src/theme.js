@@ -58,6 +58,9 @@ export const theme = {
         grey: "#CCCCCC", // Neutral gray for various purposes
         red: "#FF0000", // Red for critical elements
         yellow: "#FFFF00",
+        blue: "#0000FF",
+        purple: "#800080",
+        green: "#008000",
       },
       icon: {
         main: "#FFFFFF",

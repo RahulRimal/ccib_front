@@ -22,7 +22,7 @@ const Wrapper = styled.main``;
 const UsersTable = () => {
   const { loading, rowData, columns } = useFetchTable({
     url: `${mainUrl}/auth/users/`,
-    columnsToHide: ["id", "idx"],
+    columnsToHide: ["id", "idx", "username"],
   });
   const theme = useTheme();
   const data = useMemo(() => rowData, [rowData]);
@@ -52,7 +52,6 @@ const Home = ({}) => {
   return (
     <Wrapper>
       <UsersTable />
-      <UserDetailsTable />
     </Wrapper>
   );
 };

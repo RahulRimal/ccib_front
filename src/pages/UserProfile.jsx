@@ -15,6 +15,7 @@ import RankSlider from "../components/RankSlider";
 import { useParams } from "react-router-dom";
 import { mainUrl } from "../constants";
 import useFetch from "../custom_hooks/useFetch";
+import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
 const Wrapper = styled.div`
   display: grid;
@@ -67,6 +68,9 @@ const UserRecordSummarizedHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   line-height: ${({ theme }) => theme.spacing.s16};
+  h2 {
+    line-height: ${({ theme }) => theme.sizing.s36};
+  }
 `;
 
 const fieldsToShow = [
@@ -146,22 +150,26 @@ const UserRecordSummarized = () => {
 const UserProfile = () => {
   const theme = useTheme();
   const { id } = useParams();
-  const data = []; 
-  // const [userData, setUserData] = useState(null);
 
-  // const { data, loading } = useFetch({ url: `${mainUrl}/auth/users/${id}/` });
+  const { data, loading } = useFetch({ url: `${mainUrl}/auth/users/${id}/` });
 
   return (
     <Wrapper>
       <main>
-        <RankSlider/>
+        <RankSlider />
         <UserCreditHistoryChart />
         <LoanApplicationsTable />
         <UserRecordSummarized />
+        <UserDetailsTable />
       </main>
       <Sidebar>
         <div style={{ textAlign: "center", width: "100%" }}>
-          <CircleAvatar url={"https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg"} alt="User profile image" />
+          <CircleAvatar
+            url={
+              "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg"
+            }
+            alt="User profile image"
+          />
           <UserTitle>Rahul Rimal</UserTitle>
           <div
             style={{
@@ -241,10 +249,10 @@ const UserProfile = () => {
           <Divider />
         </div>
         {data &&
-          data.map((key) => (
+          Object.keys(data).map((key) => (
             <UserInfo key={key}>
               <span>{humanizeString(key)}: </span>
-              {humanizeString(userData[key])}
+              {humanizeString(data[key])}
             </UserInfo>
           ))}
       </Sidebar>
