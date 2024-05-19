@@ -17,6 +17,7 @@ import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import Divider from "./Divider";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   border-right: 1px solid ${({ theme }) => theme.palette.border.primary};
@@ -30,6 +31,8 @@ const Wrapper = styled.div`
 
 const Drawer = ({ drawerWidth }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
   return (
     <Wrapper style={{ width: drawerWidth }}>
       <ul style={{ padding: 0, margin: 0 }}>
@@ -43,19 +46,33 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
-            <ListItem prefix={<MdPeople />} text="Users" />
-            <ListItem prefix={<FaUsersSlash />} text="Blacklisted Users" />
-            <Divider />
-            <ListItem prefix={<MdCreditCard />} text="Loans" />
-            <ListItem
-              prefix={<MdCreditScore />}
-              text="Healthy Loans"
-              suffix={<FaAngleDown />}
-            />
-            <ListItem
-              prefix={<MdOutlineCreditCardOff />}
-              text="Defaulted Loans"
-            />
+              <ListItem
+                prefix={<MdPeople />}
+                text="Users"
+                onClick={() => navigate("/")}
+              />
+              <ListItem
+                prefix={<FaUsersSlash />}
+                text="Applications"
+                onClick={() => navigate("/loan-application")}
+              />
+              <Divider />
+              <ListItem
+                prefix={<MdCreditCard />}
+                text="Loans"
+                onClick={() => navigate("/loans")}
+              />
+              <ListItem
+                prefix={<MdCreditScore />}
+                text="Finances"
+                suffix={<FaAngleDown />}
+                onClick={() => navigate("/finance")}
+              />
+              <ListItem
+                prefix={<MdOutlineCreditCardOff />}
+                text="Companies"
+                onClick={() => navigate("/company")}
+              /> 
           </>
         )}
       </ul>

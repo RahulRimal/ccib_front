@@ -9,7 +9,7 @@ import { useTheme } from "styled-components";
 const CompanyPage = () => {
   const theme = useTheme();
   const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}cooperative/companys/`,
+    url: `${mainUrl}/cooperative/companys/`,
     columnsToHide: ["idx"],
   });
 

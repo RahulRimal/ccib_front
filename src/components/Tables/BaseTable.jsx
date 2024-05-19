@@ -145,7 +145,7 @@ const PaginationButton = styled.div`
     font-size: ${({ theme }) => theme.typography.fontSize.f24};
     border: 2px solid
       ${({ theme, disabled }) =>
-        disabled ? theme.palette.disabled.button : theme.palette.primary.main};
+    disabled ? theme.palette.disabled.button : theme.palette.primary.main};
     border-radius: ${({ theme }) => theme.borderRadius.container};
     cursor: pointer;
   }

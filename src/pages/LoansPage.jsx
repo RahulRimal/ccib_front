@@ -9,7 +9,7 @@ import { useTheme } from "styled-components";
 const LoansPage = () => {
   const theme = useTheme();
   const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}cooperative/loans/`,
+    url: `${mainUrl}/cooperative/loans/`,
     columnsToHide: ["idx"],
   });
 
