@@ -10,6 +10,7 @@ import { DrawerWidthContext } from "../App";
 import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
 import { mainUrl } from "../constants";
 import useFetchTable from "../custom_hooks/useFetchTable";
+import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
 //Sizing system (px)// Spacing system (px)
 // 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
@@ -20,7 +21,7 @@ const Wrapper = styled.main``;
 
 const UsersTable = () => {
   const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}users/`,
+    url: `${mainUrl}/auth/users/`,
     columnsToHide: ["id", "idx"],
   });
   const theme = useTheme();
@@ -51,6 +52,7 @@ const Home = ({}) => {
   return (
     <Wrapper>
       <UsersTable />
+      <UserDetailsTable />
     </Wrapper>
   );
 };

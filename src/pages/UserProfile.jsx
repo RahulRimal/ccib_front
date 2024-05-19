@@ -11,6 +11,9 @@ import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
 import { FaUser } from "react-icons/fa";
 import ReactECharts from "echarts-for-react";
 import IconButton from "../components/IconButton";
+import { useParams } from "react-router-dom";
+import { mainUrl } from "../constants";
+import useFetch from "../custom_hooks/useFetch";
 
 const Wrapper = styled.div`
   display: grid;
@@ -141,29 +144,11 @@ const UserRecordSummarized = () => {
 
 const UserProfile = () => {
   const theme = useTheme();
-  const [userData, setUserData] = useState(null);
+  const { id } = useParams();
+  const data = []; 
+  // const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // setLoading(true);
-        const response = await axios.get("http://localhost:3001/users/1/");
-        if (response.status === 200) {
-          console.log(response.data);
-          // setData(response.data);
-          setUserData(response.data);
-        }
-        if (response.status === 400) {
-          console.log("axios error");
-          // setLoading(false);
-        }
-      } catch (error) {
-        console.log(error);
-        // setLoading(false);
-      }
-    };
-    fetchUserData();
-  }, []);
+  // const { data, loading } = useFetch({ url: `${mainUrl}/auth/users/${id}/` });
 
   return (
     <Wrapper>
@@ -253,8 +238,8 @@ const UserProfile = () => {
           </div>
           <Divider />
         </div>
-        {userData &&
-          fieldsToShow.map((key) => (
+        {data &&
+          data.map((key) => (
             <UserInfo key={key}>
               <span>{humanizeString(key)}: </span>
               {humanizeString(userData[key])}
