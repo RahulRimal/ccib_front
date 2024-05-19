@@ -11,6 +11,7 @@ import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
 import { FaUser } from "react-icons/fa";
 import ReactECharts from "echarts-for-react";
 import IconButton from "../components/IconButton";
+import RankSlider from "../components/RankSlider";
 
 const Wrapper = styled.div`
   display: grid;
@@ -168,6 +169,7 @@ const UserProfile = () => {
   return (
     <Wrapper>
       <main>
+        <RankSlider/>
         <UserCreditHistoryChart />
         <LoanApplicationsTable />
         <UserRecordSummarized />
