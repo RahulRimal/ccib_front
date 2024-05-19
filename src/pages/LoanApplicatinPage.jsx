@@ -8,9 +8,24 @@ import { useTheme } from "styled-components";
 
 const LoanApplicationPage = () => {
   const theme = useTheme();
+
+  const handleResponse = (data) => {
+    return data.map((item) => {
+      const { username, first_name, middle_name, last_name, phone_number } =
+        item.user;
+      return {
+        ...item,
+        username,
+        name: `${first_name} ${middle_name} ${last_name}`,
+        phone_number,
+      };
+    });
+  }; 
+
   const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}cooperative/loanapplications/`,
-    columnsToHide: ["idx"],
+    url: `${mainUrl}/cooperative/loanapplications/`,
+    columnsToHide: ["idx", "user"],
+    responseHandler: handleResponse,
   });
 
   const data = useMemo(() => rowData, [rowData]);

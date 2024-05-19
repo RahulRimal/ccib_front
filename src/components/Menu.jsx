@@ -13,6 +13,7 @@ const MenuWrapper = styled.div`
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   border-radius: ${({ theme }) => theme.borderRadius.container};
   padding: 4px;
+  z-index: 1;
 `;
 
 const MenuItemWrapper = styled.div`
