@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import { mainUrl } from "../constants";
 import useFetch from "../custom_hooks/useFetch";
 import UserDetailsTable from "../components/Tables/UserDetailsTable";
+import Button from "../components/Button";
 
 const Wrapper = styled.div`
   display: grid;
@@ -35,22 +36,22 @@ const Sidebar = styled.div`
 `;
 
 const UserTitle = styled.h1`
-  font-size: ${({ theme }) => theme.typography.fontSize.f16};
-  margin: 0;
-  letter-spacing: ${({ theme }) => theme.spacing.s2};
+  font-size: ${({ theme }) => theme.typography.fontSize.f18};
+  margin: ${({ theme }) => theme.spacing.s8} 0;
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
 `;
 
 const UserInfo = styled.p`
+  padding-bottom: ${({ theme }) => theme.spacing.s8};
   font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   margin-bottom: ${({ theme }) => theme.spacing.s8};
-  font-size: ${({ theme }) => theme.typography.fontSize.f14};
+  font-size: ${({ theme }) => theme.typography.fontSize.f16};
+  color: ${({ theme }) => theme.palette.text.primary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   text-align: left;
   span {
-    font-style: italic;
-    font-weight: ${({ theme }) => theme.typography.fontWeight.regular};
-    font-size: ${({ theme }) => theme.typography.fontSize.f12};
+    font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
+    font-size: ${({ theme }) => theme.typography.fontSize.f16};
   }
 `;
 
@@ -151,7 +152,9 @@ const UserProfile = () => {
   const theme = useTheme();
   const { id } = useParams();
 
-  const { data, loading } = useFetch({ url: `${mainUrl}/auth/users/${id}/` });
+  const { data, loading } = useFetch({
+    url: `http://127.0.0.1:3001/users/1`,
+  });
 
   return (
     <Wrapper>
@@ -176,7 +179,8 @@ const UserProfile = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              gap: "4px",
+              gap: theme.spacing.s4,
+              marginBottom: theme.spacing.s8,
             }}
           >
             <FaLocationArrow />
@@ -186,59 +190,77 @@ const UserProfile = () => {
           <div
             style={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-evenly",
               alignItems: "center",
-              gap: "4px",
+              gap: theme.spacing.s8,
             }}
           >
-            <ToolTip tooltip={"25 Active loans"}>
+            <ToolTip
+              tooltip={"25 Active loans"}
+              style={{ padding: `${theme.spacing.s8} 0` }}
+            >
               <p
                 style={{
                   fontWeight: theme.typography.fontWeight.bold,
                   color: theme.palette.primary.main,
+                  fontSize: theme.typography.fontSize.f24,
                 }}
               >
                 25
               </p>
               <p
                 style={{
-                  fontSize: theme.typography.fontSize.f12,
+                  paddingTop: theme.spacing.s4,
+                  fontWeight: theme.typography.fontWeight.semiBold,
+                  fontSize: theme.typography.fontSize.f16,
                   color: theme.palette.primary.main,
                 }}
               >
                 Active
               </p>
             </ToolTip>
-            <ToolTip tooltip={"3 Healty loans"}>
+            <ToolTip
+              tooltip={"3 Healty loans"}
+              style={{ padding: `${theme.spacing.s8} 0` }}
+            >
               <p
                 style={{
                   fontWeight: theme.typography.fontWeight.bold,
                   color: theme.palette.success.main,
+                  fontSize: theme.typography.fontSize.f24,
                 }}
               >
                 3
               </p>
               <p
                 style={{
-                  fontSize: theme.typography.fontSize.f12,
+                  paddingTop: theme.spacing.s4,
+                  fontWeight: theme.typography.fontWeight.semiBold,
+                  fontSize: theme.typography.fontSize.f16,
                   color: theme.palette.success.main,
                 }}
               >
                 Healthy
               </p>
             </ToolTip>
-            <ToolTip tooltip={"4 Defaulted loans"}>
+            <ToolTip
+              tooltip={"4 Defaulted loans"}
+              style={{ padding: `${theme.spacing.s8} 0` }}
+            >
               <p
                 style={{
                   fontWeight: theme.typography.fontWeight.bold,
                   color: theme.palette.error.main,
+                  fontSize: theme.typography.fontSize.f24,
                 }}
               >
                 4
               </p>
               <p
                 style={{
-                  fontSize: theme.typography.fontSize.f12,
+                  paddingTop: theme.spacing.s4,
+                  fontWeight: theme.typography.fontWeight.semiBold,
+                  fontSize: theme.typography.fontSize.f16,
                   color: theme.palette.error.main,
                 }}
               >
@@ -248,13 +270,26 @@ const UserProfile = () => {
           </div>
           <Divider />
         </div>
-        {data &&
-          Object.keys(data).map((key) => (
-            <UserInfo key={key}>
-              <span>{humanizeString(key)}: </span>
-              {humanizeString(data[key])}
-            </UserInfo>
-          ))}
+        <div style={{ padding: `${theme.spacing.s16} ${theme.spacing.s8}` }}>
+          {data &&
+            Object.keys(data).map((key) => (
+              <UserInfo key={key}>
+                <span>{humanizeString(key)} : </span>
+                {humanizeString(data[key])}
+              </UserInfo>
+            ))}
+        </div>
+        <div style={{ width: "100%" }}>
+          <Button
+            text={"View Full Information"}
+            style={{
+              width: "100%",
+              fontSize: theme.typography.fontSize.f16,
+              padding: `${theme.spacing.s16} ${theme.spacing.s16}`,
+              background: theme.palette.success.main,
+            }}
+          />
+        </div>
       </Sidebar>
     </Wrapper>
   );
