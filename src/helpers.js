@@ -43,10 +43,14 @@ export function flattenObject(obj, parentKey = "") {
   }, {});
 }
 
-export const usernameConcatenator = (obj) => {
-  return Object.values(obj)
-    .map((value) => value || "")
-    .join(" ");
+export const getFullName = (user) => {
+  const { first_name, middle_name, last_name } = user;
+  if (!first_name) return "";
+
+  const middle = middle_name || "";
+  const last = last_name || "";
+
+  return `${first_name} ${middle} ${last}`.trim();
 };
 
 export const hexWithOpacity = (hex, opacity) => {
