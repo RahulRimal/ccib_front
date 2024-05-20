@@ -5,7 +5,7 @@ import BaseTable from "../components/Tables/BaseTable";
 import Button from "../components/Button";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useTheme } from "styled-components";
-import { humanizeString } from "../helpers";
+import { getFullName, humanizeString } from "../helpers";
 
 const LoanApplicationPage = () => {
   const theme = useTheme();
@@ -15,9 +15,7 @@ const LoanApplicationPage = () => {
       const { first_name, middle_name, last_name, phone_number } = item.user;
       return {
         ...item,
-        user: `${first_name} ${
-          middle_name !== null ? middle_name : ""
-        } ${last_name}`,
+        user: getFullName({ first_name, middle_name, last_name }),
         phone_number,
         finance: item.finance.name,
       };

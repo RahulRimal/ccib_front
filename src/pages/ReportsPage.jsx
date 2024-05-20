@@ -4,6 +4,8 @@ import RankSlider from "../components/RankSlider";
 import styled, { useTheme } from "styled-components";
 import { GiSpeedometer } from "react-icons/gi";
 import { FcComboChart } from "react-icons/fc";
+import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
+import DetailsTable from "../components/Tables/DetailsTable";
 
 export const QuickReportCard = ({ color, icon, value, text, interval }) => {
   const theme = useTheme();
@@ -22,7 +24,7 @@ export const QuickReportCard = ({ color, icon, value, text, interval }) => {
           borderRadius: theme.borderRadius.container,
         }}
       >
-        <div style={{ color: color }}>{icon}</div>
+        {icon && <div style={{ color: color }}>{icon}</div>}
         <div style={{ textAlign: "center" }}>
           <h1 style={{ color: color, textAlign: "center" }}>{value}</h1>
           <p style={{ lineHeight: theme.sizing.s30 }}>{text}</p>
@@ -110,7 +112,7 @@ function ReportsPage() {
       />
       <ReportSection
         headingText={"Quick Reports"}
-        style={{ marginTop: theme.spacing.s20 }}
+        style={{ marginTop: theme.spacing.s48 }}
         headerTextLeft
         headerWidth={"30%"}
       >
@@ -133,14 +135,13 @@ function ReportsPage() {
             <QuickReportCard
               icon={<FcComboChart fontSize={theme.typography.fontSize.f86} />}
               color={theme.palette.warning.main}
-              value={"180"}
+              value={"23.43%"}
               text={"Probrability of Default % Month Feb 24"}
               interval={"Jan-24 - Mar-24"}
             />
             <QuickReportCard
-              icon={<GiSpeedometer fontSize={theme.typography.fontSize.f86} />}
               color={theme.palette.warning.main}
-              value={"180"}
+              value={"Prime A"}
               text={"Evaluation Month Feb 24"}
             />
           </div>
@@ -175,21 +176,48 @@ function ReportsPage() {
       </ReportSection>
       <ReportSection
         headingText={"Score Reports for last 3 months"}
-        style={{ marginTop: theme.spacing.s20 }}
+        style={{ marginTop: theme.spacing.s32 }}
         headerTextLeft
         headerWidth={"30%"}
       >
         <Wrapper>
-          <p
-            style={{
-              fontWeight: theme.typography.fontWeight.semiBold,
-              fontSize: theme.typography.fontSize.f16,
-              paddingBottom: theme.spacing.s8,
-            }}
-          >
-            Explanation:
-          </p>
-          <Explanation text={"10.23%"} notText={"10.23%"} />
+          <UserCreditHistoryChart />
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Report Details"}
+        style={{ marginTop: theme.spacing.s32 }}
+        headerTextLeft
+        headerWidth={"30%"}
+      >
+        <Wrapper
+          style={{ padding: "0", borderRadius: theme.borderRadius.input }}
+        >
+          <DetailsTable />
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Search Details"}
+        style={{ marginTop: theme.spacing.s32 }}
+        headerTextLeft
+        headerWidth={"30%"}
+      >
+        <Wrapper
+          style={{ padding: "0", borderRadius: theme.borderRadius.input }}
+        >
+          <DetailsTable />
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Consumer Details"}
+        style={{ marginTop: theme.spacing.s32 }}
+        headerTextLeft
+        headerWidth={"30%"}
+      >
+        <Wrapper
+          style={{ padding: "0", borderRadius: theme.borderRadius.input }}
+        >
+          <DetailsTable />
         </Wrapper>
       </ReportSection>
     </div>

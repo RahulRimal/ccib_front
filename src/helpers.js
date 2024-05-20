@@ -42,3 +42,36 @@ export function flattenObject(obj, parentKey = "") {
     return acc;
   }, {});
 }
+
+export const getFullName = (user) => {
+  const { first_name, middle_name, last_name } = user;
+  if (!first_name) return "";
+
+  const middle = middle_name || "";
+  const last = last_name || "";
+
+  return `${first_name} ${middle} ${last}`.trim();
+};
+
+export const hexWithOpacity = (hex, opacity) => {
+  if (
+    typeof hex !== "string" ||
+    !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex)
+  ) {
+    throw new Error("Invalid hex color");
+  }
+
+  if (hex.length === 4) {
+    hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+  }
+
+  if (typeof opacity !== "number" || opacity < 0 || opacity > 100) {
+    throw new Error("Opacity must be a number between 0 and 100");
+  }
+  const alpha = Math.round((opacity / 100) * 255)
+    .toString(16)
+    .padStart(2, "0")
+    .toUpperCase();
+
+  return hex + alpha;
+};
