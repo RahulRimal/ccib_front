@@ -5,7 +5,7 @@ const SliderContainer = styled.div`
   display: flex;
   width: 100%;
   height: ${({ theme }) => theme.sizing.s30};
-  margin-top: ${({ theme }) => theme.spacing.s28};
+  margin-top: ${({ theme }) => theme.spacing.s0};
   /* display: "flex",
             width: "100%",
             height: theme.spacing.s32,
@@ -139,7 +139,7 @@ function RankSlider() {
     <>
       <div
         className="main"
-        style={{ position: "relative", padding: theme.spacing.s32 }}
+        style={{ position: "relative", padding: theme.spacing.s12 }}
       >
         <SliderContainer>
           <div style={{ backgroundColor: theme.palette.common.red }}>Risk</div>
