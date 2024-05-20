@@ -1,7 +1,7 @@
 import styled from "styled-components";
 const Wrapper = styled.div`
   display: flex;
-  margin-bottom: ${({ theme }) => theme.spacing.s20};
+  margin-bottom: ${({ theme }) => theme.spacing.s4};
   border-radius: ${({ theme }) => theme.borderRadius.badge};
   align-items: center;
   justify-content: ${({ left, center, right }) =>

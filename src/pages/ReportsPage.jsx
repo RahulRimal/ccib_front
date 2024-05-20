@@ -37,6 +37,7 @@ export const Explanation = ({ text, notText }) => {
   const theme = useTheme();
   const Wrapper = styled.div`
     p {
+      color: ${({ theme }) => theme.palette.text.primary};
       line-height: ${({ theme }) => theme.sizing.s20};
       span {
         color: ${({ theme }) => theme.palette.secondary.main};
@@ -60,10 +61,37 @@ export const Explanation = ({ text, notText }) => {
   );
 };
 
-const MainWrapper = styled.div`
-  width: 100%;
-  padding-bottom: ${({ theme }) => theme.spacing.s12};
-`;
+const ReportSection = ({
+  children,
+  headingText,
+  headerWidth,
+  style,
+  headerTextLeft,
+  headerTextRight,
+  headerTextCenter,
+}) => {
+  const theme = useTheme();
+  return (
+    <>
+      <div style={style}>
+        <SectionHeading
+          text={headingText}
+          background={theme.palette.secondary.dark}
+          color={theme.palette.text.white}
+          width={headerWidth || "auto"}
+          center={headerTextCenter}
+          left={headerTextLeft}
+          right={headerTextRight}
+          style={{
+            padding: theme.spacing.s8,
+            fontWeight: theme.typography.fontWeight.semiBold,
+          }}
+        />
+        {children}
+      </div>
+    </>
+  );
+};
 const Wrapper = styled.div`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.s12};
@@ -76,34 +104,21 @@ function ReportsPage() {
   const theme = useTheme();
   return (
     <div style={{ padding: theme.spacing.s12 }}>
-      <Wrapper style={{ padding: 0, border: 0 }}>
-        <SectionHeading
-          text={"Consumer Loan Score Comprehansive Report"}
-          background={theme.palette.secondary.dark}
-          color={theme.palette.text.white}
-          center
-          style={{
-            padding: theme.spacing.s8,
-            fontWeight: theme.typography.fontWeight.semiBold,
-          }}
-        />
-      </Wrapper>
-      <div style={{ marginTop: theme.spacing.s20 }}>
+      <ReportSection
+        headingText={"Consumner Loan Score Report"}
+        headerTextCenter
+      />
+      <ReportSection
+        headingText={"Quick Reports"}
+        style={{ marginTop: theme.spacing.s20 }}
+        headerTextLeft
+        headerWidth={"30%"}
+      >
         <Wrapper>
-          <SectionHeading
-            text={"Scoring Details"}
-            background={theme.palette.secondary.dark}
-            color={theme.palette.text.white}
-            width={"30%"}
-            left
-            style={{
-              padding: theme.spacing.s8,
-              fontWeight: theme.typography.fontWeight.semiBold,
-            }}
-          />
           <div
             style={{
               display: "flex",
+              flexWrap: "wrap",
               gap: theme.spacing.s64,
               alignItems: "center",
               justifyContent: "space-between",
@@ -157,7 +172,26 @@ function ReportsPage() {
             <Explanation text={"10.23%"} notText={"10.23%"} />
           </div>
         </Wrapper>
-      </div>
+      </ReportSection>
+      <ReportSection
+        headingText={"Score Reports for last 3 months"}
+        style={{ marginTop: theme.spacing.s20 }}
+        headerTextLeft
+        headerWidth={"30%"}
+      >
+        <Wrapper>
+          <p
+            style={{
+              fontWeight: theme.typography.fontWeight.semiBold,
+              fontSize: theme.typography.fontSize.f16,
+              paddingBottom: theme.spacing.s8,
+            }}
+          >
+            Explanation:
+          </p>
+          <Explanation text={"10.23%"} notText={"10.23%"} />
+        </Wrapper>
+      </ReportSection>
     </div>
   );
 }
