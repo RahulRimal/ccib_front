@@ -4,8 +4,175 @@ import RankSlider from "../components/RankSlider";
 import styled, { useTheme } from "styled-components";
 import { GiSpeedometer } from "react-icons/gi";
 import { FcComboChart } from "react-icons/fc";
-import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
 import DetailsTable from "../components/Tables/DetailsTable";
+import ClassificationTable from "../components/Tables/ClassificationTable";
+import ScoreHistoryChart from "../components/Charts/ScoreHistoryChart";
+import AmountOverdueChart from "../components/Charts/AmountOverdueChart";
+
+const columns1 = [
+  {
+    header: " ",
+    columns: [
+      {
+        header: "Types of Loan Accounts (Products)",
+        accessorKey: "type",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Types of Loan Accounts (Products)",
+        accessorKey: "no_of_accounts",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Types of Loan Accounts (Products)",
+        accessorKey: "opened",
+        cell: (info) => info.getValue(),
+      },
+      {
+        header: "Types of Loan Accounts (Products)",
+        accessorKey: "closed",
+        cell: (info) => info.getValue(),
+      },
+    ],
+  },
+
+  {
+    header: "Amount Overdue(NPR)",
+    columns: [
+      {
+        accessorKey: "age",
+        header: "Accounts Overdue(NPR)",
+      },
+      {
+        accessorKey: "email",
+        header: "Persentage Overdue",
+        aggregationFn: "",
+      },
+      {
+        accessorKey: "date_of_birth",
+        header: "Percent Amount Overdue",
+        aggregationFn: "",
+      },
+      {
+        accessorKey: "date_of_admission",
+        header: "Recent Overdue Date",
+        aggregationFn: "",
+      },
+    ],
+  },
+];
+const columns3 = [
+  {
+    header: "Description",
+    accessorKey: "email",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Amount(NPR)",
+    accessorKey: "no_of_accounts",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Description",
+    accessorKey: "date_of_birth",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Amount(NPR)",
+    accessorKey: "closed",
+    cell: (info) => info.getValue(),
+  },
+];
+const columns5 = [
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "No. of Active Blcklist Reporting",
+    accessorKey: "age",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "No.of Institutions",
+    accessorKey: "date_of_birth",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Most recently Reported Active Blcklist Details",
+    accessorKey: "closed",
+    cell: (info) => info.getValue(),
+  },
+];
+
+const columns6 = [
+  {
+    header: "Institution Type",
+    accessorKey: "id",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "No. in last 12 monthd",
+    accessorKey: "age",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Inquery Reason",
+    accessorKey: "date_of_birth",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "No. in last 12 months",
+    accessorKey: "closed",
+    cell: (info) => info.getValue(),
+  },
+];
+
+const columns2 = [
+  {
+    header: "Indicator",
+    accessorKey: "date_of_admission",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Status",
+    accessorKey: "lastName",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Recorded Months",
+    accessorKey: "date_of_birth",
+    cell: (info) => info.getValue(),
+  },
+];
+const columns4 = [
+  {
+    header: "Institution Type",
+    accessorKey: "address.city",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Number of Accounts",
+    accessorKey: "lastName",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Limit Amount (NPR)",
+    accessorKey: "date_of_birth",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Total Outstanding Balance (NPR)",
+    accessorKey: "lastName",
+    cell: (info) => info.getValue(),
+  },
+  {
+    header: "Amount Overdue (NPR)",
+    accessorKey: "age",
+    cell: (info) => info.getValue(),
+  },
+];
 
 export const QuickReportCard = ({ color, icon, value, text, interval }) => {
   const theme = useTheme();
@@ -68,6 +235,7 @@ const ReportSection = ({
   headingText,
   headerWidth,
   style,
+  width,
   headerTextLeft,
   headerTextRight,
   headerTextCenter,
@@ -75,12 +243,12 @@ const ReportSection = ({
   const theme = useTheme();
   return (
     <>
-      <div style={style}>
+      <div style={(style, { width: width || "100%" })}>
         <SectionHeading
           text={headingText}
           background={theme.palette.secondary.dark}
           color={theme.palette.text.white}
-          width={headerWidth || "auto"}
+          width={headerWidth || "100%"}
           center={headerTextCenter}
           left={headerTextLeft}
           right={headerTextRight}
@@ -95,11 +263,11 @@ const ReportSection = ({
   );
 };
 const Wrapper = styled.div`
+  min-height: 40px;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.s12};
   margin-bottom: ${({ theme }) => theme.spacing.s20};
   border: 1px solid ${({ theme }) => theme.palette.secondary.dark};
-  border-radius: ${({ theme }) => theme.borderRadius.container};
+  border-radius: ${({ theme }) => theme.borderRadius.input};
 `;
 
 function ReportsPage() {
@@ -109,6 +277,7 @@ function ReportsPage() {
       <ReportSection
         headingText={"Consumner Loan Score Report"}
         headerTextCenter
+        style={{ marginTop: theme.spacing.s48 }}
       />
       <ReportSection
         headingText={"Quick Reports"}
@@ -180,8 +349,8 @@ function ReportsPage() {
         headerTextLeft
         headerWidth={"30%"}
       >
-        <Wrapper>
-          <UserCreditHistoryChart />
+        <Wrapper style={{ background: theme.palette.background.default }}>
+          <ScoreHistoryChart style={{ height: "550px" }} />
         </Wrapper>
       </ReportSection>
       <ReportSection
@@ -190,9 +359,7 @@ function ReportsPage() {
         headerTextLeft
         headerWidth={"30%"}
       >
-        <Wrapper
-          style={{ padding: "0", borderRadius: theme.borderRadius.input }}
-        >
+        <Wrapper>
           <DetailsTable />
         </Wrapper>
       </ReportSection>
@@ -202,22 +369,124 @@ function ReportsPage() {
         headerTextLeft
         headerWidth={"30%"}
       >
-        <Wrapper
-          style={{ padding: "0", borderRadius: theme.borderRadius.input }}
-        >
+        <Wrapper>
           <DetailsTable />
         </Wrapper>
       </ReportSection>
       <ReportSection
-        headingText={"Consumer Details"}
+        headingText={"Blacklist Indicator"}
+        style={{ marginTop: theme.spacing.s32 }}
+        width={"100%"}
+        headerTextLeft
+      >
+        <Wrapper>
+          <ClassificationTable columns={columns5} />
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Blacklist Indicator"}
+        style={{ marginTop: theme.spacing.s32 }}
+        width={"100%"}
+        headerTextLeft
+      >
+        <Wrapper style={{ padding: `0 ${theme.spacing.s12}` }}>
+          <p>No Data Available</p>
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Blacklist History"}
+        style={{ marginTop: theme.spacing.s32 }}
+        width={"100%"}
+        headerTextLeft
+      >
+        <Wrapper style={{ padding: `0 ${theme.spacing.s12}` }}>
+          <p>No Data Available</p>
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Credit Profile Overview"}
         style={{ marginTop: theme.spacing.s32 }}
         headerTextLeft
-        headerWidth={"30%"}
+        width={"60%"}
       >
-        <Wrapper
-          style={{ padding: "0", borderRadius: theme.borderRadius.input }}
+        <Wrapper>
+          <ClassificationTable columns={columns2} />
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Classification of Active Accounts by Institution Type"}
+        style={{ marginTop: theme.spacing.s32 }}
+        headerTextLeft
+        width={"100%"}
+      >
+        <Wrapper>
+          <ClassificationTable columns={columns4} width={"100%"} />
+        </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Classification of Active Accounts by Product Type"}
+        style={{ marginTop: theme.spacing.s32 }}
+        headerTextLeft
+        width={"100%"}
+      >
+        <Wrapper>
+          <ClassificationTable columns={columns1} width={"100%"} />
+        </Wrapper>
+        <Wrapper>
+          <ClassificationTable columns={columns1} width={"100%"} />
+        </Wrapper>
+        <Wrapper>
+          <ClassificationTable columns={columns1} width={"100%"} />
+        </Wrapper>
+      </ReportSection>
+      <div style={{ display: "flex", maxHeight: "fit-content", gap: "12px" }}>
+        <ReportSection
+          headingText={"Total Liability Summary"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
         >
-          <DetailsTable />
+          <Wrapper>
+            <ClassificationTable columns={columns3} />
+          </Wrapper>
+        </ReportSection>
+        <Wrapper style={{ backgroundColor: theme.palette.background.default }}>
+          <AmountOverdueChart />
+        </Wrapper>
+      </div>
+
+      <ReportSection
+        headingText={"Inquiry Summary"}
+        style={{ marginTop: theme.spacing.s32 }}
+        width={"70%"}
+        headerTextLeft
+      >
+        <Wrapper>
+          <ClassificationTable columns={columns6} />
+        </Wrapper>
+      </ReportSection>
+
+      <ReportSection
+        headingText={"Classification of Active Loans by Institution Type"}
+        style={{ marginTop: theme.spacing.s32 }}
+        headerTextLeft
+        width={"100%"}
+      >
+        <Wrapper>
+          <ClassificationTable columns={columns4} width={"100%"} />
+        </Wrapper>
+      </ReportSection>
+
+      <ReportSection
+        headingText={"Classification of Active Loans by Product Type"}
+        style={{ marginTop: theme.spacing.s32 }}
+        headerTextLeft
+        headerWidth={"100%"}
+      >
+        <Wrapper>
+          <ClassificationTable columns={columns4} width={"100%"} />
+        </Wrapper>
+        <Wrapper>
+          <ClassificationTable columns={columns4} width={"100%"} />
         </Wrapper>
       </ReportSection>
     </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
+import { hexWithOpacity } from "../../helpers";
 
 const Wrapper = styled.div`
   table,
@@ -28,7 +29,8 @@ const Wrapper = styled.div`
         font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
         color: ${({ theme }) => theme.palette.text.primary};
         font-size: ${({ theme }) => theme.typography.fontSize.f16};
-        background-color: hexW;
+        background-color: ${({ theme }) =>
+          hexWithOpacity(theme.palette.primary.main, 10)};
       }
       td {
         flex-grow: 1;
@@ -68,6 +70,80 @@ function DetailsTable() {
             borderRadius: theme.borderRadius.input,
           }}
         >
+          <tr style={{}}>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td colSpan="1">
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Mothers's Name :</span>
+              </th>
+              <td colSpan="2">
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td colSpan="2">
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td colSpan="2">
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Address :</span>
+              </th>
+              <td colSpan="2">
+                <span>WKathmandu, NP</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>DOB:</span>
+              </th>
+              <td colSpan="2">
+                <span>2022-01-01</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Mother's Name :</span>
+              </th>
+              <td colSpan="2">
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Company Name:</span>
+              </th>
+              <td colSpan="2">
+                <span>CCIP</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td colSpan="2">
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+          </tr>
           <tr style={{}}>
             <div>
               <th>
