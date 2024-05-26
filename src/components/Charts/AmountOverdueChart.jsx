@@ -11,13 +11,11 @@ const AmountOverdueChart = () => {
         text: "Overdue History",
         left: "center",
         top: theme.spacing.s8,
-        // textAlign: "center",
       },
       {
         text: "Overdue History",
         left: "center",
         bottom: "-5px",
-        // textAlign: "center",
       },
     ],
     tooltip: {
@@ -40,9 +38,12 @@ const AmountOverdueChart = () => {
         "Dec-23",
       ],
     },
+
     grid: {
-      top: 50,
-      bottom: 70,
+      left: "3%",
+      right: "4%",
+      bottom: "15%",
+      containLabel: true,
     },
     yAxis: {
       type: "value",

@@ -8,10 +8,7 @@ const Wrapper = styled.div`
   td {
     border-collapse: collapse;
   }
-  th,
-  td {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-  }
+
   tr {
     border-radius: ${({ theme }) => theme.borderRadius.input};
     display: flex;
@@ -19,9 +16,13 @@ const Wrapper = styled.div`
     overflow: hidden;
     width: 100%;
     & > div {
+      border: 1px solid
+      border-collapse: collapse;
+        ${({ theme }) => hexWithOpacity(theme.palette.border.focused, 10)};
       flex-grow: 1;
       display: flex;
       th {
+        min-width: 200px;
         align-content: center;
         padding-left: ${({ theme }) => theme.spacing.s12};
         padding-right: ${({ theme }) => theme.spacing.s12};
@@ -30,9 +31,10 @@ const Wrapper = styled.div`
         color: ${({ theme }) => theme.palette.text.primary};
         font-size: ${({ theme }) => theme.typography.fontSize.f16};
         background-color: ${({ theme }) =>
-          hexWithOpacity(theme.palette.primary.main, 10)};
+          hexWithOpacity(theme.palette.primary.dark, 10)};
       }
       td {
+        min-width: 250px;
         flex-grow: 1;
         align-content: center;
         padding-left: ${({ theme }) => theme.spacing.s12};
@@ -45,9 +47,7 @@ const Wrapper = styled.div`
   }
   th,
   td {
-    /* border: 1px solid green; */
-    height: ${({ theme }) => theme.sizing.s36};
-    /* margin: 2px; */
+    height: ${({ theme }) => theme.sizing.s44};
   }
 `;
 
@@ -75,15 +75,15 @@ function DetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="1">
-                <span>William H. Gates Sr.</span>
+              <td>
+                <span>H. Gates Sr.</span>
               </td>
             </div>
             <div>
               <th>
                 <span>Mothers's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -91,7 +91,7 @@ function DetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -99,7 +99,7 @@ function DetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -107,7 +107,7 @@ function DetailsTable() {
               <th>
                 <span>Address :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>WKathmandu, NP</span>
               </td>
             </div>
@@ -115,7 +115,7 @@ function DetailsTable() {
               <th>
                 <span>DOB:</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>2022-01-01</span>
               </td>
             </div>
@@ -123,7 +123,7 @@ function DetailsTable() {
               <th>
                 <span>Mother's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -131,7 +131,7 @@ function DetailsTable() {
               <th>
                 <span>Company Name:</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>CCIP</span>
               </td>
             </div>
@@ -139,25 +139,7 @@ function DetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
-                <span>William H. Gates Sr.</span>
-              </td>
-            </div>
-          </tr>
-          <tr style={{}}>
-            <div>
-              <th>
-                <span>Father's Name :</span>
-              </th>
-              <td colSpan="1">
-                <span>William H. Gates Sr.</span>
-              </td>
-            </div>
-            <div>
-              <th>
-                <span>Mothers's Name :</span>
-              </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -165,7 +147,7 @@ function DetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -173,47 +155,39 @@ function DetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
-              </td>
-            </div>
-            <div>
-              <th>
-                <span>Address :</span>
-              </th>
-              <td colSpan="2">
-                <span>WKathmandu, NP</span>
-              </td>
-            </div>
-            <div>
-              <th>
-                <span>DOB:</span>
-              </th>
-              <td colSpan="2">
-                <span>2022-01-01</span>
-              </td>
-            </div>
-            <div>
-              <th>
-                <span>Mother's Name :</span>
-              </th>
-              <td colSpan="2">
-                <span>William H. Gates Sr.</span>
-              </td>
-            </div>
-            <div>
-              <th>
-                <span>Company Name:</span>
-              </th>
-              <td colSpan="2">
-                <span>CCIP</span>
               </td>
             </div>
             <div>
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>

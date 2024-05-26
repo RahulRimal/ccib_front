@@ -8,6 +8,7 @@ import DetailsTable from "../components/Tables/DetailsTable";
 import ClassificationTable from "../components/Tables/ClassificationTable";
 import ScoreHistoryChart from "../components/Charts/ScoreHistoryChart";
 import AmountOverdueChart from "../components/Charts/AmountOverdueChart";
+import PieChart from "../components/Charts/PieChart";
 
 const columns1 = [
   {
@@ -174,6 +175,21 @@ const columns4 = [
   },
 ];
 
+const data1 = [
+  { value: 98, name: "Overdue" },
+  { value: 2, name: "Current Outstanding" },
+];
+
+const data2 = [
+  { value: 100, name: "Banks" },
+  { value: 0, name: "Other Companies" },
+  { value: 0, name: "Finincial Institution" },
+  { value: 0, name: "Microfinance Institution " },
+  { value: 0, name: "Co-Operatives " },
+];
+
+const data3 = [{ value: 100, name: "New Credit Application" }];
+
 export const QuickReportCard = ({ color, icon, value, text, interval }) => {
   const theme = useTheme();
   return (
@@ -263,11 +279,14 @@ const ReportSection = ({
   );
 };
 const Wrapper = styled.div`
-  min-height: 40px;
+  /* min-height: 40px; */
   width: 100%;
   margin-bottom: ${({ theme }) => theme.spacing.s20};
   border: 1px solid ${({ theme }) => theme.palette.secondary.dark};
   border-radius: ${({ theme }) => theme.borderRadius.input};
+  & > p {
+    line-height: 40px;
+  }
 `;
 
 function ReportsPage() {
@@ -285,7 +304,7 @@ function ReportsPage() {
         headerTextLeft
         headerWidth={"30%"}
       >
-        <Wrapper>
+        <Wrapper style={{ padding: theme.spacing.s12 }}>
           <div
             style={{
               display: "flex",
@@ -488,6 +507,31 @@ function ReportsPage() {
         <Wrapper>
           <ClassificationTable columns={columns4} width={"100%"} />
         </Wrapper>
+      </ReportSection>
+      <ReportSection
+        headingText={"Classification of Active Accounts by Product Type"}
+        style={{ marginTop: theme.spacing.s32, display: "flex" }}
+        headerTextLeft
+        width={"100%"}
+      >
+        <div
+          style={{
+            maxWidth: "100%",
+            display: "flex",
+            flexDirection: "row",
+            gap: theme.spacing.s20,
+          }}
+        >
+          <Wrapper style={{}}>
+            <PieChart data={data1} title={"Overdue"} />
+          </Wrapper>
+          <Wrapper style={{}}>
+            <PieChart data={data2} title={"Institution Type(Inquiry)"} />
+          </Wrapper>
+          <Wrapper style={{}}>
+            <PieChart data={data3} title={"Inquiry Reason"} />
+          </Wrapper>
+        </div>
       </ReportSection>
     </div>
   );
