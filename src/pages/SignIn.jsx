@@ -6,11 +6,13 @@ import Button from "../components/Button";
 import { ClipLoader } from "react-spinners";
 import InputField from "../components/Forms/InputField";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../features/authSlice";
+import { loginUser, updateAuthentiaction } from "../features/authSlice";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../components/Backdrop";
 import PasswordField from "../components/Forms/PasswordField";
 import CheckboxField from "../components/Forms/CheckboxField";
+import { useNavigate } from "react-router-dom";
+import { Cookies } from "react-cookie";
 
 const Grid = styled.div`
   display: grid;
@@ -68,8 +70,17 @@ const Icon = styled.div`
 function SignIn() {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { loading } = useSelector((store) => store.auth);
+
+  useEffect(() => {
+    const cookie = new Cookies();
+    if (cookie.get("access") && cookie.get("refresh")) {
+      dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
+      navigate("/");
+    }
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -78,6 +89,7 @@ function SignIn() {
     const password = data.get('password');
     dispatch(loginUser({ username, password })).unwrap().then((data) => {
       enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
+      navigate("/");
     }).catch((error) => {
       const errs = JSON.parse(error.message)
       errs.forEach((element, index) => {
@@ -113,11 +125,11 @@ function SignIn() {
 
             <InputField label="Username" name="username" type="text" placeholder="Username" />
             <PasswordField label="Password" name="password" placeholder="Password" />
-            
-           <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
-           <CheckboxField />
-            <span>Remember me</span>
-           </div>
+
+            <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
+              <CheckboxField />
+              <span>Remember me</span>
+            </div>
             <Button
               style={{ width: "100%" }}
               type="submit"
