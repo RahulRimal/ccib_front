@@ -39,6 +39,7 @@ const TableWrapper = styled.div`
 `;
 
 const StyledTable = styled.table`
+  border-collapse: collapse;
   width: 100%;
   p {
     margin: 0;
@@ -56,6 +57,11 @@ const StyledTable = styled.table`
   td {
     text-align: left;
     padding: 12px;
+  }
+  th,
+  td {
+    border: 1px solid ${({ theme }) => theme.palette.border.secondary};
+    border-collapse: collapse;
   }
 `;
 

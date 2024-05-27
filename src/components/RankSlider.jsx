@@ -143,8 +143,8 @@ function RankSlider() {
       >
         <SliderContainer>
           <div style={{ backgroundColor: theme.palette.common.red }}>Risk</div>
-          <div style={{ backgroundColor: theme.palette.common.blue }}>
-            Prime
+          <div style={{ backgroundColor: theme.palette.common.yellow }}>
+            Good
           </div>
           <div style={{ backgroundColor: theme.palette.common.green }}>
             Ultimate
@@ -158,8 +158,8 @@ function RankSlider() {
             <Scale>
               <span>0</span>
               <SubScale>
-                <span style={{ borderTop: `2px solid red` }}></span>
-                <small style={{ borderLeft: `2px solid red` }}></small>
+                <span style={{ borderTop: `2px solid black` }}></span>
+                <small style={{ borderLeft: `2px solid black` }}></small>
               </SubScale>
               <span></span>
             </Scale>

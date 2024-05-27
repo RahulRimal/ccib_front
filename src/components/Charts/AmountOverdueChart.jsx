@@ -10,12 +10,10 @@ const AmountOverdueChart = () => {
       {
         text: "Overdue History",
         left: "center",
-        top: theme.spacing.s8,
       },
       {
         text: "Overdue History",
         left: "center",
-        bottom: "-5px",
       },
     ],
     tooltip: {
@@ -39,18 +37,12 @@ const AmountOverdueChart = () => {
       ],
     },
 
-    grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "15%",
-      containLabel: true,
-    },
     yAxis: {
       type: "value",
     },
 
     legend: {
-      bottom: theme.spacing.s20,
+      bottom: "bottom",
       data: ["Amount Overdue"],
       textStyle: {
         fontSize: theme.typography.fontSize.f16,
@@ -94,9 +86,8 @@ const AmountOverdueChart = () => {
   };
 
   return (
-    // render echarts option.
-    <div style={{ width: "100%" }}>
-      <ReactECharts option={option} />
+    <div>
+      <ReactECharts option={option} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 };

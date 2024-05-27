@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import SectionHeading from "../components/ScetionHeading";
 import RankSlider from "../components/RankSlider";
 import styled, { useTheme } from "styled-components";
@@ -8,7 +8,13 @@ import DetailsTable from "../components/Tables/DetailsTable";
 import ClassificationTable from "../components/Tables/ClassificationTable";
 import ScoreHistoryChart from "../components/Charts/ScoreHistoryChart";
 import AmountOverdueChart from "../components/Charts/AmountOverdueChart";
+import BaseTable from "../components/Tables/BaseTable";
 import PieChart from "../components/Charts/PieChart";
+import data from "../components/Tables/students.json";
+import useFetchTable from "../custom_hooks/useFetchTable";
+import { useNavigate } from "react-router-dom";
+import { mainUrl } from "../constants";
+import { getFullName, humanizeString } from "../helpers";
 
 const columns1 = [
   {
@@ -280,6 +286,7 @@ const ReportSection = ({
 };
 const Wrapper = styled.div`
   /* min-height: 40px; */
+  padding: ${({ theme }) => theme.spacing.s8};
   width: 100%;
   margin-bottom: ${({ theme }) => theme.spacing.s20};
   border: 1px solid ${({ theme }) => theme.palette.secondary.dark};
@@ -291,6 +298,58 @@ const Wrapper = styled.div`
 
 function ReportsPage() {
   const theme = useTheme();
+  const handleResponse = (data) => {
+    return data.map((item) => {
+      const { first_name, middle_name, last_name } = item.user;
+      return {
+        ...item,
+        user: getFullName({ first_name, middle_name, last_name }),
+        finance: item.finance.name,
+      };
+    });
+  };
+
+  const customRenderer = {
+    status: (info) => {
+      const colors = {
+        pending: theme.palette.warning.main,
+        approved: theme.palette.success.main,
+        rejected: theme.palette.error.main,
+      };
+      const value = info.getValue();
+      return <p style={{ color: colors[value] }}>{info.getValue()}</p>;
+    },
+  };
+
+  const { loading, rowData, columns } = useFetchTable({
+    url: `${mainUrl}/cooperative/blacklists/`,
+    columnsToHide: ["idx"],
+    responseHandler: handleResponse,
+    customRenderer: customRenderer,
+  });
+  const customHeaderRenderer = (header) => {
+    return <span style={{ fontWeight: "bold" }}>{humanizeString(header)}</span>;
+  };
+  const data = useMemo(() => rowData, [rowData]);
+
+  // return (
+  //   <div style={{ margin: theme.spacing.s20 }}>
+  //     <BaseTable
+  //       title="Users list"
+  //       isLoading={loading}
+  //       data={data}
+  //       columns={columns}
+  //       toolbarActions={
+  //         <Button
+  //           icon={<AiOutlinePlus />}
+  //           text="Add User"
+  //           onClick={() => navigate("application")}
+  //         />
+  //       }
+  //       navigateOnRowClick={(data) => navigate(`/users/${data.idx}`)}
+  //     />
+  //   </div>
+  // );
   return (
     <div style={{ padding: theme.spacing.s12 }}>
       <ReportSection
@@ -399,7 +458,7 @@ function ReportsPage() {
         headerTextLeft
       >
         <Wrapper>
-          <ClassificationTable columns={columns5} />
+          <BaseTable isLoading={loading} data={data} columns={columns} />
         </Wrapper>
       </ReportSection>
       <ReportSection
@@ -429,7 +488,7 @@ function ReportsPage() {
         width={"60%"}
       >
         <Wrapper>
-          <ClassificationTable columns={columns2} />
+          <BaseTable data={data} columns={columns2} />
         </Wrapper>
       </ReportSection>
       <ReportSection
@@ -439,7 +498,7 @@ function ReportsPage() {
         width={"100%"}
       >
         <Wrapper>
-          <ClassificationTable columns={columns4} width={"100%"} />
+          <BaseTable data={data} columns={columns4} width={"100%"} />
         </Wrapper>
       </ReportSection>
       <ReportSection
@@ -449,13 +508,13 @@ function ReportsPage() {
         width={"100%"}
       >
         <Wrapper>
-          <ClassificationTable columns={columns1} width={"100%"} />
+          <BaseTable columns={columns1} data={data} />
         </Wrapper>
         <Wrapper>
-          <ClassificationTable columns={columns1} width={"100%"} />
+          <BaseTable data={data} columns={columns1} width={"100%"} />
         </Wrapper>
         <Wrapper>
-          <ClassificationTable columns={columns1} width={"100%"} />
+          <BaseTable data={data} columns={columns1} width={"100%"} />
         </Wrapper>
       </ReportSection>
       <div style={{ display: "flex", maxHeight: "fit-content", gap: "12px" }}>
@@ -465,10 +524,15 @@ function ReportsPage() {
           headerTextLeft
         >
           <Wrapper>
-            <ClassificationTable columns={columns3} />
+            <BaseTable data={data} columns={columns3} />
           </Wrapper>
         </ReportSection>
-        <Wrapper style={{ backgroundColor: theme.palette.background.default }}>
+        <Wrapper
+          style={{
+            backgroundColor: theme.palette.background.default,
+            height: "inherit",
+          }}
+        >
           <AmountOverdueChart />
         </Wrapper>
       </div>
@@ -480,7 +544,7 @@ function ReportsPage() {
         headerTextLeft
       >
         <Wrapper>
-          <ClassificationTable columns={columns6} />
+          <BaseTable data={data} columns={columns6} />
         </Wrapper>
       </ReportSection>
 
@@ -491,7 +555,7 @@ function ReportsPage() {
         width={"100%"}
       >
         <Wrapper>
-          <ClassificationTable columns={columns4} width={"100%"} />
+          <BaseTable data={data} columns={columns4} width={"100%"} />
         </Wrapper>
       </ReportSection>
 
@@ -502,33 +566,34 @@ function ReportsPage() {
         headerWidth={"100%"}
       >
         <Wrapper>
-          <ClassificationTable columns={columns4} width={"100%"} />
+          <BaseTable columns={columns4} data={data} />
         </Wrapper>
         <Wrapper>
-          <ClassificationTable columns={columns4} width={"100%"} />
+          <BaseTable data={data} columns={columns4} width={"100%"} />
         </Wrapper>
       </ReportSection>
       <ReportSection
         headingText={"Classification of Active Accounts by Product Type"}
-        style={{ marginTop: theme.spacing.s32, display: "flex" }}
+        style={{ marginTop: theme.spacing.s32 }}
         headerTextLeft
         width={"100%"}
       >
         <div
           style={{
-            maxWidth: "100%",
+            width: "100%",
             display: "flex",
             flexDirection: "row",
             gap: theme.spacing.s20,
+            // flexWrap: "wrap",
           }}
         >
-          <Wrapper style={{}}>
+          <Wrapper>
             <PieChart data={data1} title={"Overdue"} />
           </Wrapper>
-          <Wrapper style={{}}>
+          <Wrapper>
             <PieChart data={data2} title={"Institution Type(Inquiry)"} />
           </Wrapper>
-          <Wrapper style={{}}>
+          <Wrapper>
             <PieChart data={data3} title={"Inquiry Reason"} />
           </Wrapper>
         </div>
