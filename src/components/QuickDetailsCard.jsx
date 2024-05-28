@@ -18,8 +18,7 @@ const QuickDetailsCardWrapper = styled.div`
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10%;
+  justify-content: space-evenly;
   &:hover {
     transform: scale(1.05);
   }
@@ -92,12 +91,38 @@ export const QuickDetails = [
     value: "10",
   },
 ];
+export const profitability = [
+  {
+    id: 1,
+    icon: <HiOutlineBanknotes className="icon" />,
+    title: "Gross Profit Margin",
+    value: "Rs. 200000",
+  },
+  {
+    id: 2,
+    icon: <MdDoneAll className="icon" />,
+    title: "Operating Profit Margin",
+    value: "Rs. 21500",
+  },
+  {
+    id: 3,
+    icon: <VscDebugAll className="icon" />,
+    title: "Pretax Profit Margin",
+    value: "Rs. 120005",
+  },
+  {
+    id: 4,
+    icon: <ImStatsBars className="icon" />,
+    title: "Net Profit Margin",
+    value: "503770",
+  },
+];
 
-function QuickDetailsCard({ key, item }) {
+function QuickDetailsCard({ key, item, style }) {
   const theme = useTheme();
   return (
     <>
-      <QuickDetailsCardWrapper className="shadow-md" key={key}>
+      <QuickDetailsCardWrapper className="shadow-md" key={key} style={style}>
         <IconButton>
           <BsThreeDots className="icon" />
         </IconButton>

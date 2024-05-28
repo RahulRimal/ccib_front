@@ -29,7 +29,7 @@ const Wrapper = styled.div`
     & > div {
       background-color: ${({ theme }) => theme.palette.background.default};
       border-radius: ${({ theme }) => theme.borderRadius.container};
-      margin: ${({ theme }) => theme.spacing.s24} 0;
+      margin: ${({ theme }) => theme.spacing.s12} 0;
       padding: ${({ theme }) => theme.spacing.s8};
     }
   }

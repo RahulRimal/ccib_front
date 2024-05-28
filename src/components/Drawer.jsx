@@ -13,6 +13,7 @@ import {
 
 import { IoMenu, IoPersonSharp } from "react-icons/io5";
 import { drawerMinWidth } from "../App";
+import { LuLayoutDashboard } from "react-icons/lu";
 import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import Divider from "./Divider";
@@ -38,6 +39,11 @@ const Drawer = ({ drawerWidth }) => {
       <ul style={{ padding: 0, margin: 0 }}>
         {drawerWidth === drawerMinWidth ? (
           <>
+            <ListItem
+              prefix={<LuLayoutDashboard />}
+              text="Dashboard"
+              onClick={() => navigate("/dashboard")}
+            />
             <ListItem prefix={<MdPeople />} />
             <ListItem prefix={<FaUsersSlash />} />
             <ListItem prefix={<MdCreditCard />} />
@@ -46,33 +52,38 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
-              <ListItem
-                prefix={<MdPeople />}
-                text="Users"
-                onClick={() => navigate("/")}
-              />
-              <ListItem
-                prefix={<FaUsersSlash />}
-                text="Applications"
-                onClick={() => navigate("/loan-application")}
-              />
-              <Divider />
-              <ListItem
-                prefix={<MdCreditCard />}
-                text="Loans"
-                onClick={() => navigate("/loans")}
-              />
-              <ListItem
-                prefix={<MdCreditScore />}
-                text="Finances"
-                suffix={<FaAngleDown />}
-                onClick={() => navigate("/finance")}
-              />
-              <ListItem
-                prefix={<MdOutlineCreditCardOff />}
-                text="Companies"
-                onClick={() => navigate("/company")}
-              /> 
+            <ListItem
+              prefix={<LuLayoutDashboard />}
+              text="Dashboard"
+              onClick={() => navigate("/dashboard")}
+            />
+            <ListItem
+              prefix={<MdPeople />}
+              text="Users"
+              onClick={() => navigate("/")}
+            />
+            <ListItem
+              prefix={<FaUsersSlash />}
+              text="Applications"
+              onClick={() => navigate("/loan-application")}
+            />
+            <Divider />
+            <ListItem
+              prefix={<MdCreditCard />}
+              text="Loans"
+              onClick={() => navigate("/loans")}
+            />
+            <ListItem
+              prefix={<MdCreditScore />}
+              text="Finances"
+              suffix={<FaAngleDown />}
+              onClick={() => navigate("/finance")}
+            />
+            <ListItem
+              prefix={<MdOutlineCreditCardOff />}
+              text="Companies"
+              onClick={() => navigate("/company")}
+            />
           </>
         )}
       </ul>
