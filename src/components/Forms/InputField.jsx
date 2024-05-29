@@ -1,13 +1,21 @@
-import React from 'react'
-import styled, { useTheme } from 'styled-components'
-
+import React from "react";
+import styled, { useTheme } from "styled-components";
 
 const FormGroup = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.s4};
-  margin:${({ theme }) => theme.spacing.s8} 0;
-  position: relative;
+  p {
+    font-size: ${({ theme }) => theme.typography.fontSize.f14};
+    font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
+    color: ${({ theme }) => theme.palette.primary.main};
+  }
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing.s4};
+    margin: ${({ theme }) => theme.spacing.s8} 0;
+    position: relative;
+    width: 100%;
+    background-color: ${({ theme }) => theme.palette.background.default};
+  }
 
   label {
     position: absolute;
@@ -22,14 +30,14 @@ const FormGroup = styled.div`
     transition: opacity 0.3s ease;
     visibility: hidden;
     opacity: 0;
-
   }
 
   input {
     width: 100%;
     border: 1px solid ${({ theme }) => theme.palette.border.primary};
     height: ${({ theme }) => theme.sizing.s44};
-    padding: ${({ theme }) => theme.spacing.s8} ${({ theme }) => theme.spacing.s16};
+    padding: ${({ theme }) => theme.spacing.s8}
+      ${({ theme }) => theme.spacing.s16};
     box-sizing: border-box;
     border-radius: ${({ theme }) => theme.borderRadius.input};
     overflow: hidden;
@@ -39,7 +47,6 @@ const FormGroup = styled.div`
       &::placeholder {
         visibility: hidden;
       }
-
     }
   }
   input:focus + label {
@@ -49,38 +56,68 @@ const FormGroup = styled.div`
 `;
 
 const Prefix = styled.div`
-position: absolute;
-left: ${({ theme }) => theme.spacing.s12};
+  position: absolute;
+  left: ${({ theme }) => theme.spacing.s12};
 `;
 
 const Suffix = styled.div`
-position: absolute;
-right: ${({ theme }) => theme.spacing.s12};
+  position: absolute;
+  right: ${({ theme }) => theme.spacing.s12};
 `;
 
-
-const InputField = ({ name, placeholder, type, label, required = true, editable = true, prefix, suffix, onClick, onPrefixClick, onSuffixClick, style }) => {
+const InputField = ({
+  title,
+  name,
+  value,
+  placeholder,
+  type,
+  label,
+  required = true,
+  editable = true,
+  prefix,
+  suffix,
+  onClick,
+  onPrefixClick,
+  onSuffixClick,
+  style,
+}) => {
   const theme = useTheme();
-  const textStyles = { ...style }
+  const textStyles = { ...style };
 
   return (
-    <FormGroup >
-      {prefix && <Prefix onClick={onPrefixClick}>{prefix}</Prefix>}
-      <input
-        style={{ ...(prefix && { paddingLeft: theme.spacing.s32 }), ...textStyles }}
-        name={name}
-        type={type}
-        className="form-control"
-        placeholder={placeholder}
-        required={required}
-        readOnly={!editable && "readonly"}
-        onClick={onClick}
-      />
-      {suffix && <Suffix onClick={onSuffixClick} style={{ cursor: `${onSuffixClick && 'pointer'}` }}>{suffix}</Suffix>}
+    <FormGroup>
+      <p>{title}</p>
+      <div>
+        {prefix && <Prefix onClick={onPrefixClick}>{prefix}</Prefix>}
+        <input
+          style={{
+            ...(prefix && { paddingLeft: theme.spacing.s32 }),
+            ...textStyles,
+          }}
+          name={name}
+          type={type}
+          className="form-control"
+          placeholder={placeholder}
+          required={required}
+          readOnly={!editable && "readonly"}
+          onClick={onClick}
+          value={value}
+        />
+        {suffix && (
+          <Suffix
+            onClick={onSuffixClick}
+            style={{ cursor: `${onSuffixClick && "pointer"}` }}
+          >
+            {suffix}
+          </Suffix>
+        )}
 
-      <label htmlFor={name} style={{ textTransform: 'capitalize' }}>{label}</label>
+        <label htmlFor={name} style={{ textTransform: "capitalize" }}>
+          {label}
+        </label>
+      </div>
     </FormGroup>
-  )
-}
+  );
+};
 
-export default InputField
+export default InputField;

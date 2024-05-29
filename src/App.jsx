@@ -14,6 +14,7 @@ import CompanyPage from "./pages/CompanyPage";
 import LoanApplicationPage from "./pages/LoanApplicatinPage";
 import LoansPage from "./pages/LoansPage";
 import Footer from "./components/Footer";
+import EmployeeProfile from "./pages/EmployeeProfile";
 
 export const DrawerWidthContext = React.createContext();
 export const drawerMinWidth = 50;
@@ -36,40 +37,41 @@ const App = () => {
     <ThemeProvider theme={themeMode === "light" ? theme.light : theme.dark}>
       <GlobalStyle />
       <DrawerWidthContext.Provider value={{ drawerWidth }}>
-        {!isLoggedIn ? (
+        {/* {!isLoggedIn ? (
           <SignIn />
-        ) : (
-          <BrowserRouter>
-            <AppBar
-              drawerWidth={drawerWidth}
-              toggleDrawer={toggleDrawer}
-              toggleTheme={toggleTheme}
-            />
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: `${drawerWidth}px calc(100% - ${drawerWidth}px)`,
-                transition: "all 0.3s ease",
-              }}
-            >
-              <Drawer drawerWidth={drawerWidth} />
-              <Routes>
-                <Route path="/" exact element={<Home />} />
-                <Route path="/finance" exact element={<FinancePage />} />
-                <Route path="/company" exact element={<CompanyPage />} />
-                <Route
-                  path="/loan-application"
-                  exact
-                  element={<LoanApplicationPage />}
-                />
-                <Route path="/users/:id" exact element={<UserProfile />} />
-                <Route path="/application" exact element={<LoanForm />} />
-                <Route path="/loans" exact element={<LoansPage />} />
-              </Routes>
-            </div>
-            <Footer />
-          </BrowserRouter>
-        )}
+        ) : ( */}
+        <BrowserRouter>
+          <AppBar
+            drawerWidth={drawerWidth}
+            toggleDrawer={toggleDrawer}
+            toggleTheme={toggleTheme}
+          />
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: `${drawerWidth}px calc(100% - ${drawerWidth}px)`,
+              transition: "all 0.3s ease",
+            }}
+          >
+            <Drawer drawerWidth={drawerWidth} />
+            <Routes>
+              <Route path="/" exact element={<Home />} />
+              <Route path="/finance" exact element={<FinancePage />} />
+              <Route path="/company" exact element={<CompanyPage />} />
+              <Route
+                path="/loan-application"
+                exact
+                element={<LoanApplicationPage />}
+              />
+              <Route path="/users/:id" exact element={<UserProfile />} />
+              <Route path="/application" exact element={<LoanForm />} />
+              <Route path="/loans" exact element={<LoansPage />} />
+              <Route path="/profile" exact element={<EmployeeProfile />} />
+            </Routes>
+          </div>
+          <Footer />
+        </BrowserRouter>
+        {/* )} */}
       </DrawerWidthContext.Provider>
     </ThemeProvider>
   );

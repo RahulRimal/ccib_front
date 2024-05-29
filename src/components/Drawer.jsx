@@ -15,6 +15,8 @@ import { IoMenu, IoPersonSharp } from "react-icons/io5";
 import { drawerMinWidth } from "../App";
 import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
+import { TbUserHexagon } from "react-icons/tb";
+
 import Divider from "./Divider";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
@@ -46,39 +48,42 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
-              <ListItem
-                prefix={<MdPeople />}
-                text="Users"
-                onClick={() => navigate("/")}
-              />
-              <ListItem
-                prefix={<FaUsersSlash />}
-                text="Applications"
-                onClick={() => navigate("/loan-application")}
-              />
-              <Divider />
-              <ListItem
-                prefix={<MdCreditCard />}
-                text="Loans"
-                onClick={() => navigate("/loans")}
-              />
-              <ListItem
-                prefix={<MdCreditScore />}
-                text="Finances"
-                suffix={<FaAngleDown />}
-                onClick={() => navigate("/finance")}
-              />
-              <ListItem
-                prefix={<MdOutlineCreditCardOff />}
-                text="Companies"
-                onClick={() => navigate("/company")}
-              /> 
+            <ListItem
+              prefix={<MdPeople />}
+              text="Users"
+              onClick={() => navigate("/")}
+            />
+            <ListItem
+              prefix={<FaUsersSlash />}
+              text="Applications"
+              onClick={() => navigate("/loan-application")}
+            />
+            <Divider />
+            <ListItem
+              prefix={<MdCreditCard />}
+              text="Loans"
+              onClick={() => navigate("/loans")}
+            />
+            <ListItem
+              prefix={<MdCreditScore />}
+              text="Finances"
+              suffix={<FaAngleDown />}
+              onClick={() => navigate("/finance")}
+            />
+            <ListItem
+              prefix={<MdOutlineCreditCardOff />}
+              text="Companies"
+              onClick={() => navigate("/company")}
+            />
           </>
         )}
       </ul>
       <ul style={{ padding: 0, margin: 0 }}>
         {drawerWidth === drawerMinWidth ? (
           <>
+            <ListItem
+              prefix={<TbUserHexagon onClick={() => navigate("/profile")} />}
+            />
             <ListItem prefix={<MdOutlineSettings />} />
             <ListItem prefix={<MdOutlinePrivacyTip />} />
             <Divider />
@@ -86,6 +91,11 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
+            <ListItem
+              prefix={<TbUserHexagon />}
+              text="Profile"
+              onClick={() => navigate("/profile")}
+            />
             <ListItem prefix={<MdOutlineSettings />} text="Settings" />
             <ListItem
               prefix={<MdOutlinePrivacyTip />}
