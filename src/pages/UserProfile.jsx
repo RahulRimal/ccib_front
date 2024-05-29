@@ -16,7 +16,9 @@ import { mainUrl } from "../constants";
 import useFetch from "../custom_hooks/useFetch";
 import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
-import QuickDetailsCard, { QuickDetails } from "../components/QuickDetailsCard";
+import QuickDetailsCard, {
+  QuickDetails,
+} from "./dashboard/components/QuickDetailsCard";
 import AnalyticsChart from "../components/Charts/AnalyticsChart";
 
 const Wrapper = styled.div`
