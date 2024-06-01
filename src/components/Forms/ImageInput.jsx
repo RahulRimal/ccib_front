@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import CircleAvatar from "../CircleAvatar";
 
 const ImageInputWrapper = styled.div`
   position: relative;
   width: ${({ theme }) => theme.sizing.s86};
   height: ${({ theme }) => theme.sizing.s86};
-  img {
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+
   input {
     cursor: pointer;
     position: absolute;
@@ -27,7 +23,7 @@ function ImageInput() {
   const [image, setImage] = useState("https://picsum.photos/200");
   return (
     <ImageInputWrapper>
-      <img src={image} alt="" />
+      <CircleAvatar url={image} style={{ height: "100%", width: "100%" }} />
       <input
         type="file"
         onChange={(e) => setImage(URL.createObjectURL(e.target.files[0]))}

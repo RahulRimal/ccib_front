@@ -2,6 +2,8 @@ import React from "react";
 import styled, { useTheme } from "styled-components";
 
 const FormGroup = styled.div`
+  position: relative;
+  width: 100%;
   p {
     padding-bottom: ${({ theme }) => theme.spacing.s8};
     font-size: ${({ theme }) => theme.typography.fontSize.f14};
@@ -15,7 +17,6 @@ const FormGroup = styled.div`
     margin: ${({ theme }) => theme.spacing.s8} 0;
     position: relative;
     width: 100%;
-    background-color: ${({ theme }) => theme.palette.background.default};
   }
 
   label {
@@ -37,8 +38,7 @@ const FormGroup = styled.div`
     width: 100%;
     border: 1px solid ${({ theme }) => theme.palette.border.primary};
     height: ${({ theme }) => theme.sizing.s44};
-    padding: ${({ theme }) => theme.spacing.s8}
-      ${({ theme }) => theme.spacing.s16};
+    padding: ${({ theme }) => `${theme.spacing.s8} ${theme.spacing.s16}`};
     box-sizing: border-box;
     border-radius: ${({ theme }) => theme.borderRadius.input};
     overflow: hidden;

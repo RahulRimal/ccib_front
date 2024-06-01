@@ -1,18 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Image = styled.img`
-height: 100px;
-width: 100px;
-border-radius: 50%;
-border: 3px solid ${({theme})=>theme.palette.primary.main}; 
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border: 3px solid ${({ theme }) => theme.palette.primary.main};
+  object-fit: cover;
 `;
 
 const CircleAvatar = ({ url, alt, style }) => {
-    const imageStyle = { ...style }
-    return (
-        <Image src={url} style={imageStyle} alt={alt} />
-    )
-}
+  const imageStyle = { ...style };
+  return <Image src={url} style={imageStyle} alt={alt} />;
+};
 
-export default CircleAvatar
+export default CircleAvatar;
