@@ -16,6 +16,8 @@ import { drawerMinWidth } from "../App";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
+import { TbUserHexagon } from "react-icons/tb";
+
 import Divider from "./Divider";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
@@ -56,11 +58,6 @@ const Drawer = ({ drawerWidth }) => {
         ) : (
           <>
             <ListItem
-              prefix={<LuLayoutDashboard />}
-              text="Dashboard"
-              onClick={() => navigate("/dashboard")}
-            />
-            <ListItem
               prefix={<MdPeople />}
               text="Users"
               onClick={() => navigate("/")}
@@ -69,11 +66,6 @@ const Drawer = ({ drawerWidth }) => {
               prefix={<FaUsersSlash />}
               text="Applications"
               onClick={() => navigate("/loan-application")}
-            />
-            <ListItem
-              prefix={<FaUsersSlash />}
-              text="Report"
-              onClick={() => navigate("/report")}
             />
             <Divider />
             <ListItem
@@ -98,6 +90,9 @@ const Drawer = ({ drawerWidth }) => {
       <ul style={{ padding: 0, margin: 0 }}>
         {drawerWidth === drawerMinWidth ? (
           <>
+            <ListItem
+              prefix={<TbUserHexagon onClick={() => navigate("/profile")} />}
+            />
             <ListItem prefix={<MdOutlineSettings />} />
             <ListItem prefix={<MdOutlinePrivacyTip />} />
             <Divider />
@@ -105,6 +100,11 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
+            <ListItem
+              prefix={<TbUserHexagon />}
+              text="Profile"
+              onClick={() => navigate("/profile")}
+            />
             <ListItem prefix={<MdOutlineSettings />} text="Settings" />
             <ListItem
               prefix={<MdOutlinePrivacyTip />}
