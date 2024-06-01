@@ -80,7 +80,6 @@ const FormInputField = styled.div`
 
 function EmployeeProfile() {
   const theme = useTheme();
-  const [away, setAway] = useState(false);
 
   const [profile, setProfile] = useState(setting);
 
@@ -139,42 +138,6 @@ function EmployeeProfile() {
                   </h3>
                   <p style={{ color: theme.palette.text.secondary }}>
                     shresthaj1986@gmail.com
-                  </p>
-                </div>
-                <div
-                  style={{
-                    position: "absolute",
-                    right: theme.spacing.s12,
-                    textAlign: "right",
-                  }}
-                >
-                  {!away ? (
-                    <RxSwitch
-                      style={{
-                        height: theme.sizing.s36,
-                        width: theme.sizing.s36,
-                        cursor: "pointer",
-                        transform: "rotate(180deg)",
-                      }}
-                      onClick={() => setAway(true)}
-                    />
-                  ) : (
-                    <RxSwitch
-                      style={{
-                        height: theme.sizing.s36,
-                        width: theme.sizing.s36,
-                        cursor: "pointer",
-                      }}
-                      onClick={() => setAway(false)}
-                    />
-                  )}
-                  <p
-                    style={{
-                      fontSize: theme.typography.fontSize.f14,
-                      fontWeight: theme.typography.fontWeight.semiBold,
-                    }}
-                  >
-                    Show me as away
                   </p>
                 </div>
               </div>

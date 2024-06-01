@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import { ClipLoader } from "react-spinners";
 import InputField from "../components/Forms/InputField";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../features/authSlice";
+import { authenticateUser, loginUser } from "../features/authSlice";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../components/Backdrop";
 import PasswordField from "../components/Forms/PasswordField";
@@ -74,26 +74,48 @@ function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password = data.get('password');
-    dispatch(loginUser({ username, password })).unwrap().then((data) => {
-      enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
-    }).catch((error) => {
-      const errs = JSON.parse(error.message)
-      errs.forEach((element, index) => {
-        setTimeout(() => {
-          enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
-        }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
-      });
+    const username = data.get("username");
+    const password = data.get("password");
 
-    })
-  }
+    if (!username || !password)
+      return enqueueSnackbar("Please fill all the fields", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    if (username === "admin" && password === "admin") {
+      dispatch(authenticateUser());
+      return enqueueSnackbar("Login successful", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+    }
+
+    return enqueueSnackbar("Invalid credentials", {
+      variant: "error",
+      autoHideDuration: 2000,
+    });
+
+    // dispatch(loginUser({ username, password })).unwrap().then((data) => {
+    //   enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
+    // }).catch((error) => {
+    //   const errs = JSON.parse(error.message)
+    //   errs.forEach((element, index) => {
+    //     setTimeout(() => {
+    //       enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
+    //     }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+    //   });
+
+    // })
+  };
 
   return (
     <>
       <Grid>
         <ImageContainer>
-          <img src="https://source.unsplash.com/random?wallpapers" alt="login-img" />
+          <img
+            src="https://source.unsplash.com/random?wallpapers"
+            alt="login-img"
+          />
         </ImageContainer>
         <LoginContainer>
           <Icon>
@@ -109,15 +131,30 @@ function SignIn() {
             Sign In
           </p>
 
-          <form onSubmit={handleSubmit} >
+          <form onSubmit={handleSubmit}>
+            <InputField
+              label="Username"
+              name="username"
+              type="text"
+              placeholder="Username"
+            />
+            <PasswordField
+              label="Password"
+              name="password"
+              placeholder="Password"
+            />
 
-            <InputField label="Username" name="username" type="text" placeholder="Username" />
-            <PasswordField label="Password" name="password" placeholder="Password" />
-            
-           <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
-           <CheckboxField />
-            <span>Remember me</span>
-           </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "start",
+                alignItems: "center",
+                gap: theme.spacing.s4,
+              }}
+            >
+              <CheckboxField />
+              <span>Remember me</span>
+            </div>
             <Button
               style={{ width: "100%" }}
               type="submit"
@@ -135,7 +172,7 @@ function SignIn() {
         </LoginContainer>
       </Grid>
 
-      <Backdrop open={loading} >
+      <Backdrop open={loading}>
         <ClipLoader color="#fff" />
       </Backdrop>
     </>
