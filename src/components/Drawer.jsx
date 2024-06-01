@@ -46,33 +46,38 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
-              <ListItem
-                prefix={<MdPeople />}
-                text="Users"
-                onClick={() => navigate("/")}
-              />
-              <ListItem
-                prefix={<FaUsersSlash />}
-                text="Applications"
-                onClick={() => navigate("/loan-application")}
-              />
-              <Divider />
-              <ListItem
-                prefix={<MdCreditCard />}
-                text="Loans"
-                onClick={() => navigate("/loans")}
-              />
-              <ListItem
-                prefix={<MdCreditScore />}
-                text="Finances"
-                suffix={<FaAngleDown />}
-                onClick={() => navigate("/finance")}
-              />
-              <ListItem
-                prefix={<MdOutlineCreditCardOff />}
-                text="Companies"
-                onClick={() => navigate("/company")}
-              /> 
+            <ListItem
+              prefix={<MdPeople />}
+              text="Users"
+              onClick={() => navigate("/")}
+            />
+            <ListItem
+              prefix={<FaUsersSlash />}
+              text="Applications"
+              onClick={() => navigate("/loan-application")}
+            />
+            <Divider />
+            <ListItem
+              prefix={<MdCreditCard />}
+              text="Loans"
+              onClick={() => navigate("/loans")}
+            />
+            <ListItem
+              prefix={<MdCreditScore />}
+              text="Finances"
+              suffix={<FaAngleDown />}
+              onClick={() => navigate("/finance")}
+            />
+            <ListItem
+              prefix={<MdOutlineCreditCardOff />}
+              text="Companies"
+              onClick={() => navigate("/company")}
+            />
+            <ListItem
+              prefix={<MdOutlineCreditCardOff />}
+              text="Report"
+              onClick={() => navigate("/reports")}
+            />
           </>
         )}
       </ul>

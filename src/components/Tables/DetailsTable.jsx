@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
+import { hexWithOpacity } from "../../helpers";
 
 const Wrapper = styled.div`
   table,
@@ -7,20 +8,21 @@ const Wrapper = styled.div`
   td {
     border-collapse: collapse;
   }
-  th,
-  td {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-  }
+
   tr {
-    border-radius: ${({ theme }) => theme.borderRadius.container};
+    border-radius: ${({ theme }) => theme.borderRadius.input};
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
     width: 100%;
     & > div {
+      border: 1px solid
+      border-collapse: collapse;
+        ${({ theme }) => hexWithOpacity(theme.palette.border.focused, 10)};
       flex-grow: 1;
       display: flex;
       th {
+        min-width: 200px;
         align-content: center;
         padding-left: ${({ theme }) => theme.spacing.s12};
         padding-right: ${({ theme }) => theme.spacing.s12};
@@ -28,9 +30,11 @@ const Wrapper = styled.div`
         font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
         color: ${({ theme }) => theme.palette.text.primary};
         font-size: ${({ theme }) => theme.typography.fontSize.f16};
-        background-color: ${({ theme }) => `${theme.palette.secondary.main}60`};
+        background-color: ${({ theme }) =>
+          hexWithOpacity(theme.palette.primary.dark, 10)};
       }
       td {
+        min-width: 250px;
         flex-grow: 1;
         align-content: center;
         padding-left: ${({ theme }) => theme.spacing.s12};
@@ -43,41 +47,27 @@ const Wrapper = styled.div`
   }
   th,
   td {
-    /* border: 1px solid green; */
-    height: ${({ theme }) => theme.sizing.s36};
-    /* margin: 2px; */
+    height: ${({ theme }) => theme.sizing.s44};
   }
 `;
-const Title = styled.p`
-  width: ${({ theme }) => theme.sizing.s288};
-  padding-left: ${({ theme }) => theme.spacing.s28};
-  padding-right: ${({ theme }) => theme.spacing.s28};
-  margin-bottom: ${({ theme }) => theme.spacing.s8};
-  background-color: #60ae50;
-  color: ${({ theme }) => theme.palette.text.white};
-  line-height: ${({ theme }) => theme.sizing.s36};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
-  border-radius: ${({ theme }) => theme.borderRadius.container};
-`;
-function UserDetailsTable() {
+
+function DetailsTable() {
   const theme = useTheme();
   return (
-    <div style={{ width: "100%", marginBottom: "100px" }}>
+    <div>
       <Wrapper
         className="table-container"
         style={{
           margin: "auto",
-          padding: theme.spacing.s20,
           backgroundColor: theme.palette.background.default,
-          borderRadius: theme.borderRadius.container,
+          borderRadius: theme.borderRadius.input,
           border: `1px solid ${theme.palette.border.primary}`,
           overflow: "hidden",
         }}
       >
-        <Title>User Status Details</Title>
         <table
           style={{
-            borderRadius: theme.borderRadius.container,
+            borderRadius: theme.borderRadius.input,
           }}
         >
           <tr style={{}}>
@@ -85,15 +75,15 @@ function UserDetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
-                <span>William H. Gates Sr.</span>
+              <td>
+                <span>H. Gates Sr.</span>
               </td>
             </div>
             <div>
               <th>
                 <span>Mothers's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -101,7 +91,7 @@ function UserDetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -109,7 +99,7 @@ function UserDetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -117,7 +107,7 @@ function UserDetailsTable() {
               <th>
                 <span>Address :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>WKathmandu, NP</span>
               </td>
             </div>
@@ -125,7 +115,7 @@ function UserDetailsTable() {
               <th>
                 <span>DOB:</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>2022-01-01</span>
               </td>
             </div>
@@ -133,7 +123,7 @@ function UserDetailsTable() {
               <th>
                 <span>Mother's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -141,7 +131,7 @@ function UserDetailsTable() {
               <th>
                 <span>Company Name:</span>
               </th>
-              <td colSpan="2">
+              <td>
                 <span>CCIP</span>
               </td>
             </div>
@@ -149,7 +139,55 @@ function UserDetailsTable() {
               <th>
                 <span>Father's Name :</span>
               </th>
-              <td colSpan="2">
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
+                <span>William H. Gates Sr.</span>
+              </td>
+            </div>
+            <div>
+              <th>
+                <span>Father's Name :</span>
+              </th>
+              <td>
                 <span>William H. Gates Sr.</span>
               </td>
             </div>
@@ -160,4 +198,4 @@ function UserDetailsTable() {
   );
 }
 
-export default UserDetailsTable;
+export default DetailsTable;
