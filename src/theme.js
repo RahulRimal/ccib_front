@@ -113,6 +113,7 @@ export const theme = {
       s28: "28px", // Even more substantial spacing for separation
       s32: "32px", // Large spacing for significant separation
       s48: "48px", // Huge spacing for major separation
+      s52: "52px", // Huge spacing for major separation
       s64: "64px", // Very large spacing for extreme separation
       s80: "80px", // Enormous spacing for massive separation
       s96: "96px", // Monumental spacing for vast separation

@@ -13,6 +13,7 @@ import {
 
 import { IoMenu, IoPersonSharp } from "react-icons/io5";
 import { drawerMinWidth } from "../App";
+import { LuLayoutDashboard } from "react-icons/lu";
 import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import { TbUserHexagon } from "react-icons/tb";
@@ -29,6 +30,10 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: calc(100vh - ${({ theme }) => theme.sizing.s52});
+  position: sticky;
+  z-index: 9;
+  top: ${({ theme }) => theme.spacing.s52};
+  left: ${({ theme }) => theme.spacing.s0};
 `;
 
 const Drawer = ({ drawerWidth }) => {
@@ -40,6 +45,10 @@ const Drawer = ({ drawerWidth }) => {
       <ul style={{ padding: 0, margin: 0 }}>
         {drawerWidth === drawerMinWidth ? (
           <>
+            <ListItem
+              prefix={<LuLayoutDashboard />}
+              onClick={() => navigate("/dashboard")}
+            />
             <ListItem prefix={<MdPeople />} />
             <ListItem prefix={<FaUsersSlash />} />
             <ListItem prefix={<MdCreditCard />} />

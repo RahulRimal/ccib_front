@@ -137,6 +137,8 @@ function Footer() {
     <div
       style={{
         background: theme.palette.background.default,
+        marginTop: theme.spacing.s48,
+        borderRadius: theme.borderRadius.container,
         padding: ` ${theme.spacing.s48} ${theme.spacing.s12}`,
       }}
     >
