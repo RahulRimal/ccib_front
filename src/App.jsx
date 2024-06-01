@@ -54,23 +54,28 @@ const App = () => {
                 transition: "all 0.3s ease",
               }}
             >
-              <Drawer drawerWidth={drawerWidth} />
-              <Routes>
-                <Route path="/" exact element={<Home />} />
-                <Route path="/finance" exact element={<FinancePage />} />
-                <Route path="/company" exact element={<CompanyPage />} />
-                <Route
-                  path="/loan-application"
-                  exact
-                  element={<LoanApplicationPage />}
-                />
-                <Route path="/users/:id" exact element={<UserProfile />} />
-                <Route path="/application" exact element={<LoanForm />} />
-                <Route path="/loans" exact element={<LoansPage />} />
-                <Route path="/dashboard" exact element={<Dashboard />} />
-              </Routes>
+              <div style={{ position: "relative", maxWidth: drawerWidth }}>
+                <Drawer drawerWidth={drawerWidth} />
+              </div>
+              <div style={{ maxWidth: "100%" }}>
+                <Routes>
+                  <Route path="/" exact element={<Home />} />
+                  <Route path="/finance" exact element={<FinancePage />} />
+                  <Route path="/company" exact element={<CompanyPage />} />
+                  <Route
+                    path="/loan-application"
+                    exact
+                    element={<LoanApplicationPage />}
+                  />
+                  <Route path="/users/:id" exact element={<UserProfile />} />
+                  <Route path="/application" exact element={<LoanForm />} />
+                  <Route path="/loans" exact element={<LoansPage />} />
+                  <Route path="/dashboard" exact element={<Dashboard />} />
+                  <Route path="/reports" exact element={<ReportsPage />} />
+                </Routes>
+                <Footer />
+              </div>
             </div>
-            <Footer />
           </BrowserRouter>
         )}
       </DrawerWidthContext.Provider>
