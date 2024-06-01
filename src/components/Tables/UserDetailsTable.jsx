@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
-
+import { hexWithOpacity } from "../../helpers";
 const Wrapper = styled.div`
   table,
   th,
@@ -12,15 +12,20 @@ const Wrapper = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.2);
   }
   tr {
-    border-radius: ${({ theme }) => theme.borderRadius.container};
+    border-radius: ${({ theme }) => theme.borderRadius.input};
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
     width: 100%;
+    border: 1px solid ${({ theme }) => theme.palette.border.primary};
+    border-collapse: collapse;
     & > div {
+      ${({ theme }) => hexWithOpacity(theme.palette.border.focused, 10)};
       flex-grow: 1;
       display: flex;
+      border: 1px solid ${({ theme }) => theme.palette.border.primary};
       th {
+        min-width: 200px;
         align-content: center;
         padding-left: ${({ theme }) => theme.spacing.s12};
         padding-right: ${({ theme }) => theme.spacing.s12};
@@ -28,9 +33,11 @@ const Wrapper = styled.div`
         font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
         color: ${({ theme }) => theme.palette.text.primary};
         font-size: ${({ theme }) => theme.typography.fontSize.f16};
-        background-color: ${({ theme }) => `${theme.palette.secondary.main}60`};
+        background-color: ${({ theme }) =>
+          hexWithOpacity(theme.palette.primary.dark, 10)};
       }
       td {
+        min-width: 250px;
         flex-grow: 1;
         align-content: center;
         padding-left: ${({ theme }) => theme.spacing.s12};
@@ -43,21 +50,14 @@ const Wrapper = styled.div`
   }
   th,
   td {
-    /* border: 1px solid green; */
-    height: ${({ theme }) => theme.sizing.s36};
-    /* margin: 2px; */
+    height: ${({ theme }) => theme.sizing.s44};
   }
 `;
 const Title = styled.p`
-  width: ${({ theme }) => theme.sizing.s288};
-  padding-left: ${({ theme }) => theme.spacing.s28};
-  padding-right: ${({ theme }) => theme.spacing.s28};
   margin-bottom: ${({ theme }) => theme.spacing.s8};
-  background-color: #60ae50;
-  color: ${({ theme }) => theme.palette.text.white};
-  line-height: ${({ theme }) => theme.sizing.s36};
+  padding-bottom: ${({ theme }) => theme.spacing.s8};
+  font-size: ${({ theme }) => theme.typography.fontSize.f20};
   font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
-  border-radius: ${({ theme }) => theme.borderRadius.container};
 `;
 function UserDetailsTable() {
   const theme = useTheme();
@@ -91,7 +91,7 @@ function UserDetailsTable() {
             </div>
             <div>
               <th>
-                <span>Mothers's Name :</span>
+                <span>Father's Name :</span>
               </th>
               <td colSpan="2">
                 <span>William H. Gates Sr.</span>

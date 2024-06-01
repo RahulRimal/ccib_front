@@ -13,6 +13,7 @@ import {
 
 import { IoMenu, IoPersonSharp } from "react-icons/io5";
 import { drawerMinWidth } from "../App";
+import { LuLayoutDashboard } from "react-icons/lu";
 import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import Divider from "./Divider";
@@ -38,6 +39,11 @@ const Drawer = ({ drawerWidth }) => {
       <ul style={{ padding: 0, margin: 0 }}>
         {drawerWidth === drawerMinWidth ? (
           <>
+            <ListItem
+              prefix={<LuLayoutDashboard />}
+              text="Dashboard"
+              onClick={() => navigate("/dashboard")}
+            />
             <ListItem prefix={<MdPeople />} />
             <ListItem prefix={<FaUsersSlash />} />
             <ListItem prefix={<MdCreditCard />} />
@@ -46,6 +52,11 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
+            <ListItem
+              prefix={<LuLayoutDashboard />}
+              text="Dashboard"
+              onClick={() => navigate("/dashboard")}
+            />
             <ListItem
               prefix={<MdPeople />}
               text="Users"
@@ -72,11 +83,6 @@ const Drawer = ({ drawerWidth }) => {
               prefix={<MdOutlineCreditCardOff />}
               text="Companies"
               onClick={() => navigate("/company")}
-            />
-            <ListItem
-              prefix={<MdOutlineCreditCardOff />}
-              text="Report"
-              onClick={() => navigate("/reports")}
             />
           </>
         )}

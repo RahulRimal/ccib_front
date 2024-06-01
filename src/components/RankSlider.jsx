@@ -139,7 +139,11 @@ function RankSlider() {
     <>
       <div
         className="main"
-        style={{ position: "relative", padding: theme.spacing.s12 }}
+        style={{
+          position: "relative",
+          padding: theme.spacing.s16,
+          minHeight: theme.sizing.s192,
+        }}
       >
         <SliderContainer>
           <div style={{ backgroundColor: theme.palette.common.red }}>Risk</div>
