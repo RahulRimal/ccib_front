@@ -30,7 +30,8 @@ const Wrapper = styled.div`
   height: calc(100vh - ${({ theme }) => theme.sizing.s52});
   position: sticky;
   z-index: 9;
-  top: ${({ theme }) => theme.sizing.s52};
+  top: ${({ theme }) => theme.spacing.s52};
+  left: ${({ theme }) => theme.spacing.s0};
 `;
 
 const Drawer = ({ drawerWidth }) => {
@@ -72,7 +73,7 @@ const Drawer = ({ drawerWidth }) => {
             <ListItem
               prefix={<FaUsersSlash />}
               text="Reports"
-              onClick={() => navigate("/reports")}
+              onClick={() => navigate("/report")}
             />
             <Divider />
             <ListItem
