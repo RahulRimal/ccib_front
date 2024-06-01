@@ -15,6 +15,7 @@ import LoanApplicationPage from "./pages/LoanApplicatinPage";
 import LoansPage from "./pages/LoansPage";
 import Footer from "./components/Footer";
 import Dashboard from "./pages/dashboard/Dashboard";
+import ReportsPage from "./pages/ReportsPage";
 
 export const DrawerWidthContext = React.createContext();
 export const drawerMinWidth = 50;
