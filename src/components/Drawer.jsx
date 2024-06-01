@@ -72,7 +72,7 @@ const Drawer = ({ drawerWidth }) => {
             />
             <ListItem
               prefix={<FaUsersSlash />}
-              text="Reports"
+              text="Report"
               onClick={() => navigate("/report")}
             />
             <Divider />
