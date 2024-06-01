@@ -15,7 +15,7 @@ import LoanApplicationPage from "./pages/LoanApplicatinPage";
 import LoansPage from "./pages/LoansPage";
 import Footer from "./components/Footer";
 import Dashboard from "./pages/dashboard/Dashboard";
-import ReportsPage from "./pages/ReportsPage";
+import ReportPage from "./pages/ReportsPage";
 
 export const DrawerWidthContext = React.createContext();
 export const drawerMinWidth = 50;
@@ -54,23 +54,30 @@ const App = () => {
                 transition: "all 0.3s ease",
               }}
             >
-              <Drawer drawerWidth={drawerWidth} />
-              <Routes>
-                <Route path="/" exact element={<Home />} />
-                <Route path="/finance" exact element={<FinancePage />} />
-                <Route path="/company" exact element={<CompanyPage />} />
-                <Route
-                  path="/loan-application"
-                  exact
-                  element={<LoanApplicationPage />}
-                />
-                <Route path="/users/:id" exact element={<UserProfile />} />
-                <Route path="/application" exact element={<LoanForm />} />
-                <Route path="/loans" exact element={<LoansPage />} />
-                <Route path="/dashboard" exact element={<Dashboard />} />
-              </Routes>
+              <div style={{ maxWidth: drawerWidth }}>
+                <Drawer drawerWidth={drawerWidth} />
+              </div>
+              <div
+                style={{ maxWidth: "100%", margin: "12px", marginBottom: 0 }}
+              >
+                <Routes>
+                  <Route path="/" exact element={<Home />} />
+                  <Route path="/finance" exact element={<FinancePage />} />
+                  <Route path="/company" exact element={<CompanyPage />} />
+                  <Route
+                    path="/loan-application"
+                    exact
+                    element={<LoanApplicationPage />}
+                  />
+                  <Route path="/users/:id" exact element={<UserProfile />} />
+                  <Route path="/application" exact element={<LoanForm />} />
+                  <Route path="/loans" exact element={<LoansPage />} />
+                  <Route path="/dashboard" exact element={<Dashboard />} />
+                  <Route path="/report" exact element={<ReportPage />} />
+                </Routes>
+                <Footer />
+              </div>
             </div>
-            <Footer />
           </BrowserRouter>
         )}
       </DrawerWidthContext.Provider>

@@ -28,6 +28,10 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: calc(100vh - ${({ theme }) => theme.sizing.s52});
+  position: sticky;
+  z-index: 9;
+  top: ${({ theme }) => theme.spacing.s52};
+  left: ${({ theme }) => theme.spacing.s0};
 `;
 
 const Drawer = ({ drawerWidth }) => {
@@ -41,7 +45,6 @@ const Drawer = ({ drawerWidth }) => {
           <>
             <ListItem
               prefix={<LuLayoutDashboard />}
-              text="Dashboard"
               onClick={() => navigate("/dashboard")}
             />
             <ListItem prefix={<MdPeople />} />
@@ -66,6 +69,11 @@ const Drawer = ({ drawerWidth }) => {
               prefix={<FaUsersSlash />}
               text="Applications"
               onClick={() => navigate("/loan-application")}
+            />
+            <ListItem
+              prefix={<FaUsersSlash />}
+              text="Report"
+              onClick={() => navigate("/report")}
             />
             <Divider />
             <ListItem

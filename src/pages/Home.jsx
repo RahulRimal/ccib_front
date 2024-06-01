@@ -29,7 +29,7 @@ const UsersTable = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ margin: theme.spacing.s20 }}>
+    <div>
       <BaseTable
         title="Users list"
         isLoading={loading}

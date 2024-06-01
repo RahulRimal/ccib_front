@@ -89,8 +89,6 @@ const users = [
 ];
 
 const Wrapper = styled.div`
-  padding: ${({ theme }) => theme.spacing.s12};
-
   section {
     display: flex;
     gap: ${({ theme }) => theme.spacing.s16};

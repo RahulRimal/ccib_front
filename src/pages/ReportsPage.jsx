@@ -296,7 +296,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function ReportsPage() {
+function ReportPage() {
   const theme = useTheme();
   const handleResponse = (data) => {
     return data.map((item) => {
@@ -332,26 +332,8 @@ function ReportsPage() {
   };
   const data = useMemo(() => rowData, [rowData]);
 
-  // return (
-  //   <div style={{ margin: theme.spacing.s20 }}>
-  //     <BaseTable
-  //       title="Users list"
-  //       isLoading={loading}
-  //       data={data}
-  //       columns={columns}
-  //       toolbarActions={
-  //         <Button
-  //           icon={<AiOutlinePlus />}
-  //           text="Add User"
-  //           onClick={() => navigate("application")}
-  //         />
-  //       }
-  //       navigateOnRowClick={(data) => navigate(`/users/${data.idx}`)}
-  //     />
-  //   </div>
-  // );
   return (
-    <div style={{ padding: theme.spacing.s12 }}>
+    <div>
       <ReportSection
         headingText={"Consumner Loan Score Report"}
         headerTextCenter
@@ -602,4 +584,4 @@ function ReportsPage() {
   );
 }
 
-export default ReportsPage;
+export default ReportPage;
