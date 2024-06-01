@@ -57,7 +57,7 @@ const App = () => {
               <div style={{ position: "relative", maxWidth: drawerWidth }}>
                 <Drawer drawerWidth={drawerWidth} />
               </div>
-              <div style={{ maxWidth: "100%" }}>
+              <div style={{ maxWidth: "100%", padding: "12px" }}>
                 <Routes>
                   <Route path="/" exact element={<Home />} />
                   <Route path="/finance" exact element={<FinancePage />} />

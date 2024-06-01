@@ -160,6 +160,7 @@ export const loanOverviewChartOption = () => {
 export const incomeChartOption = () => {
   const theme = useTheme();
   const option = {
+    animationDuration: 10000,
     title: {
       text: "Income Overview",
       textStyle: {

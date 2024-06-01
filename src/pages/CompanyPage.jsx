@@ -16,7 +16,7 @@ const CompanyPage = () => {
   const data = useMemo(() => rowData, [rowData]);
 
   return (
-    <div style={{ margin: theme.spacing.s20 }}>
+    <div style={{}}>
       <BaseTable isLoading={loading} data={data} columns={columns} />
     </div>
   );

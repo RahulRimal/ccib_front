@@ -351,7 +351,7 @@ function ReportsPage() {
   //   </div>
   // );
   return (
-    <div style={{ padding: theme.spacing.s12 }}>
+    <div>
       <ReportSection
         headingText={"Consumner Loan Score Report"}
         headerTextCenter

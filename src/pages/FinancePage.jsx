@@ -9,7 +9,6 @@ import { useTheme } from "styled-components";
 const FinancePage = () => {
   const theme = useTheme();
 
-
   const handleResponce = (data) => {
     return data.map((item) => {
       const { name: locationName } = item.location;
@@ -25,13 +24,11 @@ const FinancePage = () => {
     url: `${mainUrl}/cooperative/finance/`,
     columnsToHide: ["idx", "location", "name"],
     responseHandler: handleResponce,
-  }); 
-  ;
-
+  });
   const data = useMemo(() => rowData, [rowData]);
 
   return (
-    <div style={{ margin: theme.spacing.s20 }}>
+    <div style={{}}>
       <BaseTable isLoading={loading} data={data} columns={columns} />
     </div>
   );
