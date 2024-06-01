@@ -3,6 +3,7 @@ import styled, { useTheme } from "styled-components";
 
 const FormGroup = styled.div`
   p {
+    padding-bottom: ${({ theme }) => theme.spacing.s8};
     font-size: ${({ theme }) => theme.typography.fontSize.f14};
     font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
     color: ${({ theme }) => theme.palette.primary.main};
