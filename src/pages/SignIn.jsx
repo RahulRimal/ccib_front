@@ -11,6 +11,7 @@ import { enqueueSnackbar } from "notistack";
 import Backdrop from "../components/Backdrop";
 import PasswordField from "../components/Forms/PasswordField";
 import CheckboxField from "../components/Forms/CheckboxField";
+import { useNavigate } from "react-router-dom";
 
 const Grid = styled.div`
   display: grid;
@@ -68,6 +69,7 @@ const Icon = styled.div`
 function SignIn() {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { loading } = useSelector((store) => store.auth);
 
@@ -84,6 +86,7 @@ function SignIn() {
       });
     if (username === "admin" && password === "admin") {
       dispatch(authenticateUser());
+      navigate("/dashboard");
       return enqueueSnackbar("Login successful", {
         variant: "success",
         autoHideDuration: 2000,
