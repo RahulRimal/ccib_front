@@ -9,7 +9,7 @@ const useFetchTable = ({
   customRenderer = null,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [rowData, setRawData] = useState([]);
+  const [rowData, setRowData] = useState([]);
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const useFetchTable = ({
           if (responseHandler) {
             data = responseHandler(data);
           }
-          setRawData(data);
+          setRowData(data);
           let cols = Object.keys(data[0]);
           cols = cols.map((item) => ({
             header: humanizeString(item),

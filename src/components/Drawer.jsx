@@ -84,6 +84,11 @@ const Drawer = ({ drawerWidth }) => {
               text="Companies"
               onClick={() => navigate("/company")}
             />
+            <ListItem
+              prefix={<MdOutlineCreditCardOff />}
+              text="Report"
+              onClick={() => navigate("/report")}
+            />
           </>
         )}
       </ul>
