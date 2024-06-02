@@ -16,6 +16,8 @@ import { drawerMinWidth } from "../App";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
+import { TbUserHexagon } from "react-icons/tb";
+
 import Divider from "./Divider";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +30,10 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: calc(100vh - ${({ theme }) => theme.sizing.s52});
+  position: sticky;
+  z-index: 9;
+  top: ${({ theme }) => theme.spacing.s52};
+  left: ${({ theme }) => theme.spacing.s0};
 `;
 
 const Drawer = ({ drawerWidth }) => {
@@ -41,7 +47,6 @@ const Drawer = ({ drawerWidth }) => {
           <>
             <ListItem
               prefix={<LuLayoutDashboard />}
-              text="Dashboard"
               onClick={() => navigate("/dashboard")}
             />
             <ListItem prefix={<MdPeople />} />
@@ -52,11 +57,6 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
-            <ListItem
-              prefix={<LuLayoutDashboard />}
-              text="Dashboard"
-              onClick={() => navigate("/dashboard")}
-            />
             <ListItem
               prefix={<MdPeople />}
               text="Users"
@@ -95,6 +95,9 @@ const Drawer = ({ drawerWidth }) => {
       <ul style={{ padding: 0, margin: 0 }}>
         {drawerWidth === drawerMinWidth ? (
           <>
+            <ListItem
+              prefix={<TbUserHexagon onClick={() => navigate("/profile")} />}
+            />
             <ListItem prefix={<MdOutlineSettings />} />
             <ListItem prefix={<MdOutlinePrivacyTip />} />
             <Divider />
@@ -102,6 +105,11 @@ const Drawer = ({ drawerWidth }) => {
           </>
         ) : (
           <>
+            <ListItem
+              prefix={<TbUserHexagon />}
+              text="Profile"
+              onClick={() => navigate("/profile")}
+            />
             <ListItem prefix={<MdOutlineSettings />} text="Settings" />
             <ListItem
               prefix={<MdOutlinePrivacyTip />}

@@ -97,7 +97,7 @@ function Dashboard() {
         <div>
           <BaseChart option={profibabilityRatioChartOption()} />
         </div>
-        <div
+        {/* <div
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -114,7 +114,7 @@ function Dashboard() {
               style={{ width: "49%" }}
             />
           ))}
-        </div>
+        </div> */}
       </section>
       <section>
         <div style={{ minHeight: theme.sizing.s384 }}>

@@ -55,7 +55,9 @@ const AppBar = ({ drawerWidth, toggleDrawer, toggleTheme }) => {
       style={{
         display: "flex",
         height: theme.sizing.s52,
-        position: "relative",
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
       }}
     >
       <DrawerHeader
