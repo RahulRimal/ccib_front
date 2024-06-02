@@ -4,13 +4,25 @@ import { IoChevronDownSharp, IoSearchCircleOutline } from "react-icons/io5";
 import styled, { useTheme } from "styled-components";
 import { GiBank, GiCardPick } from "react-icons/gi";
 import { MdShareLocation } from "react-icons/md";
+import PayentmentModuleCard from "./components/PayentmentModuleCard";
+import Navbar from "./components/Navbar";
+import MainBanner from "./components/MainBanner";
+import { useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer";
 
 const HeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  height: ${({ theme }) => theme.sizing.s44};
   padding: ${({ theme }) => `${theme.spacing.s0} ${theme.spacing.s12}`};
   background-color: ${({ theme }) => theme.palette.info.main};
+  position: sticky;
+  z-index: 999;
+  top: 0;
+  & > div {
+    height: ${({ theme }) => theme.sizing.s52};
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+  }
   button {
     background-color: transparent;
   }
@@ -43,30 +55,6 @@ const SectionWrapper = styled.section`
     }
   }
 `;
-
-const payementModules = [
-  {
-    id: 1,
-    title: "Know Your Credit",
-    icon: <GiBank className="icon" />,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non cursus est. Pellentesque et suscipit ipsum. Nulla ullamcorper odio ac cursus ultricies. Nunc pellentesque porta porta. ",
-  },
-  {
-    id: 2,
-    title: "CCIC Credit Tracker",
-    icon: <GiCardPick className="icon" />,
-    description:
-      "Nunc tincidunt enim lectus, in scelerisque est egestas euismod. Donec mattis metus in aliquam dictum. Vestibulum libero mauris, faucibus at tortor nec, tristique vestibulum mauris.",
-  },
-  {
-    id: 3,
-    title: "CCIC Credit History",
-    icon: <MdShareLocation className="icon" />,
-    description:
-      "Nunc tincidunt enim lectus, in scelerisque est egestas euismod. Donec mattis metus in aliquam dictum. Vestibulum libero mauris, faucibus at tortor nec, tristique vestibulum mauris.",
-  },
-];
 
 const commitment = [
   {
@@ -141,53 +129,65 @@ const imp = [
 
 function LandingPage() {
   const theme = useTheme();
+  const navigate = useNavigate();
   return (
-    <div style={{ backgroundColor: theme.palette.common.white, width: "100%" }}>
+    <div
+      style={{
+        backgroundColor: theme.palette.common.white,
+        width: "100%",
+        position: "relative",
+      }}
+    >
       <HeaderWrapper>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: theme.spacing.s12,
-            width: "100%",
-          }}
-        >
-          <Button
-            text={"CCIC user"}
-            style={{ fontSize: theme.typography.fontSize.f8 }}
-            icon={<IoChevronDownSharp className="icon" />}
-          />
-          <Button
-            text={"CCIC user"}
-            style={{ fontSize: theme.typography.fontSize.f8 }}
-            icon={<IoChevronDownSharp className="icon" />}
-          />
-          <Button
-            style={{ padding: `${theme.spacing.s0} ${theme.spacing.s8}` }}
-            icon={
-              <IoSearchCircleOutline
-                className="icon"
-                style={{ fontSize: theme.typography.fontSize.f24 }}
-              />
-            }
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: theme.spacing.s8,
-            width: theme.sizing.s256,
-          }}
-        >
-          <Button text={"Login"} />
-          <Button
-            text={"Sign Up"}
-            style={{ backgroundColor: theme.palette.primary.main }}
-          />
+        <div>
+          <h2 style={{ color: theme.palette.text.white }}>CCIC</h2>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: theme.spacing.s12,
+              width: "100%",
+            }}
+          >
+            <Button
+              text={"CCIC user"}
+              style={{ fontSize: theme.typography.fontSize.f8 }}
+              icon={<IoChevronDownSharp className="icon" />}
+            />
+            <Button
+              text={"CCIC user"}
+              style={{ fontSize: theme.typography.fontSize.f8 }}
+              icon={<IoChevronDownSharp className="icon" />}
+            />
+            <Button
+              style={{ padding: `${theme.spacing.s0} ${theme.spacing.s8}` }}
+              icon={
+                <IoSearchCircleOutline
+                  className="icon"
+                  style={{ fontSize: theme.typography.fontSize.f24 }}
+                />
+              }
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: theme.spacing.s8,
+              width: theme.sizing.s256,
+            }}
+          >
+            <Button text={"Login"} onClick={() => navigate("/signin")} />
+            <Button
+              text={"Sign Up"}
+              style={{ backgroundColor: theme.palette.primary.main }}
+            />
+          </div>
         </div>
       </HeaderWrapper>
-      <main style={{ width: "80%", margin: "auto" }}>
+      {/* <Navbar /> */}
+      <MainBanner />
+      <main style={{ width: "90%", margin: "auto" }}>
         <SectionWrapper>
           <SectionHeading>PAYEMENTS MODULE</SectionHeading>
           <div>
@@ -195,77 +195,32 @@ function LandingPage() {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero
               expedita perspiciatis soluta reprehenderit esse veniam veritatis.
             </p>
-            <div
-              style={{
-                display: "flex",
-                width: "80%",
-                margin: "auto",
-                gap: theme.spacing.s20,
-              }}
-            >
-              {payementModules.map((item) => (
-                <div
-                  className="shadow-md"
-                  key={item.id}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    textAlign: "center",
-                    height: theme.sizing.s416,
-                    padding: theme.spacing.s20,
-                    background: theme.palette.background.default,
-                    borderRadius: theme.borderRadius.container,
-                  }}
-                >
-                  <div>
-                    <span style={{ fontSize: theme.typography.fontSize.f52 }}>
-                      {item.icon}
-                    </span>
-                    <h2 style={{ height: theme.sizing.s44 }}>{item.title}</h2>
-                  </div>
-                  <p
-                    style={{
-                      color: theme.palette.text.secondary,
-                      lineHeight: theme.sizing.s24,
-                    }}
-                  >
-                    {item.description}
-                  </p>
-                  <Button
-                    style={{
-                      width: "fit-content",
-                      padding: theme.spacing.s12 + " " + theme.spacing.s24,
-                    }}
-                    text={"Get Started"}
-                  />
-                </div>
-              ))}
-            </div>
+            <PayentmentModuleCard />
           </div>
+        </SectionWrapper>
+        <SectionWrapper>
+          <SectionHeading></SectionHeading>
         </SectionWrapper>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            gap: "5%",
+            gap: "3%",
           }}
         >
-          <SectionWrapper style={{ width: "70%" }}>
+          <SectionWrapper style={{ flexBasis: "60%" }}>
             <SectionHeading>WE ARE COMMITTED TO</SectionHeading>
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                justifyContent: "space-between",
                 gap: theme.spacing.s16,
               }}
             >
               {commitment.map((item) => (
                 <div
                   style={{
-                    width: theme.sizing.s256,
+                    width: theme.sizing.s224,
                     display: "flex",
                     padding: theme.spacing.s20,
                     flexDirection: "column",
@@ -287,7 +242,7 @@ function LandingPage() {
           </SectionWrapper>
           <div
             style={{
-              width: "30%",
+              flexBasis: "40%",
               backgroundColor: theme.palette.info.main,
               color: theme.palette.text.white,
               padding: theme.spacing.s28 + " " + theme.spacing.s20,
@@ -300,6 +255,7 @@ function LandingPage() {
               style={{
                 display: "flex",
                 flexDirection: "column",
+
                 gap: theme.spacing.s16,
               }}
             >
@@ -307,6 +263,7 @@ function LandingPage() {
                 <div
                   key={item.id}
                   style={{
+                    height: "100%",
                     display: "flex",
                     gap: theme.spacing.s16,
                   }}
@@ -328,6 +285,7 @@ function LandingPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

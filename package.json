@@ -15,7 +15,8 @@
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "swiper": "^11.1.4"
   },
   "overrides": {
     "@babel/core": "7.19.6",

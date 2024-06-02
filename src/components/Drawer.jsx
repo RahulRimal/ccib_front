@@ -11,7 +11,6 @@ import {
   MdPeople,
 } from "react-icons/md";
 
-import { IoMenu, IoPersonSharp } from "react-icons/io5";
 import { drawerMinWidth } from "../App";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FaUsersSlash } from "react-icons/fa";
@@ -49,14 +48,36 @@ const Drawer = ({ drawerWidth }) => {
               prefix={<LuLayoutDashboard />}
               onClick={() => navigate("/dashboard")}
             />
-            <ListItem prefix={<MdPeople />} />
-            <ListItem prefix={<FaUsersSlash />} />
-            <ListItem prefix={<MdCreditCard />} />
-            <ListItem prefix={<MdCreditScore />} />
-            <ListItem prefix={<MdOutlineCreditCardOff />} />
+            <ListItem prefix={<MdPeople />} onClick={() => navigate("/")} />
+            <ListItem
+              prefix={<FaUsersSlash />}
+              onClick={() => navigate("/loan-application")}
+            />
+            <ListItem
+              prefix={<FaUsersSlash />}
+              onClick={() => navigate("/report")}
+            />
+            <Divider />
+            <ListItem
+              prefix={<MdCreditCard />}
+              onClick={() => navigate("/loans")}
+            />
+            <ListItem
+              prefix={<MdCreditScore />}
+              onClick={() => navigate("/finance")}
+            />
+            <ListItem
+              prefix={<MdOutlineCreditCardOff />}
+              onClick={() => navigate("/company")}
+            />
           </>
         ) : (
           <>
+            <ListItem
+              prefix={<LuLayoutDashboard />}
+              text="Dashboard"
+              onClick={() => navigate("/dashboard")}
+            />
             <ListItem
               prefix={<MdPeople />}
               text="Users"
@@ -66,6 +87,11 @@ const Drawer = ({ drawerWidth }) => {
               prefix={<FaUsersSlash />}
               text="Applications"
               onClick={() => navigate("/loan-application")}
+            />
+            <ListItem
+              prefix={<FaUsersSlash />}
+              text="Report"
+              onClick={() => navigate("/report")}
             />
             <Divider />
             <ListItem
