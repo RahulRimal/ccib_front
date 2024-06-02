@@ -21,7 +21,7 @@ import CompanyPage from "./pages/CompanyPage";
 import LoanApplicationPage from "./pages/LoanApplicatinPage";
 import LoansPage from "./pages/LoansPage";
 import Footer from "./components/Footer";
-import Dashboard from "./pages/dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import ReportPage from "./pages/ReportsPage";
 import EmployeeProfile from "./pages/EmployeeProfile";
 import LandingPage from "./pages/landing_page/LandingPage";

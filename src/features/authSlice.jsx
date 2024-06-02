@@ -38,7 +38,7 @@ export const loginUser = createAsyncThunk("auth/login", async (loginInfo) => {
 
 const initialState = {
   loading: false,
-  isLoggedIn: false,
+  isLoggedIn: true,
   user: {
     idx: "djS34jkfdjfkd",
     first_name: "Rahul",

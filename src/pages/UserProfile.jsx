@@ -18,8 +18,8 @@ import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
 import QuickDetailsCard, {
   QuickDetails,
-} from "./dashboard/components/QuickDetailsCard";
-import AnalyticsChart from "../components/Charts/AnalyticsChart";
+} from "./Dashboard/components/QuickDetailsCard";
+import BaseChart from "../components/Charts/BaseChart";
 
 const Wrapper = styled.div`
   display: grid;
@@ -196,9 +196,9 @@ const UserProfile = () => {
             backgroundColor: "transparent",
           }}
         >
-          {QuickDetails.map((item, index) => (
+          {/* {QuickDetails.map((item, index) => (
             <QuickDetailsCard key={index} item={item} />
-          ))}
+          ))} */}
         </div>
         <div>
           <RankSlider />
@@ -226,7 +226,7 @@ const UserProfile = () => {
               borderRadius: theme.borderRadius.container,
             }}
           >
-            <AnalyticsChart />
+            <LineChart />
           </div>
         </div>
         <div style={{ padding: 0 }}>

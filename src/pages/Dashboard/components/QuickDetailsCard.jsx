@@ -5,12 +5,15 @@ import { HiOutlineBanknotes } from "react-icons/hi2";
 import { ImStatsBars } from "react-icons/im";
 import { BsThreeDots } from "react-icons/bs";
 import { MdDoneAll } from "react-icons/md";
+import * as BsIcons from "react-icons/bs";
+import * as RiIcons from "react-icons/ri";
+import * as FaIcons from "react-icons/fa";
+import * as MdIcons from "react-icons/md";
 import IconButton from "../../../components/IconButton";
 
 const QuickDetailsCardWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.background.default};
-  padding: ${({ theme }) => theme.spacing.s28}
-    ${({ theme }) => theme.spacing.s20};
+  padding: ${({ theme }) => theme.spacing.s28} ${({ theme }) => theme.spacing.s20};
   border-radius: ${({ theme }) => theme.borderRadius.container};
   width: 100%;
   height: ${({ theme }) => theme.sizing.s128};
@@ -64,7 +67,7 @@ const QuickDetailsCardWrapper = styled.div`
     }
   }
 `;
-
+/* 
 export const QuickDetails = [
   {
     id: 1,
@@ -91,6 +94,7 @@ export const QuickDetails = [
     value: "10",
   },
 ];
+*/
 export const profitability = [
   {
     id: 1,
@@ -120,13 +124,43 @@ export const profitability = [
 
 function QuickDetailsCard({ key, item, style }) {
   const theme = useTheme();
+
+
+  const renderIcon = (library, iconName) => {
+    let IconComponent = null;
+    switch (true) {
+      case library === 'bs':
+        IconComponent = BsIcons[iconName];
+        break;
+      case library === 'ri':
+        IconComponent = RiIcons[iconName];
+        break;
+      case library === 'fa':
+        IconComponent = FaIcons[iconName];
+        break;
+      case library === "md":
+        IconComponent = MdIcons[iconName];
+        break;
+      default:
+        console.warn(`Icon "${iconName}" not found.`);
+        return null; // Or return a default icon/component
+    }
+
+    return <IconComponent className="icon" />;
+
+  };
+
+  const icon = renderIcon(item.icon_library, item.icon);
+
+
   return (
     <>
       <QuickDetailsCardWrapper className="shadow-md" key={key} style={style}>
         <IconButton>
           <BsThreeDots className="icon" />
+          {/* {icon} */}
         </IconButton>
-        <div>{item.icon}</div>
+        <div>{icon}</div>
         <div>
           <h3>{item.value}</h3>
           <p>{item.title}</p>
