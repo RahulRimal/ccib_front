@@ -14,7 +14,7 @@ import CompanyPage from "./pages/CompanyPage";
 import LoanApplicationPage from "./pages/LoanApplicatinPage";
 import LoansPage from "./pages/LoansPage";
 import Footer from "./components/Footer";
-import Dashboard from "./pages/dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import ReportsPage from "./pages/ReportsPage";
 
 export const DrawerWidthContext = React.createContext();
@@ -68,6 +68,7 @@ const App = () => {
                 <Route path="/application" exact element={<LoanForm />} />
                 <Route path="/loans" exact element={<LoansPage />} />
                 <Route path="/dashboard" exact element={<Dashboard />} />
+                <Route path="/report" exact element={<ReportsPage />} />
               </Routes>
             </div>
             <Footer />
