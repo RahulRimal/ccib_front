@@ -25,6 +25,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import ReportPage from "./pages/ReportsPage";
 import EmployeeProfile from "./pages/EmployeeProfile";
 import LandingPage from "./pages/landing_page/LandingPage";
+import BaseForm from "./pages/base_form/BaseForm";
 
 export const DrawerWidthContext = React.createContext();
 export const drawerMinWidth = 50;
@@ -117,6 +118,10 @@ const App = () => {
         {
           path: "/profile",
           element: <EmployeeProfile />,
+        },
+        {
+          path: "/add-data",
+          element: <BaseForm />,
         },
       ],
     },

@@ -29,48 +29,50 @@ const FormGroup = styled.div`
   }
 `;
 
-const CheckboxWrapper = styled.div`
+const RadioWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.s8};
 `;
 
-const CheckboxInput = styled.input`
+const RadioInput = styled.input`
   cursor: pointer;
   height: ${({ theme }) => theme.sizing.s24};
   width: ${({ theme }) => theme.sizing.s24};
 `;
 
-const CheckboxField = ({
+const RadioField = ({
+  control,
+  name,
   required = false,
   title,
   error,
   options,
-  name,
-  control,
+  defaultChecked,
 }) => {
   const theme = useTheme();
 
   return (
     <FormGroup>
       <p>{title}</p>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          gap: theme.spacing.s16,
+        }}
+      >
         {options.map((option, index) => (
-          <CheckboxWrapper key={index}>
+          <RadioWrapper key={index}>
             <Controller
-              name={`${name}.${option.value}`}
+              name={name}
               control={control}
+              defaultValue={defaultChecked || ""}
               render={({ field }) => (
-                <CheckboxInput
-                  type="checkbox"
-                  checked={field.value || false}
-                  required={required}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                />
+                <RadioInput {...field} type="radio" value={option.value} />
               )}
             />
             <label htmlFor={`${name}[${index}]`}>{option.label}</label>
-          </CheckboxWrapper>
+          </RadioWrapper>
         ))}
       </div>
       {error && <span>{error}</span>}
@@ -78,4 +80,4 @@ const CheckboxField = ({
   );
 };
 
-export default CheckboxField;
+export default RadioField;

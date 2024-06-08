@@ -3,7 +3,6 @@ import styled, { useTheme } from "styled-components";
 
 const FormGroup = styled.div`
   position: relative;
-  padding-bottom: ${({ theme }) => theme.spacing.s8};
   p {
     padding-bottom: ${({ theme }) => theme.spacing.s8};
     font-size: ${({ theme }) => theme.typography.fontSize.f14};
@@ -35,15 +34,15 @@ const FormGroup = styled.div`
     opacity: 0;
   }
 
-  input {
+  textarea {
     width: 100%;
     border: 1px solid ${({ theme }) => theme.palette.border.primary};
-    height: ${({ theme }) => theme.sizing.s44};
     padding: ${({ theme }) => `${theme.spacing.s8} ${theme.spacing.s16}`};
     box-sizing: border-box;
     border-radius: ${({ theme }) => theme.borderRadius.input};
     overflow: hidden;
     font-size: ${({ theme }) => theme.typography.fontSize.f16};
+    background-color: ${({ theme }) => theme.palette.background.dark};
     &:focus {
       outline-color: ${({ theme }) => theme.palette.border.focused};
       &::placeholder {
@@ -51,7 +50,7 @@ const FormGroup = styled.div`
       }
     }
   }
-  input:focus + label {
+  textarea:focus + label {
     visibility: visible;
     opacity: 1;
   }
@@ -63,67 +62,37 @@ const FormGroup = styled.div`
   }
 `;
 
-const Prefix = styled.div`
-  position: absolute;
-  left: ${({ theme }) => theme.spacing.s12};
-`;
-
-const Suffix = styled.div`
-  position: absolute;
-  right: ${({ theme }) => theme.spacing.s12};
-`;
-
-const InputField = ({
+const TextAreaField = ({
   title,
   name,
   value,
   placeholder,
-  type,
   label,
-  required = false,
+  required = true,
   editable = true,
-  prefix,
-  suffix,
   onClick,
-  onPrefixClick,
-  onSuffixClick,
   style,
   error,
   register,
   idx,
-  defaultValue,
 }) => {
   const theme = useTheme();
-  const textStyles = { ...style };
 
   return (
     <FormGroup key={idx && idx}>
       <p>{title}</p>
       <div>
-        {prefix && <Prefix onClick={onPrefixClick}>{prefix}</Prefix>}
-        <input
-          style={{
-            ...(prefix && { paddingLeft: theme.spacing.s32 }),
-            ...textStyles,
-          }}
-          {...(register && register(name))}
+        <textarea
+          rows={3}
+          style={style}
           name={name}
-          type={type}
-          className="form-control"
+          {...(register && register(name))}
           placeholder={placeholder}
+          value={value}
+          required={required}
           readOnly={!editable && "readonly"}
           onClick={onClick}
-          required={required}
-          defaultValue={defaultValue}
         />
-        {suffix && (
-          <Suffix
-            onClick={onSuffixClick}
-            style={{ cursor: `${onSuffixClick && "pointer"}` }}
-          >
-            {suffix}
-          </Suffix>
-        )}
 
         <label htmlFor={name} style={{ textTransform: "capitalize" }}>
           {label}
@@ -134,4 +103,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default TextAreaField;
