@@ -26,6 +26,8 @@ import ReportPage from "./pages/ReportsPage";
 import EmployeeProfile from "./pages/EmployeeProfile";
 import LandingPage from "./pages/landing_page/LandingPage";
 import BaseForm from "./components/Forms/BaseForm";
+import InquiryForm from "./components/Forms/InquiryForm";
+import BasePage from "./pages/base_form/BasePage";
 
 export const DrawerWidthContext = React.createContext();
 export const drawerMinWidth = 50;
@@ -78,6 +80,10 @@ const App = () => {
         {
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "/base",
+          element: <BasePage />,
         },
         {
           path: "/dashboard",

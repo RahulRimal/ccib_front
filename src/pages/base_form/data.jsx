@@ -1,3 +1,4 @@
+import InquiryForm from "../../components/Forms/InquiryForm";
 import {
   blacklistReportSchema,
   blacklistSchema,
@@ -654,11 +655,12 @@ export const blacklistFields = [
 export const formTabs = [
   {
     id: 1,
-    title: "Inquiry Form",
+    title: "Inquiry",
     active: true,
     schema: inquirySchema,
     fields: inquiryFields,
     endpoint: "cooperative/inquiries",
+    Component: InquiryForm,
   },
   {
     id: 2,
@@ -667,6 +669,7 @@ export const formTabs = [
     schema: loanSchema,
     fields: loanFields,
     endpoint: "cooperative/loan",
+    Component: InquiryForm,
   },
 
   {
@@ -676,6 +679,7 @@ export const formTabs = [
     schema: companySchema,
     fields: companyFormFields,
     endpoint: "cooperative/companys",
+    Component: InquiryForm,
   },
   {
     id: 4,
@@ -684,6 +688,7 @@ export const formTabs = [
     schema: financeSchema,
     fields: financeFormFields,
     endpoint: "cooperative/finance",
+    Component: InquiryForm,
   },
   {
     id: 5,
@@ -692,6 +697,7 @@ export const formTabs = [
     schema: securityDepositSchema,
     fields: securityDepositFormFields,
     endpoint: "cooperative/securitydeposits",
+    Component: InquiryForm,
   },
   {
     id: 6,
@@ -700,6 +706,7 @@ export const formTabs = [
     schema: loanApplicationSchema,
     fields: loanApplicationFields,
     endpoint: "cooperative/loanapplications",
+    Component: InquiryForm,
   },
   {
     id: 7,
@@ -708,6 +715,7 @@ export const formTabs = [
     schema: installementSchema,
     fields: installmentFields,
     endpoint: "cooperative/installments",
+    Component: InquiryForm,
   },
   {
     id: 8,
@@ -716,6 +724,7 @@ export const formTabs = [
     schema: blacklistSchema,
     fields: blacklistFields,
     endpoint: "cooperative/blacklists",
+    Component: InquiryForm,
   },
   {
     id: 9,
@@ -724,5 +733,6 @@ export const formTabs = [
     schema: blacklistReportSchema,
     fields: blacklistReportFields,
     endpoint: "cooperative/blacklistreports",
+    Component: InquiryForm,
   },
 ];
