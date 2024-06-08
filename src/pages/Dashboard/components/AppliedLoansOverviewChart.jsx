@@ -72,7 +72,7 @@ const loanOverviewChartOption = () => {
 
 const AppliedLoansOverviewChart = () => {
 
-    const { loading, data } = useFetch({ url: `${mainUrl}/cooperative/loanapplications/loan_application_history?finance=36MHASzorqBBdKP2CccsYm` })
+    const { loading, data } = useFetch({ url: `${mainUrl}/cooperative/loanapplications/loan_application_history?finance=FBXV6ZkP3REMxfTUCFSJmP` })
 
     let optionData = []
 

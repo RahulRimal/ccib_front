@@ -55,12 +55,12 @@ const incomeChartOption = () => {
 
 const IncomeChart = ({ }) => {
 
-    const { loading, data } = useFetch({ url: `${mainUrl}/cooperative/finance/income_overview/?finance=36MHASzorqBBdKP2CccsYm` });
+    const { loading, data } = useFetch({ url: `${mainUrl}/cooperative/finance/income_overview/?finance=FBXV6ZkP3REMxfTUCFSJmP` });
 
     let option = incomeChartOption();
     let xAxisData = [];
 
-    if (data) {
+    if (data && data.length > 0) {
         xAxisData = data.total_due.map(item => item.date,
         );
     }
@@ -84,7 +84,7 @@ const IncomeChart = ({ }) => {
     ];*/
     let series = [];
 
-    if (data) {
+    if (data && data.length > 0) {
         series = [
             {
                 name: "Overdue",
