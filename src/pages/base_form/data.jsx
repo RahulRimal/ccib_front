@@ -14,15 +14,15 @@ export const inquiryFields = [
   {
     label: "User",
     name: "user",
-    type: "text",
+    type: "select",
     required: true,
-    defaultValue: "hsbjgk",
+    defaultValue: "",
     placeholder: "Enter User ID",
   },
   {
     label: "Finance",
     name: "finance",
-    type: "text",
+    type: "select",
     required: true,
     defaultValue: "",
     placeholder: "Enter Finance ID",
@@ -387,14 +387,6 @@ const financeFormFields = [
 
 export const loanApplicationFields = [
   {
-    label: "User",
-    name: "user",
-    type: "number",
-    required: true,
-    defaultValue: "",
-    placeholder: "Enter User ID",
-  },
-  {
     label: "Loan Amount",
     name: "loan_amount",
     type: "number",
@@ -406,7 +398,7 @@ export const loanApplicationFields = [
   {
     label: "Finance",
     name: "finance",
-    type: "number",
+    type: "text",
     required: true,
     defaultValue: "",
     placeholder: "Enter Finance ID",
@@ -422,6 +414,79 @@ export const loanApplicationFields = [
     ],
     required: true,
     defaultValue: "pending",
+  },
+  {
+    name: "first_name",
+    label: "First Name",
+    type: "text",
+    required: true,
+    placeholder: "Enter First Name",
+    defaultValue: "",
+  },
+  {
+    name: "middle_name",
+    label: "Middle Name",
+    type: "text",
+    required: false,
+    placeholder: "Enter Middle Name",
+    defaultValue: "",
+  },
+  {
+    name: "last_name",
+    label: "Last Name",
+    type: "text",
+    required: true,
+    placeholder: "Enter Last Name",
+    defaultValue: "",
+  },
+  {
+    name: "citizenship_number",
+    label: "Citizenship Number",
+    type: "text",
+    required: true,
+    defaultValue: "",
+    placeholder: "Enter Citizenship Number",
+  },
+  {
+    name: "citizenship_issued_place",
+    label: "Citizenship Issued Place",
+    type: "text",
+    required: true,
+    defaultValue: "",
+    placeholder: "Enter CitizenShip Issued Place",
+  },
+  {
+    name: "citizenship_issued_date",
+    label: "Citizenship Issued Date",
+    type: "date",
+    required: true,
+    defaultValue: "",
+    placeholder: "Enter CitizenShip Issued Date",
+  },
+  // {
+  //   name: "gender",
+  //   label: "Gender",
+  //   type: "select",
+  //   required: true,
+  //   options: ["male", "female"],
+  // },
+  // { name: "dob", label: "Date of Birth", type: "date", required: false },
+  {
+    name: "father_name",
+    label: "Father Name",
+    type: "text",
+    required: true,
+    defaultValue: "",
+    placeholder: "Enter Father Name",
+  },
+
+  {
+    name: "phone_number",
+    label: "Phone Number",
+    type: "number",
+    required: true,
+    defaultValue: "",
+    placeholder: "Enter Phone Number",
   },
 ];
 
@@ -593,7 +658,7 @@ export const formTabs = [
     active: true,
     schema: inquirySchema,
     fields: inquiryFields,
-    endpoint: "inquiries",
+    endpoint: "cooperative/inquiries",
   },
   {
     id: 2,
@@ -601,7 +666,7 @@ export const formTabs = [
     active: false,
     schema: loanSchema,
     fields: loanFields,
-    endpoint: "loan",
+    endpoint: "cooperative/loan",
   },
 
   {
@@ -610,7 +675,7 @@ export const formTabs = [
     active: false,
     schema: companySchema,
     fields: companyFormFields,
-    endpoint: "companys",
+    endpoint: "cooperative/companys",
   },
   {
     id: 4,
@@ -618,7 +683,7 @@ export const formTabs = [
     active: false,
     schema: financeSchema,
     fields: financeFormFields,
-    endpoint: "finance",
+    endpoint: "cooperative/finance",
   },
   {
     id: 5,
@@ -626,7 +691,7 @@ export const formTabs = [
     active: false,
     schema: securityDepositSchema,
     fields: securityDepositFormFields,
-    endpoint: "securitydeposits",
+    endpoint: "cooperative/securitydeposits",
   },
   {
     id: 6,
@@ -634,7 +699,7 @@ export const formTabs = [
     active: false,
     schema: loanApplicationSchema,
     fields: loanApplicationFields,
-    endpoint: "loanapplications",
+    endpoint: "cooperative/loanapplications",
   },
   {
     id: 7,
@@ -642,7 +707,7 @@ export const formTabs = [
     active: false,
     schema: installementSchema,
     fields: installmentFields,
-    endpoint: "installments",
+    endpoint: "cooperative/installments",
   },
   {
     id: 8,
@@ -650,7 +715,7 @@ export const formTabs = [
     active: false,
     schema: blacklistSchema,
     fields: blacklistFields,
-    endpoint: "blacklists",
+    endpoint: "cooperative/blacklists",
   },
   {
     id: 9,
@@ -658,6 +723,6 @@ export const formTabs = [
     active: false,
     schema: blacklistReportSchema,
     fields: blacklistReportFields,
-    endpoint: "blacklistreports",
+    endpoint: "cooperative/blacklistreports",
   },
 ];

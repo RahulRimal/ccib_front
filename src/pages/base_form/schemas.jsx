@@ -144,7 +144,31 @@ export const securityDepositSchema = yup.object().shape({
     .required("Latest valuation date is required"),
 });
 export const loanApplicationSchema = yup.object().shape({
-  user: yup.number().required("User is required"),
+  loan_amount: yup
+    .number()
+    .required("Loan amount is required")
+    .min(0, "Loan amount must be a positive number")
+    .typeError("Loan amount must be a number"),
+  finance: yup.string().required("Finance ID is required"),
+  status: yup
+    .string()
+    .oneOf(["pending", "approved", "rejected"])
+    .required("Status is required"),
+  first_name: yup.string().required("First name is required"),
+  middle_name: yup.string(),
+  last_name: yup.string().required("Last name is required"),
+  citizenship_number: yup.string().required("Citizenship number is required"),
+  citizenship_issued_place: yup
+    .string()
+    .required("Citizenship issued place is required"),
+  citizenship_issued_date: yup
+    .date()
+    .required("Citizenship issued date is required"),
+  father_name: yup.string().required("Father name is required"),
+  phone_number: yup
+    .string()
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
+    .nullable(),
   loan_amount: yup.string().required("Loan amount is required"),
   finance: yup.number().required("Finance is required"),
   status: yup

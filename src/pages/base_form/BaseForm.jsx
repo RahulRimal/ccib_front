@@ -224,6 +224,7 @@ const FormInputField = styled.div`
 const BaseForm = () => {
   const [tabs, setTabs] = useState(formTabs);
   const [endpoints, setEndpoints] = useState("");
+  const [fetchedOption, setFetchedoption] = useState([]);
 
   const activeField = () => {
     return tabs.find((item) => item.active);
@@ -245,15 +246,11 @@ const BaseForm = () => {
     console.log("Form submitted:", data);
 
     try {
-      const response = await axios.post(
-        `${mainUrl}cooperative/${endpoints}/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${mainUrl}/${endpoints}/`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       console.log("Success:", response.data);
       reset();
@@ -270,10 +267,32 @@ const BaseForm = () => {
     }
   };
 
+  const getUsers = async () => {
+    try {
+      const response = await axios.get(`${mainUrl}/users`, {});
+
+      if (response.status === 200) {
+        const options = response.data.map((item) => {
+          return {
+            label: item.username,
+            value: item.username,
+          };
+        });
+        console.log(options);
+        setFetchedoption(options);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(fetchedOption);
+
   useEffect(() => {
     setEndpoints(tabs.filter((item) => item.active)[0].endpoint);
+    getUsers();
     reset();
-  }, [tabs, reset]);
+  }, [tabs, reset, getUsers]);
 
   return (
     <>
@@ -294,15 +313,6 @@ const BaseForm = () => {
             <strong>Check Status</strong>
           </div>
           <SectionWrapper>
-            {/* {profile.map((item, index) => (
-              <ButtonWrapper
-                key={index}
-                className={item.active ? "active" : ""}
-                onClick={() => handleTab(item.id)}
-              >
-                {item.title}
-              </ButtonWrapper>
-            ))} */}
             <TabButtons
               formTabs={tabs}
               setEndpoints={setEndpoints}

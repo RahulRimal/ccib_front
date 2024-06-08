@@ -11,7 +11,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { formTabs } from "../../pages/base_form/data";
 import { LiaStreetViewSolid } from "react-icons/lia";
 import TabButtons from "../TabButtons";
-
+import axios from "axios";
+import { mainUrl } from "../../constants";
+import useFetch from "../../custom_hooks/useFetch";
 
 const SectionWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -44,10 +46,14 @@ const FormInputField = styled.div`
   }
 `;
 
-
 const BaseForm = () => {
   const [tabs, setTabs] = useState(formTabs);
   const [endpoints, setEndpoints] = useState("");
+  const [fetchedUsers, setFetchedUsers] = useState([]);
+  const [fetchedFinances, setFetchedFinances] = useState([]);
+  const [mydata, setMydata] = useState([]);
+  const { data } = useFetch({ url: `${mainUrl}auth/users` });
+  const { data: finance } = useFetch({ url: `${mainUrl}cooperative/finance` });
 
   const activeField = () => {
     return tabs.find((item) => item.active);
@@ -93,11 +99,55 @@ const BaseForm = () => {
       }
     }
   };
+  // const getUsers = async () => {
+  //   try {
+  //     const response = await axios.get(`${mainUrl}auth/users`);
+
+  //     if (response.status === 200) {
+  //       const options = response.data.map((item) => {
+  //         return {
+  //           label: item.first_name,
+  //           value: item.first_name,
+  //         };
+  //       });
+  //       console.log(options);
+  //       setFetchedoption(options);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const getUsers = () => {
+    if (data) {
+      const options = data.map((item) => {
+        return {
+          label: item.first_name,
+          value: item.first_name,
+        };
+      });
+      setFetchedUsers(options);
+    }
+  };
+  const getFinances = () => {
+    if (finance) {
+      const options = finance.map((item) => {
+        return {
+          label: item.name,
+          value: item.name,
+        };
+      });
+      setFetchedFinances(options);
+    }
+  };
+  console.log(fetchedUsers);
 
   useEffect(() => {
     setEndpoints(tabs.filter((item) => item.active)[0].endpoint);
+    getUsers();
+    getFinances();
     reset();
-  }, [tabs, reset]);
+  }, [tabs, reset, data, finance]);
 
   return (
     <>
@@ -149,7 +199,11 @@ const BaseForm = () => {
                       <OptionField
                         key={i}
                         title={field.label}
-                        options={field.options}
+                        options={
+                          field.label === "User"
+                            ? fetchedUsers
+                            : fetchedFinances
+                        }
                         name={field.name}
                         register={register}
                         control={control}

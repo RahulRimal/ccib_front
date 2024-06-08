@@ -51,29 +51,12 @@ const DropdownWrapper = styled.div`
   }
 `;
 
-const customStyles = (theme) => ({
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: theme.palette.background.dark,
-    height: "52px",
-    display: "flex",
-    alignItems: "center",
-    fontSize: theme.typography.fontSize.f16,
-
-    "&> div": {
-      height: "52px",
-      display: "flex",
-      alignItems: "center",
-      border: "none",
-      " &>div": {
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        position: "relative",
-      },
-    },
+const customStyles = {
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected && "black",
   }),
-});
+};
 
 const OptionField = ({
   options = [],
@@ -101,12 +84,13 @@ const OptionField = ({
             options={options}
             placeholder={placeholder}
             isClearable
+            styles={customStyles}
             theme={(themes) => ({
               ...themes,
               borderRadius: theme.borderRadius.input,
               colors: {
                 ...themes.colors,
-                primary: theme.palette.primary.main,
+                primary: theme.palette.background.dark,
               },
             })}
             onChange={(selectedOption) => {
