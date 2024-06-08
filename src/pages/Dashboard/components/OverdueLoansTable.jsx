@@ -32,7 +32,7 @@ const OverdueLoansTable = () => {
 
 
     const { loading, rowData, columns } = useFetchTable({
-        url: `${mainUrl}/cooperative/loans/overdue_loans/?finance=36MHASzorqBBdKP2CccsYm`, customRenderer: customRenderer
+        url: `${mainUrl}/cooperative/loans/overdue_loans/?finance=FBXV6ZkP3REMxfTUCFSJmP`, customRenderer: customRenderer
     })
     return (
         <>

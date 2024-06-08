@@ -47,7 +47,7 @@ function Dashboard() {
   const theme = useTheme();
 
   const { loading, data: quickSummary } = useFetch({
-    url: `${mainUrl}/cooperative/finance/quick_summary?finance=36MHASzorqBBdKP2CccsYm`
+    url: `${mainUrl}/cooperative/finance/quick_summary?finance=FBXV6ZkP3REMxfTUCFSJmP`
   });
 
 
@@ -63,8 +63,8 @@ function Dashboard() {
             backgroundColor: "transparent",
           }}
         >
-          {quickSummary.map((item, index) => (
-            <QuickDetailsCard key={index} item={item} />
+          {Object.keys(quickSummary).map((key, index) => (
+            <QuickDetailsCard key={index} item={quickSummary[key]} />
           ))}
         </div>
       </section>

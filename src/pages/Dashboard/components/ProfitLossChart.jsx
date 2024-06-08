@@ -65,7 +65,7 @@ const profitLossChartOption = () => {
 const IncomeChart = ({ }) => {
   const theme = useTheme();
 
-  // const {loading, data} = useFetch({ url: `${mainUrl}/cooperative/finance/income_overview/?finance=36MHASzorqBBdKP2CccsYm`});
+  // const {loading, data} = useFetch({ url: `${mainUrl}/cooperative/finance/income_overview/?finance=FBXV6ZkP3REMxfTUCFSJmP`});
 
   let option = profitLossChartOption();
   option.data = (function () {
