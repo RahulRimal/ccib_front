@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OptionField from "./OptionField";
 import CheckboxField from "./CheckboxField";
 import TextAreaField from "./TextAreaField";
@@ -8,6 +8,10 @@ import Button from "../Button";
 import styled, { useTheme } from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { formTabs } from "../../pages/base_form/data";
+import { LiaStreetViewSolid } from "react-icons/lia";
+import TabButtons from "../TabButtons";
+
 
 const SectionWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -40,7 +44,8 @@ const FormInputField = styled.div`
   }
 `;
 
-const BaseForm = ({ formTabs }) => {
+
+const BaseForm = () => {
   const [tabs, setTabs] = useState(formTabs);
   const [endpoints, setEndpoints] = useState("");
 
