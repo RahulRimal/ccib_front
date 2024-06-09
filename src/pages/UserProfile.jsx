@@ -6,7 +6,6 @@ import LoanApplicationsTable from "../components/Tables/LoanApplicationsTable";
 import ToolTip from "../components/ToolTip";
 import Divider from "../components/Divider";
 import { humanizeString } from "../helpers";
-import axios from "axios";
 import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
 import { FaUser } from "react-icons/fa";
 import ReactECharts from "echarts-for-react";
@@ -17,11 +16,25 @@ import { mainUrl } from "../constants";
 import useFetch from "../custom_hooks/useFetch";
 import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
+import QuickDetailsCard, {
+  QuickDetails,
+} from "./Dashboard/components/QuickDetailsCard";
+import BaseChart from "../components/Charts/BaseChart";
+
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: ${({ theme }) => theme.spacing.s16};
   padding: ${({ theme }) => theme.spacing.s12};
+
+  main {
+    & > div {
+      background-color: ${({ theme }) => theme.palette.background.default};
+      border-radius: ${({ theme }) => theme.borderRadius.container};
+      margin: ${({ theme }) => theme.spacing.s12} 0;
+      padding: ${({ theme }) => theme.spacing.s8};
+    }
+  }
 `;
 
 const Sidebar = styled.div`
@@ -34,7 +47,7 @@ const Sidebar = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.container};
 `;
 
-const UserTitle = styled.h1`
+const UserTitle = styled.h2`
   font-size: ${({ theme }) => theme.typography.fontSize.f16};
   margin: 0;
   letter-spacing: ${({ theme }) => theme.spacing.s2};
@@ -55,9 +68,7 @@ const UserInfo = styled.p`
 `;
 
 const UserRecordSummarizedWrapper = styled.div`
-  margin: 20px;
-  width: fit-content;
-  padding: ${({ theme }) => theme.spacing.s16};
+  padding: ${({ theme }) => theme.spacing.s12};
   border: 1px solid ${({ theme }) => theme.palette.border.secondary};
   border-radius: ${({ theme }) => theme.borderRadius.container};
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -89,28 +100,51 @@ const UserRecordSummarized = () => {
   const theme = useTheme();
 
   const option = {
-    grid: { top: 20, right: 40, bottom: 50, left: 40 },
     title: {
-      text: "Loans Per Month", // Add title here
+      text: "Loans Per Month",
       left: "center",
       bottom: 0,
       textStyle: {
-        fontSize: theme.typography.fontSize.f16,
+        fontSize: theme.typography.fontSize.f18,
       },
     },
     xAxis: {
       type: "category",
-      data: ["Item 1", "Item 2", "Item 3", "Item 4"],
+      data: ["Jan", "Feb", "Mar", "Apr"],
     },
     yAxis: {
       type: "value",
     },
+    toolbox: {
+      show: true,
+      feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        restore: { show: true },
+        saveAsImage: { show: true },
+      },
+    },
     series: [
       {
-        name: "fdfdf",
+        name: "Sumarized Loans",
         data: [400, 300, 350, 200],
         type: "bar",
         smooth: true,
+        label: {
+          show: false,
+          position: "center",
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 20,
+            fontWeight: "bold",
+          },
+        },
+        labelLine: {
+          show: false,
+        },
+        center: ["70%", "50%"],
       },
     ],
     tooltip: {
@@ -138,10 +172,7 @@ const UserRecordSummarized = () => {
         </IconButton>
       </UserRecordSummarizedHeader>
       <div>
-        <ReactECharts
-          option={option}
-          style={{ height: "250px", width: "350px" }}
-        />
+        <ReactECharts option={option} />
       </div>
     </UserRecordSummarizedWrapper>
   );
@@ -156,11 +187,51 @@ const UserProfile = () => {
   return (
     <Wrapper>
       <main>
-        <RankSlider />
-        <UserCreditHistoryChart />
-        <LoanApplicationsTable />
-        <UserRecordSummarized />
-        <UserDetailsTable />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: theme.spacing.s16,
+            padding: 0,
+            backgroundColor: "transparent",
+          }}
+        >
+          {/* {QuickDetails.map((item, index) => (
+            <QuickDetailsCard key={index} item={item} />
+          ))} */}
+        </div>
+        <div>
+          <RankSlider />
+        </div>
+        <div>
+          <UserCreditHistoryChart />
+        </div>
+        <div>
+          <LoanApplicationsTable />
+        </div>
+        <div
+          style={{
+            display: "grid",
+            backgroundColor: "transparent",
+            padding: 0,
+            gap: theme.spacing.s16,
+            gridTemplateColumns: " 1fr 1.5fr",
+          }}
+        >
+          <UserRecordSummarized />
+          <div
+            style={{
+              background: theme.palette.background.default,
+              padding: theme.spacing.s12,
+              borderRadius: theme.borderRadius.container,
+            }}
+          >
+            {/* <BaseChart option={option} /> */}
+          </div>
+        </div>
+        <div style={{ padding: 0 }}>
+          <UserDetailsTable />
+        </div>
       </main>
       <Sidebar>
         <div style={{ textAlign: "center", width: "100%" }}>

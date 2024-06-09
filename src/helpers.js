@@ -75,3 +75,10 @@ export const hexWithOpacity = (hex, opacity) => {
 
   return hex + alpha;
 };
+
+
+export const formatDate = (date, format = "YYYY-MM-DD") => {
+  let isoString = date.toISOString();
+
+  return isoString.slice(0, format.length);
+}

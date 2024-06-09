@@ -4,13 +4,13 @@ import styled, { useTheme } from "styled-components";
 import { MdOutlineLock } from "react-icons/md";
 import Button from "../components/Button";
 import { ClipLoader } from "react-spinners";
-import InputField from "../components/Forms/InputField";
+import InputField from "../components/Forms/Fields/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, updateAuthentiaction } from "../features/authSlice";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../components/Backdrop";
-import PasswordField from "../components/Forms/PasswordField";
-import CheckboxField from "../components/Forms/CheckboxField";
+import PasswordField from "../components/Forms/Fields/PasswordField";
+import CheckboxField from "../components/Forms/Fields/CheckboxField";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
 
@@ -78,7 +78,7 @@ function SignIn() {
     const cookie = new Cookies();
     if (cookie.get("access") && cookie.get("refresh")) {
       dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
-      navigate("/");
+      // navigate("/");
     }
   }, []);
 
@@ -97,15 +97,48 @@ function SignIn() {
           enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
         }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
       });
+/* 
+      if (!username || !password)
+        return enqueueSnackbar("Please fill all the fields", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      if (username === "admin" && password === "admin") {
+        dispatch(authenticateUser());
+        navigate("/dashboard");
+        return enqueueSnackbar("Login successful", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      }
 
-    })
+      return enqueueSnackbar("Invalid credentials", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+ */
+      // dispatch(loginUser({ username, password })).unwrap().then((data) => {
+      //   enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
+      // }).catch((error) => {
+      //   const errs = JSON.parse(error.message)
+      //   errs.forEach((element, index) => {
+      //     setTimeout(() => {
+      //       enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
+      //     }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+      //   });
+
+      // })
+    });
   }
 
   return (
     <>
       <Grid>
         <ImageContainer>
-          <img src="https://source.unsplash.com/random?wallpapers" alt="login-img" />
+          <img
+            src="https://source.unsplash.com/random?wallpapers"
+            alt="login-img"
+          />
         </ImageContainer>
         <LoginContainer>
           <Icon>
@@ -121,15 +154,22 @@ function SignIn() {
             Sign In
           </p>
 
-          <form onSubmit={handleSubmit} >
-
-            <InputField label="Username" name="username" type="text" placeholder="Username" />
-            <PasswordField label="Password" name="password" placeholder="Password" />
-
-            <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
-              <CheckboxField />
+          <form onSubmit={handleSubmit}>
+            <InputField
+              label="Username"
+              name="username"
+              type="text"
+              placeholder="Username"
+            />
+            <PasswordField
+              label="Password"
+              name="password"
+              placeholder="Password"
+            />
+           {/*  <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
+              <CheckboxField name="Remember me" options={[{ value: true, label: "yes" }, { value: false, label: "no" }]} />
               <span>Remember me</span>
-            </div>
+            </div> */}
             <Button
               style={{ width: "100%" }}
               type="submit"
@@ -147,7 +187,7 @@ function SignIn() {
         </LoginContainer>
       </Grid>
 
-      <Backdrop open={loading} >
+      <Backdrop open={loading}>
         <ClipLoader color="#fff" />
       </Backdrop>
     </>
