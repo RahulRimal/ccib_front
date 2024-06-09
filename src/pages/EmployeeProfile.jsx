@@ -1,9 +1,9 @@
 import styled, { useTheme } from "styled-components";
 import { useEffect, useState } from "react";
 import { TbUserHexagon } from "react-icons/tb";
-import ImageInput from "../components/Forms/ImageInput";
+import ImageInput from "../components/Forms/Fields/ImageInput";
 import { RxSwitch } from "react-icons/rx";
-import InputField from "../components/Forms/InputField";
+import InputField from "../components/Forms/Fields/InputField";
 import Button from "../components/Button";
 
 const setting = [

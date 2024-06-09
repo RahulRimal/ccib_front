@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled, { useTheme } from "styled-components";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
+import { current } from "@reduxjs/toolkit";
 
 const DropdownWrapper = styled.div`
   position: relative;
@@ -52,6 +53,7 @@ const DropdownWrapper = styled.div`
 `;
 
 const customStyles = {
+  cursor: "pointer",
   option: (provided, state) => ({
     ...provided,
     color: state.isSelected && "black",

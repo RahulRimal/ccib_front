@@ -75,7 +75,7 @@ const handleFinancesResponse = (data) => {
     return finances
 }
 
-const InquiryForm = () => {
+const BlackListApplicationForm = () => {
 
 
     const { loading: loadingUsers, data: users } = useFetch({ url: `${mainUrl}/auth/users`, responseHandler: handleUsersResponse });
@@ -103,4 +103,4 @@ const InquiryForm = () => {
     )
 }
 
-export default InquiryForm
+export default BlackListApplicationForm

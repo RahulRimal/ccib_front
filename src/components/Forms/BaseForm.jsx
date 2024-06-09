@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import OptionField from "./OptionField";
-import CheckboxField from "./CheckboxField";
-import TextAreaField from "./TextAreaField";
-import RadioField from "./RadioField";
-import InputField from "./InputField";
+import OptionField from "./Fields/OptionField";
+import CheckboxField from "./Fields/CheckboxField";
+import TextAreaField from "./Fields/TextAreaField";
+import RadioField from "./Fields/RadioField";
+import InputField from "./Fields/InputField";
 import Button from "../Button";
 import styled, { useTheme } from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { mainUrl } from "../../constants";
+import { ClipLoader } from "react-spinners";
 
 const SectionWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -43,9 +44,7 @@ const FormInputField = styled.div`
 `;
 
 
-const BaseForm = ({ title, fields, schema, endpoint }) => {
-
-
+const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
   const {
     register,
     control,
@@ -86,151 +85,125 @@ const BaseForm = ({ title, fields, schema, endpoint }) => {
       }
     }
   };
-  // const getUsers = async () => {
-  //   try {
-  //     const response = await axios.get(`${mainUrl}auth/users`);
 
-  //     if (response.status === 200) {
-  //       const options = response.data.map((item) => {
-  //         return {
-  //           label: item.first_name,
-  //           value: item.first_name,
-  //         };
-  //       });
-  //       console.log(options);
-  //       setFetchedoption(options);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  ;
 
   return (
     <>
-      {/* <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: theme.spacing.s8,
-          paddingBottom: theme.spacing.s16,
-        }}
-      >
-        <LiaStreetViewSolid
-          className="icon"
-          style={{ height: theme.sizing.s24, width: theme.sizing.s24 }}
-        />
-        <strong>Check Status</strong>
-      </div> */}
       <SectionWrapper
         style={{
           padding: `${theme.spacing.s16} ${theme.spacing.s12}`,
         }}
       >
-        <form
-          method="POST"
-          onSubmit={handleSubmit(onSubmitHandler)}
-          style={{
-            minHeight: "74vh",
-            display: "flex",
-            flexDirection: "column",
-            position: "relative",
-          }}
-        >
-          <SectionHeading style={{ marginTop: theme.spacing.s16 }}>
-            {title} Form
-          </SectionHeading>
-          <FormInputField>
-            {fields.map(
-              (field, i) =>
-                (field.type === "select" && (
-                  <OptionField
-                    key={i}
-                    title={field.label}
-                    options={field.options} 
-                    name={field.name}
-                    register={register}
-                    control={control}
-                    error={errors[field.name]?.message}
-                    defaultValue={field.defaultValue}
-                  />
-                )) ||
-                (field.type === "checkbox" && (
-                  <CheckboxField
-                    required={field.required}
-                    name={field.name}
-                    title={field.label}
-                    options={field.options}
-                    register={register}
-                    error={errors[field.name]?.message}
-                    control={control}
-                    defaultValue={field.defaultValue}
-                  />
-                )) ||
-                (field.type === "textarea" && (
-                  <TextAreaField
-                    required={field.required}
-                    placeholder={field.placeholder}
-                    name={field.name}
-                    title={field.label}
-                    options={field.options}
-                    register={register}
-                    error={errors[field.name]?.message}
-                  />
-                )) ||
-                (field.type === "radio" && (
-                  <RadioField
-                    control={control}
-                    required={field.required}
-                    name={field.name}
-                    title={field.label}
-                    labels={field.labels}
-                    type={field.type}
-                    options={field.options}
-                    register={register}
-                    error={errors[field.name]?.message}
-                    placeholder={field.placeholder}
-                    defaultValue={field.defaultValue}
-                  />
-                )) ||
-                (field.type !== "textarea" &&
-                  field.type !== "radio" &&
-                  field.type !== "select" &&
-                  field.type !== "checkbox" && (
-                    <InputField
+        {loading ? <div style={{ textAlign: "center" }}>
+          <ClipLoader />
+        </div> :
+          <form
+            method="POST"
+            onSubmit={handleSubmit(onSubmitHandler)}
+            style={{
+              minHeight: "74vh",
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+            }}
+          >
+            <SectionHeading style={{ marginTop: theme.spacing.s16 }}>
+              {title} Form
+            </SectionHeading>
+            <FormInputField>
+              {fields.map(
+                (field, i) =>
+                  (field.type === "select" && (
+                    <OptionField
                       key={i}
                       title={field.label}
+                      options={field.options}
                       name={field.name}
-                      type={field.type}
-                      label={field.label}
+                      register={register}
+                      control={control}
+                      error={errors[field.name]?.message}
+                      placeholder={field.placeholder}
+                      defaultValue={field.defaultValue}
+                    />
+                  )) ||
+                  (field.type === "checkbox" && (
+                    <CheckboxField
                       required={field.required}
+                      name={field.name}
+                      title={field.label}
+                      options={field.options}
+                      register={register}
+                      error={errors[field.name]?.message}
+                      control={control}
+                      defaultValue={field.defaultValue}
+                    />
+                  )) ||
+                  (field.type === "textarea" && (
+                    <TextAreaField
+                      required={field.required}
+                      placeholder={field.placeholder}
+                      name={field.name}
+                      title={field.label}
+                      options={field.options}
+                      register={register}
+                      error={errors[field.name]?.message}
+                    />
+                  )) ||
+                  (field.type === "radio" && (
+                    <RadioField
+                      control={control}
+                      required={field.required}
+                      name={field.name}
+                      title={field.label}
+                      labels={field.labels}
+                      type={field.type}
+                      options={field.options}
                       register={register}
                       error={errors[field.name]?.message}
                       placeholder={field.placeholder}
                       defaultValue={field.defaultValue}
                     />
-                  ))
-            )}
-          </FormInputField>
-          <span
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: "0px",
-            }}
-          >
-            <Button
-              text={"Check Status"}
-              isSubmitting={isSubmitting}
+                  )) ||
+                  (field.type !== "textarea" &&
+                    field.type !== "radio" &&
+                    field.type !== "select" &&
+                    field.type !== "checkbox" && (
+                      <InputField
+                        key={i}
+                        title={field.label}
+                        name={field.name}
+                        type={field.type}
+                        label={field.label}
+                        required={field.required}
+                        register={register}
+                        error={errors[field.name]?.message}
+                        placeholder={field.placeholder}
+                        defaultValue={field.defaultValue}
+                      />
+                    ))
+              )}
+            </FormInputField>
+            <span
               style={{
-                height: theme.sizing.s44,
-                padding: `${theme.spacing.s0} ${theme.spacing.s32}`,
-                marginTop: theme.spacing.s16,
-                backgroundColor: theme.palette.primary.main,
+                position: "absolute",
+                bottom: 0,
+                left: "0px",
               }}
-            />
-          </span>
-        </form >
+            >
+              <Button
+                text="Check Status"
+                isSubmitting={isSubmitting}
+                type="submit"
+                style={{
+                  height: theme.sizing.s44,
+                  padding: `${theme.spacing.s0} ${theme.spacing.s32}`,
+                  marginTop: theme.spacing.s16,
+                  backgroundColor: theme.palette.primary.main,
+                }}
+              />
+            </span>
+          </form >
+        }
       </SectionWrapper>
     </>
   );

@@ -24,10 +24,10 @@ const ButtonWrapper = styled.button`
   transition: background-color 0.3s ease;
 `;
 
-const Button = ({ icon, isSubmitting, text, onClick, disabled, style }) => {
+const Button = ({ icon, isSubmitting, text, onClick, disabled, type, style }) => {
   const buttonStyle = { ...style };
   return (
-    <ButtonWrapper disabled={disabled} style={buttonStyle} onClick={onClick}>
+    <ButtonWrapper  type={type} disabled={disabled} style={buttonStyle} onClick={onClick}>
       {isSubmitting ? (
         "Submitting..."
       ) : (

@@ -226,7 +226,7 @@ const UserProfile = () => {
               borderRadius: theme.borderRadius.container,
             }}
           >
-            <LineChart />
+            {/* <BaseChart option={option} /> */}
           </div>
         </div>
         <div style={{ padding: 0 }}>
