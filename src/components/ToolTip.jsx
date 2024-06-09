@@ -35,7 +35,8 @@ const ToolTip = ({ tooltip, style, children }) => {
                 adjustedLeft = Math.max(0, right + windowScrollX - tooltipWidth + 40); // Added 16px as margin on right
             }
 
-            setTooltipPosition({ top: bottom, left: adjustedLeft });
+            // setTooltipPosition({ top: bottom, left: adjustedLeft });
+            setTooltipPosition({ left: adjustedLeft });
         }
     }, [anchorEl]);
 

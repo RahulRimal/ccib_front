@@ -2,6 +2,8 @@ import React from "react";
 import styled, { useTheme } from "styled-components";
 
 const FormGroup = styled.div`
+  position: relative;
+  padding-bottom: ${({ theme }) => theme.spacing.s8};
   p {
     padding-bottom: ${({ theme }) => theme.spacing.s8};
     font-size: ${({ theme }) => theme.typography.fontSize.f14};
@@ -37,8 +39,7 @@ const FormGroup = styled.div`
     width: 100%;
     border: 1px solid ${({ theme }) => theme.palette.border.primary};
     height: ${({ theme }) => theme.sizing.s44};
-    padding: ${({ theme }) => theme.spacing.s8}
-      ${({ theme }) => theme.spacing.s16};
+    padding: ${({ theme }) => `${theme.spacing.s8} ${theme.spacing.s16}`};
     box-sizing: border-box;
     border-radius: ${({ theme }) => theme.borderRadius.input};
     overflow: hidden;
@@ -53,6 +54,12 @@ const FormGroup = styled.div`
   input:focus + label {
     visibility: visible;
     opacity: 1;
+  }
+  span {
+    color: ${({ theme }) => theme.palette.error.main};
+    position: absolute;
+    top: 110%;
+    left: 1%;
   }
 `;
 
@@ -73,7 +80,7 @@ const InputField = ({
   placeholder,
   type,
   label,
-  required = true,
+  required = false,
   editable = true,
   prefix,
   suffix,
@@ -81,12 +88,16 @@ const InputField = ({
   onPrefixClick,
   onSuffixClick,
   style,
+  error,
+  register,
+  idx,
+  defaultValue,
 }) => {
   const theme = useTheme();
   const textStyles = { ...style };
 
   return (
-    <FormGroup>
+    <FormGroup key={idx && idx}>
       <p>{title}</p>
       <div>
         {prefix && <Prefix onClick={onPrefixClick}>{prefix}</Prefix>}
@@ -95,14 +106,15 @@ const InputField = ({
             ...(prefix && { paddingLeft: theme.spacing.s32 }),
             ...textStyles,
           }}
+          {...(register && register(name))}
           name={name}
           type={type}
           className="form-control"
           placeholder={placeholder}
-          required={required}
           readOnly={!editable && "readonly"}
           onClick={onClick}
-          value={value}
+          required={required}
+          defaultValue={defaultValue}
         />
         {suffix && (
           <Suffix
@@ -116,6 +128,7 @@ const InputField = ({
         <label htmlFor={name} style={{ textTransform: "capitalize" }}>
           {label}
         </label>
+        {error && <span>{error}</span>}
       </div>
     </FormGroup>
   );

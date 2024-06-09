@@ -4,13 +4,13 @@ import styled, { useTheme } from "styled-components";
 import { MdOutlineLock } from "react-icons/md";
 import Button from "../components/Button";
 import { ClipLoader } from "react-spinners";
-import InputField from "../components/Forms/InputField";
+import InputField from "../components/Forms/Fields/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import { authenticateUser, loginUser } from "../features/authSlice";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../components/Backdrop";
-import PasswordField from "../components/Forms/PasswordField";
-import CheckboxField from "../components/Forms/CheckboxField";
+import PasswordField from "../components/Forms/Fields/PasswordField";
+import CheckboxField from "../components/Forms/Fields/CheckboxField";
 import { useNavigate } from "react-router-dom";
 
 const Grid = styled.div`

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
 import Button from "../components/Button";
-import InputField from "../components/Forms/InputField";
+import InputField from "../components/Forms/Fields/InputField";
 
 const MainWrapper = styled.div`
   display: block;

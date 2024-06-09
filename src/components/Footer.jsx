@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
-import InputField from "./Forms/InputField";
+import InputField from "./Forms/Fields/InputField";
 import Button from "./Button";
 import { ContactInfo, FooterLinks } from "../data";
 import { Link } from "react-router-dom";
