@@ -53,7 +53,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
     formState: { errors, isSubmitting, isSubmitted, isSubmitSuccessful },
     reset,
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
   });
 
   const theme = useTheme();
