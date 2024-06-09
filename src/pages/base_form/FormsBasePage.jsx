@@ -9,7 +9,7 @@ import BlackListForm from "../../components/Forms/BlackListForm";
 import SecurityDepositForm from "../../components/Forms/SecurityDeposit";
 import BlackListApplicationForm from "../../components/Forms/BlackListApplicationForm";
 import { useParams } from "react-router-dom";
-
+import AddUserFrom from "../../components/Forms/AddUserForm";
 
 const formTabs = [
   {
@@ -53,6 +53,13 @@ const formTabs = [
     active: false,
     Component: InstallmentForm,
   },
+  {
+    id: 8,
+    key: "users",
+    title: "Add Users",
+    active: false,
+    Component: AddUserFrom,
+  },
   /* {
     id: 9,
     title: "Blacklist Application",
@@ -74,7 +81,9 @@ const FormsBasePage = () => {
 
   useEffect(() => {
     if (formKey) {
-      setTabs(formTabs.map((item) => ({ ...item, active: item.key === formKey })));
+      setTabs(
+        formTabs.map((item) => ({ ...item, active: item.key === formKey }))
+      );
     }
   }, [formKey]);
 
@@ -89,16 +98,12 @@ const FormsBasePage = () => {
     <>
       <main>
         <SectionWrapper>
-          <TabButtons
-            tabs={tabs}
-            setTabs={setTabs}
-          />
+          <TabButtons tabs={tabs} setTabs={setTabs} />
         </SectionWrapper>
         <Component />
       </main>
     </>
-  )
-
+  );
 };
 
 export default FormsBasePage;
