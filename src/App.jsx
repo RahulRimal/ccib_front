@@ -27,7 +27,7 @@ import EmployeeProfile from "./pages/EmployeeProfile";
 import LandingPage from "./pages/landing_page/LandingPage";
 import BaseForm from "./components/Forms/BaseForm";
 import InquiryForm from "./components/Forms/InquiryForm";
-import BasePage from "./pages/base_form/BasePage";
+import FormsBasePage from "./pages/base_form/FormsBasePage";
 
 export const DrawerWidthContext = React.createContext();
 export const drawerMinWidth = 50;
@@ -82,8 +82,13 @@ const App = () => {
           element: <Home />,
         },
         {
-          path: "/base",
-          element: <BasePage />,
+          path: "/add",
+          element: <FormsBasePage />,
+          index: true,
+        },
+        {
+          path: "/add/:formKey",
+          element: <FormsBasePage />,
         },
         {
           path: "/dashboard",

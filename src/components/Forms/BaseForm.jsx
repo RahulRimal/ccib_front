@@ -99,7 +99,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
         </div> :
           <form
             method="POST"
-            onSubmit={handleSubmit(onSubmitHandler)}
+            onSubmit={()=>handleSubmit(onSubmitHandler)}
             style={{
               minHeight: "74vh",
               display: "flex",

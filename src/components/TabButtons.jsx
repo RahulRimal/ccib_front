@@ -30,19 +30,15 @@ const ButtonWrapper = styled.button`
   }
 `;
 
-function TabButtons({ formTabs = [], setTabs }) {
-  const [tab, setTab] = useState(formTabs);
+function TabButtons({ tabs = [], setTabs }) {
 
   const handleTab = (id) => {
-    setTab(tab.map((item) => ({ ...item, active: item.id === id })));
+    setTabs(tabs.map((item) => ({ ...item, active: item.id === id })));
   };
-
-  useEffect(() => {
-    setTabs(tab.filter((item) => item.active));
-  }, [tab]);
+  
   return (
     <Wrapper>
-      {tab.map((item, index) => (
+      {tabs.map((item, index) => (
         <ButtonWrapper
           key={index}
           className={item.active ? "active" : ""}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import TabButtons from "../../components/TabButtons";
 import InquiryForm from "../../components/Forms/InquiryForm";
@@ -8,17 +8,20 @@ import InstallmentForm from "../../components/Forms/InstallmentForm";
 import BlackListForm from "../../components/Forms/BlackListForm";
 import SecurityDepositForm from "../../components/Forms/SecurityDeposit";
 import BlackListApplicationForm from "../../components/Forms/BlackListApplicationForm";
+import { useParams } from "react-router-dom";
 
 
 const formTabs = [
   {
     id: 1,
+    key: "inquiry_form",
     title: "Inquiry",
     active: true,
     Component: InquiryForm,
   },
   {
     id: 2,
+    key: "loan_account",
     title: "Loan Account",
     active: false,
     Component: LoanAccountForm,
@@ -31,18 +34,21 @@ const formTabs = [
   }, */
   {
     id: 5,
+    key: "security_deposit",
     title: "Security Deposit",
     active: false,
     Component: SecurityDepositForm,
   },
   {
     id: 6,
+    key: "loan_application",
     title: "Loan Application",
     active: false,
     Component: LoanApplicationForm,
   },
   {
     id: 7,
+    key: "installment",
     title: "Installment",
     active: false,
     Component: InstallmentForm,
@@ -62,9 +68,20 @@ const SectionWrapper = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.s16};
 `;
 
-const BasePage = () => {
+const FormsBasePage = () => {
+  const { formKey } = useParams();
   const [tabs, setTabs] = useState(formTabs);
 
+  useEffect(() => {
+    if (formKey) {
+      setTabs(formTabs.map((item) => ({ ...item, active: item.key === formKey })));
+    }
+  }, [formKey]);
+
+  /*  if(formKey){
+     setTabs(formTabs.map((item) => ({ ...item, active: item.key === formKey })));
+   }
+  */
   const activeForm = () => {
     return tabs.find((item) => item.active);
   };
@@ -77,7 +94,7 @@ const BasePage = () => {
       <main>
         <SectionWrapper>
           <TabButtons
-            formTabs={formTabs}
+            tabs={tabs}
             setTabs={setTabs}
           />
         </SectionWrapper>
@@ -88,4 +105,4 @@ const BasePage = () => {
 
 };
 
-export default BasePage;
+export default FormsBasePage;
