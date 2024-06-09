@@ -11,6 +11,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { mainUrl } from "../../constants";
 import { ClipLoader } from "react-spinners";
+import { enqueueSnackbar } from "notistack";
+import Backdrop from "../Backdrop";
 
 const SectionWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -43,16 +45,15 @@ const FormInputField = styled.div`
   }
 `;
 
-
 const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitted, isSubmitSuccessful },
     reset,
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
   });
 
   const theme = useTheme();
@@ -61,31 +62,55 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
     console.log("Form submitted:", data);
 
     try {
-      const response = await axios.post(
-        `${mainUrl}/cooperative/${endpoint}/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${mainUrl}${endpoint}/`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       console.log("Success:", response.data);
+      enqueueSnackbar("Form submitted successfully", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
       reset();
     } catch (error) {
       if (error.response) {
+        if (error.response.status === 404) {
+          console.log("Error 404: Invalid endpoint");
+          return;
+        }
         console.error("Error response data:", error.response.data);
         console.error("Error response status:", error.response.status);
         console.error("Error response headers:", error.response.headers);
+
+        Object.keys(error.response.data).map((item, index) => {
+          setTimeout(() => {
+            error.response.data[item].map((errorMessage) => {
+              enqueueSnackbar(`${item}: ${errorMessage}`, {
+                variant: "error",
+                autoHideDuration: 2000,
+              });
+            });
+          }, index * 500);
+        });
       } else if (error.request) {
         console.error("Error request:", error.request);
+        enqueueSnackbar("Network error: No response received", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
       } else {
         console.error("Error message:", error.message);
+        enqueueSnackbar(`Error: ${error.message}`, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
       }
+
+      console.error("Error config:", error.config);
     }
   };
-
 
   return (
     <>
@@ -94,12 +119,14 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
           padding: `${theme.spacing.s16} ${theme.spacing.s12}`,
         }}
       >
-        {loading ? <div style={{ textAlign: "center" }}>
-          <ClipLoader />
-        </div> :
+        {loading ? (
+          <div style={{ textAlign: "center" }}>
+            <ClipLoader />
+          </div>
+        ) : (
           <form
             method="POST"
-            onSubmit={()=>handleSubmit(onSubmitHandler)}
+            onSubmit={handleSubmit(onSubmitHandler)}
             style={{
               minHeight: "74vh",
               display: "flex",
@@ -202,9 +229,18 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
                 }}
               />
             </span>
-          </form >
-        }
+          </form>
+        )}
       </SectionWrapper>
+
+      {isSubmitting && (
+        <Backdrop
+          open={isSubmitting}
+          backgroundColor="rgba(255, 255, 255, 0.7)"
+        >
+          <ClipLoader color="#000000" />
+        </Backdrop>
+      )}
     </>
   );
 };

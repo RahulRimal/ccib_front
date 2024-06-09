@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import BaseForm from './BaseForm'
-import useFetch from '../../custom_hooks/useFetch';
-import { mainUrl } from '../../constants';
+import React, { useEffect, useState } from "react";
+import BaseForm from "./BaseForm";
+import useFetch from "../../custom_hooks/useFetch";
+import { mainUrl } from "../../constants";
 import * as yup from "yup";
 
- let fields = [
+let fields = [
   {
     label: "Loan",
     name: "loan",
@@ -110,34 +110,40 @@ const schema = yup.object().shape({
 });
 
 const title = "Security Deposit";
-const endpoint = "cooperative/security-deposit";
-
-
+const endpoint = "cooperative/securitydeposits";
 
 const handleResponse = (data) => {
-    data = data.map((item) => {
-        return {
-            label: item.idx,
-            value: item.idx,
-        };
-    })
-    return data
-}
+  data = data.map((item) => {
+    return {
+      label: item.idx,
+      value: item.idx,
+    };
+  });
+  return data;
+};
 
 const SecurityDepositForm = () => {
+  const { loading, data } = useFetch({
+    url: `${mainUrl}/cooperative/loans/`,
+    responseHandler: handleResponse,
+  });
+  if (data) {
+    fields = fields.map((item) => {
+      if (item.name === "loan") {
+        item.options = data.data;
+      }
+      return item;
+    });
+  }
+  return (
+    <BaseForm
+      title={title}
+      fields={fields}
+      schema={schema}
+      endpoint={endpoint}
+      loading={loading}
+    />
+  );
+};
 
-    const { loading, data } = useFetch({ url: `${mainUrl}/cooperative/loans/`, responseHandler: handleResponse });
-    if (data) {
-        fields = fields.map((item) => {
-            if (item.name === "loan") {
-                item.options = data.data;
-            }
-            return item;
-        })
-    }
-    return (
-        <BaseForm title={title} fields={fields} schema={schema} endpoint={endpoint} loading={loading} />
-    )
-}
-
-export default SecurityDepositForm
+export default SecurityDepositForm;
