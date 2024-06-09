@@ -78,10 +78,6 @@ const FormsBasePage = () => {
     }
   }, [formKey]);
 
-  /*  if(formKey){
-     setTabs(formTabs.map((item) => ({ ...item, active: item.key === formKey })));
-   }
-  */
   const activeForm = () => {
     return tabs.find((item) => item.active);
   };

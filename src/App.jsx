@@ -129,11 +129,7 @@ const App = () => {
         {
           path: "/profile",
           element: <EmployeeProfile />,
-        },
-        {
-          path: "/add-data",
-          element: <BaseForm />,
-        },
+        }
       ],
     },
     {

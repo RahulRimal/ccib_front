@@ -72,7 +72,7 @@ const Drawer = ({ drawerWidth }) => {
             />
             <ListItem
               prefix={<MdOutlineCreditCardOff />}
-              onClick={() => navigate("/add-data")}
+              onClick={() => navigate("/add")}
             />
           </>
         ) : (
@@ -122,7 +122,7 @@ const Drawer = ({ drawerWidth }) => {
             <ListItem
               prefix={<MdOutlineCreditCardOff />}
               text="Forms"
-              onClick={() => navigate("/add-data")}
+              onClick={() => navigate("/add")}
             />
           </>
         )}
