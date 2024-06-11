@@ -21,7 +21,7 @@ import Menu from "../Menu";
 import { humanizeString } from "../../helpers";
 import Button from "../Button";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import LoanFilterForm from "../LoanFilterForm";
+import FilterForm from "../FilterForm";
 
 const Toolbar = styled.div`
   padding: ${({ theme }) => theme.spacing.s16};
@@ -153,7 +153,7 @@ const PaginationButton = styled.div`
     font-size: ${({ theme }) => theme.typography.fontSize.f24};
     border: 2px solid
       ${({ theme, disabled }) =>
-    disabled ? theme.palette.disabled.button : theme.palette.primary.main};
+        disabled ? theme.palette.disabled.button : theme.palette.primary.main};
     border-radius: ${({ theme }) => theme.borderRadius.container};
     cursor: pointer;
   }
@@ -167,7 +167,8 @@ const BaseTable = ({
   title,
   toolbarActions,
   navigateOnRowClick,
-  showAdvanceFilters = false
+  filterFields,
+  showAdvanceFilters = true,
 }) => {
   const theme = useTheme();
   const [showFilterForm, setShowFilterForm] = useState(false);
@@ -199,14 +200,25 @@ const BaseTable = ({
   });
 
   if (isLoading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-      <ClipLoader />
-    </div>
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <ClipLoader />
+      </div>
+    );
   }
 
   return (
     <>
-      {showAdvanceFilters && <LoanFilterForm showFilters={showFilterForm} />}
+      {showAdvanceFilters && showFilterForm && (
+        <FilterForm showFilters={showFilterForm} filterFields={filterFields} />
+      )}
       <Toolbar>
         <div
           style={{
@@ -234,18 +246,19 @@ const BaseTable = ({
           </div>
         </div>
         <div style={{ display: "flex", gap: theme.spacing.s12 }}>
-          {showAdvanceFilters && <div>
-            {showFilterForm ? (
-              <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
-                <TbFilterEdit className="icon" />
-              </IconButton>
-            ) : (
-              <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
-                <TbFilter className="icon" />
-              </IconButton>
-            )}
-          </div>
-          }
+          {showAdvanceFilters && (
+            <div>
+              {showFilterForm ? (
+                <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
+                  <TbFilterEdit className="icon" />
+                </IconButton>
+              ) : (
+                <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
+                  <TbFilter className="icon" />
+                </IconButton>
+              )}
+            </div>
+          )}
           <div>
             <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
               <HiMiniViewColumns className="icon" />
@@ -311,8 +324,9 @@ const BaseTable = ({
                       <div
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`${header.column.getIsResizing() && "active"
-                          }`}
+                        className={`${
+                          header.column.getIsResizing() && "active"
+                        }`}
                         style={{
                           backgroundColor:
                             header.column.getIsResizing() &&

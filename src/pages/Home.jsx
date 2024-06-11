@@ -19,6 +19,64 @@ import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
 const Wrapper = styled.main``;
 
+let filterFields = [
+  {
+    title: "Fields",
+    inputs: [
+      {
+        label: "First name",
+        name: "first_name",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter first name.",
+      },
+      {
+        label: "Last name",
+        name: "last_name",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter last name.",
+      },
+      {
+        label: "Phone No.",
+        name: "phone_number",
+        type: "number",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter phone number.",
+      },
+      {
+        label: "Loan account no.",
+        name: "loans_account_number",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter account no.",
+      },
+      {
+        label: "Loan finance idx.",
+        name: "loans_finance_idx",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter finance idx.",
+      },
+    ],
+  },
+];
+
 const UsersTable = () => {
   const { loading, rowData, columns } = useFetchTable({
     url: `${mainUrl}/auth/users/`,
@@ -35,6 +93,7 @@ const UsersTable = () => {
         isLoading={loading}
         data={data}
         columns={columns}
+        filterFields={filterFields}
         toolbarActions={
           <Button
             icon={<AiOutlinePlus />}

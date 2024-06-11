@@ -13,7 +13,6 @@ import {
 } from "@tanstack/react-table";
 import { ClipLoader } from "react-spinners";
 import data from "./students.json";
-import LoanFilterForm from "../LoanFilterForm";
 
 const TableWrapper = styled.div`
   overflow-x: auto;

@@ -12,12 +12,65 @@ import { mainUrl } from "../constants";
 import useFetchTable from "../custom_hooks/useFetchTable";
 import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
-//Sizing system (px)// Spacing system (px)
-// 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
-
-// 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
-
 const Wrapper = styled.main``;
+
+let filterFields = [
+  {
+    title: "Fields",
+    inputs: [
+      {
+        label: "First name",
+        name: "first_name",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter first name.",
+      },
+      {
+        label: "Last name",
+        name: "last_name",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter last name.",
+      },
+      {
+        label: "Phone No.",
+        name: "phone_number",
+        type: "number",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter phone number.",
+      },
+      {
+        label: "Loan account no.",
+        name: "loans_account_number",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter account no.",
+      },
+      {
+        label: "Loan finance idx.",
+        name: "loans_finance_idx",
+        type: "text",
+        required: true,
+        basis: 30,
+        options: [],
+        defaultValue: "",
+        placeholder: "Enter finance idx.",
+      },
+    ],
+  },
+];
 
 const UsersTable = () => {
   const { loading, rowData, columns } = useFetchTable({
@@ -35,6 +88,8 @@ const UsersTable = () => {
         isLoading={loading}
         data={data}
         columns={columns}
+        filterFields={filterFields}
+        loading={loading}
         toolbarActions={
           <Button
             icon={<AiOutlinePlus />}
@@ -51,6 +106,7 @@ const UsersTable = () => {
 const UsersPage = ({}) => {
   return (
     <Wrapper>
+      {filterFields && <p>sdghsdjgs</p>}
       <UsersTable />
     </Wrapper>
   );
