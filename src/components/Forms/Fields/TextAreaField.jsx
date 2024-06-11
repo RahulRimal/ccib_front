@@ -1,14 +1,12 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
+import ErrorMessage from "./ErrorMessage";
+import InputTitle from "./InputTitle";
 
 const FormGroup = styled.div`
   position: relative;
-  p {
-    padding-bottom: ${({ theme }) => theme.spacing.s8};
-    font-size: ${({ theme }) => theme.typography.fontSize.f14};
-    font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
-    color: ${({ theme }) => theme.palette.primary.main};
-  }
+  padding-bottom: ${({ theme }) => theme.spacing.s8};
+
   & > div {
     display: flex;
     align-items: center;
@@ -54,10 +52,8 @@ const FormGroup = styled.div`
     visibility: visible;
     opacity: 1;
   }
-  span {
-    color: ${({ theme }) => theme.palette.error.main};
+  & > span {
     position: absolute;
-    top: 110%;
     left: 1%;
   }
 `;
@@ -80,7 +76,7 @@ const TextAreaField = ({
 
   return (
     <FormGroup key={idx && idx}>
-      <p>{title}</p>
+      <InputTitle title={title} required={required} />
       <div>
         <textarea
           rows={3}
@@ -97,8 +93,8 @@ const TextAreaField = ({
         <label htmlFor={name} style={{ textTransform: "capitalize" }}>
           {label}
         </label>
-        {error && <span>{error}</span>}
       </div>
+      {error && <ErrorMessage error={error} />}
     </FormGroup>
   );
 };

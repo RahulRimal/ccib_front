@@ -1,17 +1,14 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
+import ErrorMessage from "./ErrorMessage";
+import InputTitle from "./InputTitle";
 
 const FormGroup = styled.div`
   position: relative;
   padding-bottom: ${({ theme }) => theme.spacing.s8};
-  p {
-    padding-bottom: ${({ theme }) => theme.spacing.s8};
-    font-size: ${({ theme }) => theme.typography.fontSize.f14};
-    font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
-    color: ${({ theme }) => theme.palette.primary.main};
-  }
+
   & > div {
-    display: flex;
+    /* display: flex; */
     align-items: center;
     gap: ${({ theme }) => theme.spacing.s4};
     margin: ${({ theme }) => theme.spacing.s8} 0;
@@ -55,10 +52,8 @@ const FormGroup = styled.div`
     visibility: visible;
     opacity: 1;
   }
-  span {
-    color: ${({ theme }) => theme.palette.error.main};
+  & > span {
     position: absolute;
-    top: 110%;
     left: 1%;
   }
 `;
@@ -98,7 +93,7 @@ const InputField = ({
 
   return (
     <FormGroup key={idx && idx}>
-      <p>{title}</p>
+      <InputTitle title={title} required={required} />
       <div>
         {prefix && <Prefix onClick={onPrefixClick}>{prefix}</Prefix>}
         <input
@@ -128,8 +123,8 @@ const InputField = ({
         <label htmlFor={name} style={{ textTransform: "capitalize" }}>
           {label}
         </label>
-        {error && <span>{error}</span>}
       </div>
+      {error && <ErrorMessage error={error} />}
     </FormGroup>
   );
 };

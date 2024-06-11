@@ -53,6 +53,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
     formState: { errors, isSubmitting, isSubmitted, isSubmitSuccessful },
     reset,
   } = useForm({
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
@@ -144,6 +145,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
                     <OptionField
                       key={i}
                       title={field.label}
+                      required={field.required}
                       options={field.options}
                       name={field.name}
                       register={register}

@@ -129,34 +129,58 @@ let fields = [
   },
 ];
 const schema = yup.object().shape({
-  first_name: yup.string().required("First name is required"),
-  middle_name: yup.string(),
-  last_name: yup.string().required("Last name is required"),
+  first_name: yup
+    .string()
+    .max(150, "First name must be at most 150 characters"),
+  middle_name: yup
+    .string()
+    .max(150, "Middle name must be at most 150 characters"),
+  last_name: yup.string().max(150, "Last name must be at most 150 characters"),
   email: yup
     .string()
-    .email("Invalid email address")
+    .email("Enter a valid email address")
     .required("Email is required"),
-  citizenship_number: yup.string().required("Citizenship number is required"),
+  citizenship_number: yup
+    .string()
+    .max(50, "Citizenship number must be at most 50 characters")
+    .required("Citizenship number is required"),
   citizenship_issued_place: yup
     .string()
+    .max(255, "Citizenship issued place must be at most 255 characters")
     .required("Citizenship issued place is required"),
   citizenship_issued_date: yup
     .date()
+    .typeError("Citizenship issued date must be a valid date")
     .required("Citizenship issued date is required"),
   gender: yup
     .string()
     .oneOf(["male", "female"], "Invalid gender")
     .required("Gender is required"),
-  dob: yup.date().nullable(),
-  father_name: yup.string().required("Father name is required"),
-  mother_name: yup.string().required("Mother name is required"),
-  grandfather_name: yup.string().required("Grandfather name is required"),
+  dob: yup.date().typeError("Date of birth must be a valid date"),
+  father_name: yup
+    .string()
+    .max(255, "Father's name must be at most 255 characters")
+    .required("Father's name is required"),
+  mother_name: yup
+    .string()
+    .max(255, "Mother's name must be at most 255 characters")
+    .required("Mother's name is required"),
+  grandfather_name: yup
+    .string()
+    .max(255, "Grandfather's name must be at most 255 characters")
+    .required("Grandfather's name is required"),
   phone_number: yup
     .string()
-    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
-    .nullable(),
-  permanent_address: yup.string().required("Permanent address is required"),
-  temporary_address: yup.string().required("Temporary address is required"),
+    .max(15, "Phone number must be at most 15 characters"),
+  permanent_address: yup
+    .string()
+    .max(255, "Permanent address must be at most 255 characters")
+    .required("Permanent address is required"),
+  temporary_address: yup
+    .string()
+    .max(255, "Temporary address must be at most 255 characters")
+    .required("Temporary address is required"),
+  date_joined: yup.date().typeError("Date joined must be a valid date"),
 });
 const title = "Add User";
 const endpoint = "/auth/users";

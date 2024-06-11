@@ -107,6 +107,7 @@ let fields = [
     name: "maturity_date",
     type: "date",
     defaultValue: "",
+    required: true,
     placeholder: "Enter Maturity Date",
   },
   {
@@ -161,50 +162,58 @@ const schema = yup.object().shape({
   finance: yup.string().required("Finance is required"),
   account_number: yup
     .string()
-    .max(20, "Account number must be at most 20 characters")
-    .required("Account number is required"),
-  total_loan: yup
+    .required("Account Number is required")
+    .max(20, "Account Number must be at most 20 characters"),
+  name: yup
+    .string()
+    .required("Loan Name is required")
+    .max(20, "Loan Name must be at most 20 characters"),
+  loan_amount: yup
     .number()
-    .positive("Total loan must be a positive number")
-    .max(99999999.99, "Total loan must be at most 99,999,999.99")
-    .required("Total loan is required"),
+    .typeError("Required")
+    .required("Loan Amount is required")
+    .positive("Loan Amount must be a positive number"),
+  installment_amount: yup
+    .number()
+    .typeError("Required")
+    .required("Installment Amount is required")
+    .positive("Installment Amount must be a positive number"),
   total_paid: yup
     .number()
-    .positive("Total paid must be a positive number")
-    .max(99999999.99, "Total paid must be at most 99,999,999.99")
-    .required("Total paid is required"),
+    .typeError("Required")
+    .required("Total Paid is required")
+    .positive("Total Paid must be a positive number"),
+  loan_outstanding: yup
+    .number()
+    .typeError("Required")
+    .required("Loan Outstanding is required")
+    .positive("Loan Outstanding must be a positive number"),
   loan_limit: yup
     .number()
-    .positive("Loan limit must be a positive number")
-    .max(99999999.99, "Loan limit must be at most 99,999,999.99")
-    .default(() => yup.ref("total_loan")),
+    .typeError("Required")
+    .positive("Loan Limit must be a positive number"),
   interest_rate: yup
     .number()
-    .positive("Interest rate must be a positive number")
-    .max(100.0, "Interest rate must be at most 100.00")
-    .required("Interest rate is required"),
+    .typeError("Required")
+    .required("Interest Rate is required")
+    .positive("Interest Rate must be a positive number")
+    .max(100, "Interest Rate must be at most 100.00"),
   overdue_amount: yup
     .number()
-    .positive("Overdue amount must be a positive number")
-    .max(99999999.99, "Overdue amount must be at most 99,999,999.99")
-    .default(0.0),
-  status: yup
-    .string()
-    .oneOf(
-      ["good", "watchlist", "pass", "npl", "doubtful", "bad debt"],
-      "Invalid status"
-    )
-    .default("good"),
-  loan_type: yup
-    .string()
-    .oneOf(["term", "overdraft"], "Invalid loan type")
-    .default("term"),
-  is_closed: yup.boolean().default(false),
+    .typeError("Required")
+    .positive("Overdue Amount must be a positive number"),
+  maturity_date: yup
+    .date()
+    .typeError("Maturity Date must be a valid date")
+    .required("Maturity Date is required"),
+  status: yup.string().required("Status is required"),
+  loan_type: yup.string(),
+  is_closed: yup.boolean().required("Is Closed is required"),
   utilization_percent: yup
     .number()
-    .positive("Utilization percent must be a positive number")
-    .max(100.0, "Utilization percent must be at most 100.00")
-    .nullable(true),
+    .typeError("Required")
+    .required("Utilization Percent is required")
+    .positive("Utilization Percent must be a positive number"),
 });
 
 const title = "Create Loan Account";
