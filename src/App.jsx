@@ -8,7 +8,6 @@ import {
   RouterProvider,
   Outlet,
 } from "react-router-dom";
-import Home from "./pages/Home";
 import UserProfile from "./pages/UserProfile";
 import AppBar from "./components/AppBar";
 import Drawer from "./components/Drawer";
@@ -28,6 +27,7 @@ import LandingPage from "./pages/landing_page/LandingPage";
 import BaseForm from "./components/Forms/BaseForm";
 import InquiryForm from "./components/Forms/InquiryForm";
 import FormsBasePage from "./pages/base_form/FormsBasePage";
+import UsersPage from "./pages/UsersPage";
 
 export const DrawerWidthContext = React.createContext();
 export const drawerMinWidth = 50;
@@ -75,11 +75,15 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
+      element: isLoggedIn ? <Layout /> : <SignIn />,
       children: [
         {
           path: "/",
-          element: <Home />,
+          element: <Dashboard />,
+        },
+        {
+          path: "/users",
+          element: <UsersPage />,
         },
         {
           path: "/add",
@@ -90,10 +94,7 @@ const App = () => {
           path: "/add/:formKey",
           element: <FormsBasePage />,
         },
-        {
-          path: "/dashboard",
-          element: <Dashboard />,
-        },
+        
         {
           path: "/user-profile",
           element: <UserProfile />,
@@ -137,7 +138,7 @@ const App = () => {
       element: <SignIn />,
     },
     {
-      path: "/ccic",
+      path: "*",
       element: <LandingPage />,
     },
   ]);

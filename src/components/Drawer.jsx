@@ -80,12 +80,12 @@ const Drawer = ({ drawerWidth }) => {
             <ListItem
               prefix={<LuLayoutDashboard />}
               text="Dashboard"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/")}
             />
             <ListItem
               prefix={<MdPeople />}
               text="Users"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/users")}
             />
             <ListItem
               prefix={<FaUsersSlash />}
