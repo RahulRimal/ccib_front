@@ -61,8 +61,10 @@ const IncomeChart = ({ }) => {
     let xAxisData = [];
 
     if (data && data.length > 0) {
-        xAxisData = data.total_due.map(item => item.date,
-        );
+        data.map(item => {
+            xAxisData.push(item.date);
+        });
+        // xAxisData = data.total_due.map(item => item.date);
     }
 
     // option.xAxis.data = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -85,20 +87,25 @@ const IncomeChart = ({ }) => {
     let series = [];
 
     if (data && data.length > 0) {
-        series = [
+        series =  [
             {
                 name: "Overdue",
                 type: "line",
                 stack: "Total",
-                data: data.total_due.map(item => item.amount),
+                data: []
             },
             {
                 name: "Paid",
                 type: "line",
                 stack: "Total",
-                data: data.total_paid.map(item => item.amount),
+                data: []
             },
         ];
+
+         data.map(item => {
+            series[0].data.push(item.total_due);
+            series[1].data.push(item.total_paid);
+        });
     }
 
     option.series = series;
