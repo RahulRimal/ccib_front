@@ -6,12 +6,13 @@ import Button from "../components/Button";
 import { ClipLoader } from "react-spinners";
 import InputField from "../components/Forms/Fields/InputField";
 import { useDispatch, useSelector } from "react-redux";
-import { authenticateUser, loginUser } from "../features/authSlice";
+import { loginUser, updateAuthentiaction } from "../features/authSlice";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../components/Backdrop";
 import PasswordField from "../components/Forms/Fields/PasswordField";
 import CheckboxField from "../components/Forms/Fields/CheckboxField";
 import { useNavigate } from "react-router-dom";
+import { Cookies } from "react-cookie";
 
 const Grid = styled.div`
   display: grid;
@@ -73,43 +74,62 @@ function SignIn() {
 
   const { loading } = useSelector((store) => store.auth);
 
+  useEffect(() => {
+    const cookie = new Cookies();
+    if (cookie.get("access") && cookie.get("refresh")) {
+      dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
+      // navigate("/");
+    }
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get("username");
-    const password = data.get("password");
+    const username = data.get('username');
+    const password = data.get('password');
+    dispatch(loginUser({ username, password })).unwrap().then((data) => {
+      enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
+      navigate("/");
+    }).catch((error) => {
+      const errs = JSON.parse(error.message)
+      errs.forEach((element, index) => {
+        setTimeout(() => {
+          enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
+        }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+      });
+/* 
+      if (!username || !password)
+        return enqueueSnackbar("Please fill all the fields", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      if (username === "admin" && password === "admin") {
+        dispatch(authenticateUser());
+        navigate("/dashboard");
+        return enqueueSnackbar("Login successful", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      }
 
-    if (!username || !password)
-      return enqueueSnackbar("Please fill all the fields", {
+      return enqueueSnackbar("Invalid credentials", {
         variant: "error",
         autoHideDuration: 2000,
       });
-    if (username === "admin" && password === "admin") {
-      dispatch(authenticateUser());
-      navigate("/dashboard");
-      return enqueueSnackbar("Login successful", {
-        variant: "success",
-        autoHideDuration: 2000,
-      });
-    }
+ */
+      // dispatch(loginUser({ username, password })).unwrap().then((data) => {
+      //   enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
+      // }).catch((error) => {
+      //   const errs = JSON.parse(error.message)
+      //   errs.forEach((element, index) => {
+      //     setTimeout(() => {
+      //       enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
+      //     }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+      //   });
 
-    return enqueueSnackbar("Invalid credentials", {
-      variant: "error",
-      autoHideDuration: 2000,
+      // })
     });
-
-    // dispatch(loginUser({ username, password })).unwrap().then((data) => {
-    //   enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
-    // }).catch((error) => {
-    //   const errs = JSON.parse(error.message)
-    //   errs.forEach((element, index) => {
-    //     setTimeout(() => {
-    //       enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
-    //     }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
-    //   });
-
-    // })
-  };
+  }
 
   return (
     <>
@@ -146,18 +166,10 @@ function SignIn() {
               name="password"
               placeholder="Password"
             />
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "start",
-                alignItems: "center",
-                gap: theme.spacing.s4,
-              }}
-            >
-              <CheckboxField />
+           {/*  <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
+              <CheckboxField name="Remember me" options={[{ value: true, label: "yes" }, { value: false, label: "no" }]} />
               <span>Remember me</span>
-            </div>
+            </div> */}
             <Button
               style={{ width: "100%" }}
               type="submit"
