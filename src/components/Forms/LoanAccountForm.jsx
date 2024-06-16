@@ -167,6 +167,7 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .required("Loan Name is required")
+    .min(3, "Loan Name must be at least 2 characters")
     .max(20, "Loan Name must be at most 20 characters"),
   loan_amount: yup
     .number()
