@@ -2,15 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled, { useTheme } from "styled-components";
 import { Controller } from "react-hook-form";
+import InputTitle from "./InputTitle";
+import ErrorMessage from "./ErrorMessage";
 
 const FormGroup = styled.div`
   position: relative;
-  p {
-    padding-bottom: ${({ theme }) => theme.spacing.s8};
-    font-size: ${({ theme }) => theme.typography.fontSize.f14};
-    font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
-    color: ${({ theme }) => theme.palette.primary.main};
-  }
+
   & > div {
     display: flex;
     align-items: center;
@@ -21,10 +18,8 @@ const FormGroup = styled.div`
     background-color: ${({ theme }) => theme.palette.background.default};
   }
 
-  span {
-    color: ${({ theme }) => theme.palette.error.main};
+  & > span {
     position: absolute;
-    top: 110%;
     left: 1%;
   }
 `;
@@ -54,7 +49,7 @@ const RadioField = ({
 
   return (
     <FormGroup>
-      <p>{title}</p>
+      <InputTitle title={title} required={required} />
       <div
         style={{
           display: "flex",
@@ -75,7 +70,7 @@ const RadioField = ({
           </RadioWrapper>
         ))}
       </div>
-      {error && <span>{error}</span>}
+      {error && <ErrorMessage error={error} />}
     </FormGroup>
   );
 };

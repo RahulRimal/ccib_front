@@ -13,7 +13,7 @@ import useFetch from "../../custom_hooks/useFetch";
 
 import { mainUrl } from "../../constants";
 
-import ProfitLossChart from './components/ProfitLossChart';
+import ProfitLossChart from "./components/ProfitLossChart";
 
 import IncomeChart from "./components/IncomeChart";
 import AppliedLoansOverviewChart from "./components/AppliedLoansOverviewChart";
@@ -39,7 +39,6 @@ const Wrapper = styled.div`
       margin: ${({ theme }) => theme.spacing.s8} 0;
       padding: ${({ theme }) => theme.spacing.s12};
     }
-    
   }
 `;
 
@@ -47,41 +46,41 @@ function Dashboard() {
   const theme = useTheme();
 
   const { loading, data: quickSummary } = useFetch({
-    url: `${mainUrl}/cooperative/finance/quick_summary?finance=FBXV6ZkP3REMxfTUCFSJmP`
+    url: `${mainUrl}/cooperative/finance/quick_summary?finance=FBXV6ZkP3REMxfTUCFSJmP`,
   });
-
 
   return (
     <Wrapper>
-      {quickSummary && <section>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: theme.spacing.s16,
-            padding: 0,
-            backgroundColor: "transparent",
-          }}
-        >
-          {Object.keys(quickSummary).map((key, index) => (
-            <QuickDetailsCard key={index} item={quickSummary[key]} />
-          ))}
-        </div>
-      </section>
-      }
+      {quickSummary && (
+        <section>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: theme.spacing.s16,
+              padding: 0,
+              backgroundColor: "transparent",
+            }}
+          >
+            {Object.keys(quickSummary).map((key, index) => (
+              <QuickDetailsCard key={index} item={quickSummary[key]} />
+            ))}
+          </div>
+        </section>
+      )}
       <section>
-        <div >
+        <div>
           <IncomeChart />
         </div>
-        <div >
+        <div>
           <ProfitLossChart />
         </div>
       </section>
-      <section >
+      <section>
         <div style={{ flex: 1.5 }}>
           <OverdueLoansTable />
         </div>
-        <div >
+        <div>
           <AppliedLoansOverviewChart />
         </div>
       </section>
@@ -89,7 +88,7 @@ function Dashboard() {
         <div style={{ flex: 2 }}>
           <FinanceUsersTable />
         </div>
-        <div >
+        <div>
           <LoanStatusOverviewChart />
         </div>
       </section>

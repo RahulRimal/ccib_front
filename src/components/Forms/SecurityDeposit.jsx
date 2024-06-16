@@ -85,28 +85,35 @@ let fields = [
 ];
 
 const schema = yup.object().shape({
-  loan: yup.number().required("Loan is required"),
+  loan: yup.string().required("Loan is required"),
   type: yup
     .string()
-    .oneOf(["real state", "fixed asset", "higher purchase"], "Invalid type")
+    .oneOf(["real state", "fixed asset", "higher purchase"], "Invalid Type")
     .required("Type is required"),
   description: yup.string().required("Description is required"),
   ownership_type: yup
     .string()
-    .oneOf(["own", "third party"], "Invalid ownership type")
-    .required("Ownership type is required"),
+    .oneOf(["own", "third party"], "Invalid Ownership Type")
+    .required("Ownership Type is required"),
   coverage_percentage: yup
     .number()
-    .min(0, "Coverage percentage must be at least 0")
-    .max(100, "Coverage percentage must be at most 100")
-    .required("Coverage percentage is required"),
+    .typeError("Coverage Percentage must be greater than 0")
+    .required("Coverage Percentage is required")
+    .positive("Coverage Percentage must be a positive number")
+    .max(100, "Coverage Percentage must be at most 100"),
+  nature_of_charge: yup
+    .string()
+    .oneOf(["term", "od"], "Invalid Nature of Charge")
+    .required("Nature of Charge is required"),
   latest_value: yup
     .number()
-    .min(0, "Latest value must be a positive number")
-    .required("Latest value is required"),
+    .typeError("Latest Value must be greater than 0")
+    .required("Latest Value is required")
+    .positive("Latest Value must be a positive number"),
   latest_valuation_date: yup
     .date()
-    .required("Latest valuation date is required"),
+    .typeError("Latest Valuation Date must be a valid date")
+    .required("Latest Valuation Date is required"),
 });
 
 const title = "Security Deposit";
