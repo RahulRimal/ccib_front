@@ -94,7 +94,7 @@ const App = () => {
           path: "/add/:formKey",
           element: <FormsBasePage />,
         },
-        
+
         {
           path: "/user-profile",
           element: <UserProfile />,
@@ -130,7 +130,7 @@ const App = () => {
         {
           path: "/profile",
           element: <EmployeeProfile />,
-        }
+        },
       ],
     },
     {

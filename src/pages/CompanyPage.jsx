@@ -86,6 +86,7 @@ const CompanyPage = () => {
         columns={columns}
         filterFields={filterFields}
         loading={loadingCompanies}
+        noDataMessage={"Company not found"}
       />
     </div>
   );

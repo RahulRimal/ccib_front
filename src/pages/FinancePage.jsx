@@ -71,6 +71,7 @@ const FinancePage = () => {
         columns={columns}
         filterFields={filterFields}
         loading={loadingFinances}
+        noDataMessage="No Finance found"
       />
     </div>
   );

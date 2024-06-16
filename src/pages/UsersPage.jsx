@@ -22,7 +22,7 @@ let filterFields = [
         label: "First name",
         name: "first_name",
         type: "text",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -32,7 +32,7 @@ let filterFields = [
         label: "Last name",
         name: "last_name",
         type: "text",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -42,7 +42,7 @@ let filterFields = [
         label: "Phone No.",
         name: "phone_number",
         type: "number",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -52,7 +52,7 @@ let filterFields = [
         label: "Loan account no.",
         name: "loans_account_number",
         type: "text",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -62,7 +62,7 @@ let filterFields = [
         label: "Loan finance idx.",
         name: "loans_finance_idx",
         type: "text",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -73,23 +73,16 @@ let filterFields = [
 ];
 
 const UsersTable = () => {
-  const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}/auth/users/`,
-    columnsToHide: ["id", "idx", "username"],
-  });
   const theme = useTheme();
-  const data = useMemo(() => rowData, [rowData]);
   const navigate = useNavigate();
 
   return (
     <div>
       <BaseTable
         title="Users list"
-        isLoading={loading}
-        data={data}
-        columns={columns}
+        url={`${mainUrl}cooperative/financeusers/`}
+        columnsToHide={["id", "idx", "username"]}
         filterFields={filterFields}
-        loading={loading}
         toolbarActions={
           <Button
             icon={<AiOutlinePlus />}
@@ -106,7 +99,6 @@ const UsersTable = () => {
 const UsersPage = ({}) => {
   return (
     <Wrapper>
-      {filterFields && <p>sdghsdjgs</p>}
       <UsersTable />
     </Wrapper>
   );

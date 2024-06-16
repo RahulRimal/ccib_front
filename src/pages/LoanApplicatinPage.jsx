@@ -22,24 +22,25 @@ let filterFields = [
           { value: "approved", label: "Approved" },
           { value: "rejected", label: "Rejected" },
         ],
-        required: true,
+        required: false,
         defaultValue: "pending",
       },
       {
         label: "Finance",
         name: "finance",
+
         type: "select",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
         placeholder: "Enter Finance ID",
       },
       {
-        label: "Users",
+        label: "User",
         name: "user",
         type: "select",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -50,13 +51,13 @@ let filterFields = [
 ];
 
 const handleUsersResponse = (data) => {
-  const finances = data.map((item) => {
+  const users = data.map((item) => {
     return {
       label: item.first_name,
       value: item.idx,
     };
   });
-  return finances;
+  return users;
 };
 const handleFinancesResponse = (data) => {
   const finances = data.map((item) => {
@@ -99,21 +100,14 @@ const LoanApplicationPage = () => {
     },
   };
 
-  const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}/cooperative/loanapplications/`,
-    columnsToHide: ["idx", "phone_number"],
-    responseHandler: handleResponse,
-    customRenderer: customRenderer,
-  });
-
   //filter
   const { loading: loadingUsers, data: users } = useFetch({
-    url: `${mainUrl}/auth/users`,
+    url: `${mainUrl}cooperative/financeusers/`,
     responseHandler: handleUsersResponse,
   });
 
   const { loading: loadingFinances, data: finances } = useFetch({
-    url: `${mainUrl}/cooperative/finance`,
+    url: `${mainUrl}/cooperative/finance/`,
     responseHandler: handleFinancesResponse,
   });
 
@@ -136,21 +130,20 @@ const LoanApplicationPage = () => {
         }
         return input;
       });
+      return item;
     });
   }
   //filter
 
-  const data = useMemo(() => rowData, [rowData]);
-
   return (
     <div>
       <BaseTable
-        isLoading={loading}
-        data={data}
-        columns={columns}
+        url={`${mainUrl}/cooperative/loanapplications`}
+        columnsToHide={["idx", "phone_number"]}
+        handleResponse={handleResponse}
         customRenderer={customRenderer}
         filterFields={filterFields}
-        loading={loadingUsers || loadingFinances}
+        noDataMessage={"No Loan Applications"}
       />
     </div>
   );

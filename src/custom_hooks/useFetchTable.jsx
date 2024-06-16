@@ -4,6 +4,7 @@ import { humanizeString } from "../helpers";
 
 const useFetchTable = ({
   url,
+  queryParams = {},
   columnsToHide = [],
   responseHandler = null,
   customRenderer = null,
@@ -16,7 +17,9 @@ const useFetchTable = ({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          params: queryParams,
+        });
         if (response.status === 200) {
           let data = response.data;
           if (responseHandler) {

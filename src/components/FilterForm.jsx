@@ -1,6 +1,10 @@
 import styled, { useTheme } from "styled-components";
 import Button from "./Button";
 import Select from "react-select";
+import { Controller, useForm } from "react-hook-form";
+import axios from "axios";
+import useFetchTable from "../custom_hooks/useFetchTable";
+import { useEffect, useState } from "react";
 
 const FormWrapper = styled.form`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -112,11 +116,53 @@ const customStyles = {
   }),
 };
 
-function FilterForm({ showFilters, filterFields }) {
+function FilterForm({
+  showFilters,
+  filterFields,
+  baseUrl,
+  setData,
+  setLoading,
+  responseHandler = null,
+}) {
   const theme = useTheme();
 
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting, isSubmitted },
+    reset,
+  } = useForm({});
+
+  const getTableInfo = async (data, url) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(url, {
+        params: data,
+      });
+      console.log(response);
+      if (response.status === 200) {
+        if (responseHandler) {
+          response.data = responseHandler(response.data);
+        }
+        setData(response.data);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   return (
-    <FormWrapper method="GET" className={showFilters ? "show" : "hide"}>
+    <FormWrapper
+      method="GET"
+      onSubmit={(e) => {
+        e.preventDefault();
+        return handleSubmit((data) => getTableInfo(data, baseUrl))(e);
+      }}
+      className={showFilters ? "show" : "hide"}
+    >
       <MainWrapper>
         {filterFields ? (
           <>
@@ -130,24 +176,35 @@ function FilterForm({ showFilters, filterFields }) {
                       style={{ flexBasis: `${input.basis}%` }}
                     >
                       <label htmlFor="">{input.label}</label>
-                      <Select
+                      <Controller
                         name={input.name}
-                        {...input}
-                        className="react-select-container"
-                        classNamePrefix="react-select"
-                        options={input.options}
-                        isClearable
-                        styles={customStyles}
-                        theme={(themes) => ({
-                          ...themes,
-                          borderRadius: theme.borderRadius.input,
-                          colors: {
-                            ...themes.colors,
-                            primary: theme.palette.background.dark,
-                          },
-                        })}
-                        value={input.options.find(
-                          (option) => option.value === input.value
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            options={input.options}
+                            isClearable
+                            defaultValue={" "}
+                            styles={customStyles}
+                            theme={(themes) => ({
+                              ...themes,
+                              borderRadius: theme.borderRadius.input,
+                              colors: {
+                                ...themes.colors,
+                                primary: theme.palette.background.dark,
+                              },
+                            })}
+                            onChange={(selectedOption) => {
+                              field.onChange(
+                                selectedOption ? selectedOption.value : ""
+                              );
+                            }}
+                            value={input.options.find(
+                              (option) => option.value === field.value
+                            )}
+                          />
                         )}
                       />
                     </OptionWrapper>
@@ -158,9 +215,12 @@ function FilterForm({ showFilters, filterFields }) {
                     >
                       <label htmlFor="">{input.label}</label>
                       <input
+                        {...register(input.name)}
+                        value={input.value}
+                        required={input.required}
                         type={input.type}
                         placeholder={input.placeholder}
-                        name={input.label}
+                        name={input.name}
                         onChange={(e) => e.target.value}
                       />
                     </InputWrapper>

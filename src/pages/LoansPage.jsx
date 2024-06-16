@@ -21,14 +21,14 @@ let filterFields = [
           { value: "approved", label: "Approved" },
           { value: "rejected", label: "Rejected" },
         ],
-        required: true,
+        required: false,
         defaultValue: "pending",
       },
       {
         label: "Account number",
         name: "account_number",
         type: "text",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -38,7 +38,7 @@ let filterFields = [
         label: "Users",
         name: "user",
         type: "select",
-        required: true,
+        required: false,
         basis: 30,
         options: [],
         defaultValue: "",
@@ -48,14 +48,14 @@ let filterFields = [
         label: "Loan nature",
         name: "loan_nature",
         type: "select",
-        required: true,
+        required: false,
         basis: 30,
         options: [
           { value: "term", label: "Term" },
           { value: "overdraft", label: "Overdraft" },
         ],
         defaultValue: "",
-        placeholder: "Enter account no.",
+        placeholder: "Enter Loan Nature",
       },
     ],
   },
@@ -73,10 +73,6 @@ const handleUsersResponse = (data) => {
 
 const LoansPage = () => {
   const theme = useTheme();
-  const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}/cooperative/loans/`,
-    columnsToHide: ["idx"],
-  });
 
   //filter
   const { loading: loadingUsers, data: users } = useFetch({
@@ -97,16 +93,14 @@ const LoansPage = () => {
   }
   //filter
 
-  const data = useMemo(() => rowData, [rowData]);
-
   return (
     <div>
       <BaseTable
-        isLoading={loading}
-        data={data}
-        columns={columns}
+        url={`${mainUrl}/cooperative/loans/`}
+        columnsToHide={["idx"]}
         filterFields={filterFields}
         loading={loadingUsers}
+        noDataMessage={"No loans found"}
       />
     </div>
   );

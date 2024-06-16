@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { TbFilter, TbFilterEdit } from "react-icons/tb";
@@ -22,6 +22,7 @@ import { humanizeString } from "../../helpers";
 import Button from "../Button";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import FilterForm from "../FilterForm";
+import useFetchTable from "../../custom_hooks/useFetchTable";
 
 const Toolbar = styled.div`
   padding: ${({ theme }) => theme.spacing.s16};
@@ -72,6 +73,10 @@ const TableWrapper = styled.div`
 const StyledTable = styled.table`
   border-collapse: collapse;
   width: 100%;
+  height: "400px";
+  tbody {
+    position: relative;
+  }
   p {
     margin: 0;
   }
@@ -95,6 +100,16 @@ const StyledTable = styled.table`
   td {
     border-collapse: collapse;
   }
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  border-top: 1px solid ${({ theme }) => theme.palette.border.primary};
+  left: 0;
+  right: 0;
 `;
 
 const HeadingRow = styled.tr`
@@ -160,23 +175,41 @@ const PaginationButton = styled.div`
 `;
 
 const BaseTable = ({
-  data,
-  columns,
+  url,
+  columnsToHide = [],
   height,
-  isLoading,
   title,
   toolbarActions,
   navigateOnRowClick,
   filterFields,
+  handleResponse,
+  customRenderer,
   showAdvanceFilters = true,
+  noDataMessage,
 }) => {
   const theme = useTheme();
   const [showFilterForm, setShowFilterForm] = useState(false);
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
+  const [data, setData] = useState([]);
+  const [tableLoading, setTableLoading] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [grouping, setGrouping] = useState([]);
+
+  let formUrl = url;
+
+  const { loading, rowData, columns } = useFetchTable({
+    url: formUrl || url,
+    columnsToHide,
+    customRenderer: customRenderer,
+    responseHandler: handleResponse,
+  });
+
+  useEffect(() => {
+    setData(rowData);
+    setTableLoading(loading);
+  }, [rowData, loading]);
 
   const table = useReactTable({
     data,
@@ -199,7 +232,7 @@ const BaseTable = ({
     onGlobalFilterChange: setFiltering,
   });
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div
         style={{
@@ -213,11 +246,32 @@ const BaseTable = ({
       </div>
     );
   }
-
+  if (rowData.length === 0) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: theme.spacing.s24,
+          color: theme.palette.error.main,
+          fontSize: theme.typography.fontSize.f18,
+          fontWeight: theme.typography.fontWeight.semiBold,
+        }}
+      >
+        {noDataMessage}
+      </div>
+    );
+  }
   return (
     <>
       {showAdvanceFilters && showFilterForm && (
-        <FilterForm showFilters={showFilterForm} filterFields={filterFields} />
+        <FilterForm
+          baseUrl={formUrl}
+          showFilters={showFilterForm}
+          filterFields={filterFields}
+          setData={setData}
+          setLoading={setTableLoading}
+          responseHandler={handleResponse}
+        />
       )}
       <Toolbar>
         <div
@@ -341,21 +395,58 @@ const BaseTable = ({
           </thead>
 
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <DataRow
-                key={row.id}
-                onClick={() =>
-                  navigateOnRowClick && navigateOnRowClick(row.original)
-                }
-                style={{ ...(navigateOnRowClick && { cursor: "pointer" }) }}
+            {tableLoading ? (
+              <div
+                style={{
+                  height: theme.sizing.s44,
+                  marginTop: theme.spacing.s16,
+                }}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} style={{ width: cell.column.getSize() }}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </DataRow>
-            ))}
+                <LoadingWrapper>
+                  <ClipLoader />
+                </LoadingWrapper>
+              </div>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <DataRow
+                  key={row.id}
+                  onClick={() =>
+                    navigateOnRowClick && navigateOnRowClick(row.original)
+                  }
+                  style={{ ...(navigateOnRowClick && { cursor: "pointer" }) }}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} style={{ width: cell.column.getSize() }}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </DataRow>
+              ))
+            )}
+
+            {data.length === 0 && (
+              <div
+                style={{
+                  height: theme.sizing.s44,
+                  marginTop: theme.spacing.s16,
+                }}
+              >
+                <LoadingWrapper>
+                  <p
+                    style={{
+                      margin: theme.spacing.s16,
+                      fontSize: theme.sizing.f18,
+                      fontWeight: theme.typography.fontWeight.semiBold,
+                    }}
+                  >
+                    No result found!
+                  </p>
+                </LoadingWrapper>
+              </div>
+            )}
           </tbody>
         </StyledTable>
         {table.getCanNextPage() && (
