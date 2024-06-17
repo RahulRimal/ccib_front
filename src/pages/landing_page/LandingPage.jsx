@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import MainBanner from "./components/MainBanner";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
+import News from "./components/News";
 
 const HeaderWrapper = styled.div`
   padding: ${({ theme }) => `${theme.spacing.s0} ${theme.spacing.s12}`};
@@ -199,7 +200,14 @@ function LandingPage() {
           </div>
         </SectionWrapper>
         <SectionWrapper>
-          <SectionHeading></SectionHeading>
+          <SectionHeading>NEWS AND UPDATES</SectionHeading>
+          <div>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero
+              expedita perspiciatis esse veniam veritatis.
+            </p>
+            <News />
+          </div>
         </SectionWrapper>
         <div
           style={{
