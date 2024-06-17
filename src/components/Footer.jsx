@@ -231,18 +231,22 @@ function Footer() {
               title={"Your name"}
               placeholder={"Name"}
               type={"text"}
-              required
               editable
-              style={{ color: theme.palette.text.white }}
+              style={{
+                color: theme.palette.text.primary,
+                marginBottom: theme.spacing.s0,
+              }}
             />
             <InputField
               name={"email"}
               title={"Email"}
               placeholder={"Email"}
               type={"email"}
-              required
               editable
-              style={{ color: theme.palette.text.white }}
+              style={{
+                color: theme.palette.text.primary,
+                marginBottom: theme.spacing.s0,
+              }}
             />
             <Button
               text={"Get Updates"}
