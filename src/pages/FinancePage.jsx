@@ -5,6 +5,34 @@ import BaseTable from "../components/Tables/BaseTable";
 import Button from "../components/Button";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useTheme } from "styled-components";
+import useFetch from "../custom_hooks/useFetch";
+
+const filterFields = [
+  {
+    title: "Fields",
+    inputs: [
+      {
+        label: "Finance name",
+        name: "name",
+        type: "select",
+        basis: 30,
+        options: [],
+        required: true,
+        defaultValue: "pending",
+      },
+    ],
+  },
+];
+
+const handleFinancesResponse = (data) => {
+  const finances = data.map((item) => {
+    return {
+      label: item.name,
+      value: item.idx,
+    };
+  });
+  return finances;
+};
 
 const FinancePage = () => {
   const theme = useTheme();
@@ -25,11 +53,26 @@ const FinancePage = () => {
     columnsToHide: ["idx", "location", "name"],
     responseHandler: handleResponce,
   });
+
+  const { loading: loadingFinances, data: finances } = useFetch({
+    url: `${mainUrl}/cooperative/finance`,
+    responseHandler: handleFinancesResponse,
+  });
+  if (finances) {
+    filterFields[0].inputs[0].options = finances.data;
+  }
   const data = useMemo(() => rowData, [rowData]);
 
   return (
     <div>
-      <BaseTable isLoading={loading} data={data} columns={columns} />
+      <BaseTable
+        isLoading={loading}
+        data={data}
+        columns={columns}
+        filterFields={filterFields}
+        loading={loadingFinances}
+        noDataMessage="No Finance found"
+      />
     </div>
   );
 };
