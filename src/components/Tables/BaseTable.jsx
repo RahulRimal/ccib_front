@@ -186,6 +186,7 @@ const BaseTable = ({
   customRenderer,
   showAdvanceFilters = true,
   noDataMessage,
+  validationSchema,
 }) => {
   const theme = useTheme();
   const [showFilterForm, setShowFilterForm] = useState(false);
@@ -271,6 +272,7 @@ const BaseTable = ({
           setData={setData}
           setLoading={setTableLoading}
           responseHandler={handleResponse}
+          validationSchema={validationSchema}
         />
       )}
       <Toolbar>

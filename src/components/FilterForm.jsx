@@ -3,8 +3,8 @@ import Button from "./Button";
 import Select from "react-select";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
-import useFetchTable from "../custom_hooks/useFetchTable";
-import { useEffect, useState } from "react";
+import ErrorMessage from "./Forms/Fields/ErrorMessage";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const FormWrapper = styled.form`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -33,7 +33,7 @@ const SectionWrapper = styled.div`
   display: flex;
   height: max-content;
   flex-wrap: wrap;
-  row-gap: ${({ theme }) => theme.spacing.s12};
+  row-gap: ${({ theme }) => theme.spacing.s32};
   box-sizing: border-box;
   position: relative;
   small {
@@ -72,6 +72,7 @@ const InputWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing.s4};
   font-size: ${({ theme }) => theme.typography.fontSize.f16};
   box-sizing: border-box;
+  position: relative;
   label {
     min-width: ${({ theme }) => theme.sizing.s98};
     font-size: ${({ theme }) => theme.typography.fontSize.f14};
@@ -88,6 +89,10 @@ const InputWrapper = styled.div`
     &:focus {
       outline-color: ${({ theme }) => theme.palette.border.focused};
     }
+  }
+  span {
+    position: absolute;
+    top: calc(100% + ${({ theme }) => theme.spacing.s2});
   }
 `;
 
@@ -122,6 +127,7 @@ function FilterForm({
   baseUrl,
   setData,
   setLoading,
+  validationSchema,
   responseHandler = null,
 }) {
   const theme = useTheme();
@@ -130,11 +136,19 @@ function FilterForm({
     register,
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitted },
+    formState: { errors, isSubmitting },
     reset,
-  } = useForm({});
+  } = useForm({
+    mode: "onChange",
+    resolver: yupResolver(validationSchema),
+  });
+
+  const isEmptyObject = (obj) => Object.values(obj).every((value) => !value);
 
   const getTableInfo = async (data, url) => {
+    if (isEmptyObject(data)) {
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.get(url, {
@@ -169,6 +183,7 @@ function FilterForm({
             {filterFields.map((section, index) => (
               <SectionWrapper key={index}>
                 <small>{section.title}</small>
+
                 {section.inputs.map((input, i) =>
                   input.type === "select" ? (
                     <OptionWrapper
@@ -180,31 +195,39 @@ function FilterForm({
                         name={input.name}
                         control={control}
                         render={({ field }) => (
-                          <Select
-                            {...field}
-                            className="react-select-container"
-                            classNamePrefix="react-select"
-                            options={input.options}
-                            isClearable
-                            defaultValue={" "}
-                            styles={customStyles}
-                            theme={(themes) => ({
-                              ...themes,
-                              borderRadius: theme.borderRadius.input,
-                              colors: {
-                                ...themes.colors,
-                                primary: theme.palette.background.dark,
-                              },
-                            })}
-                            onChange={(selectedOption) => {
-                              field.onChange(
-                                selectedOption ? selectedOption.value : ""
-                              );
-                            }}
-                            value={input.options.find(
-                              (option) => option.value === field.value
+                          <>
+                            {" "}
+                            <Select
+                              {...field}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              options={input.options}
+                              isClearable
+                              defaultValue={" "}
+                              styles={customStyles}
+                              theme={(themes) => ({
+                                ...themes,
+                                borderRadius: theme.borderRadius.input,
+                                colors: {
+                                  ...themes.colors,
+                                  primary: theme.palette.background.dark,
+                                },
+                              })}
+                              onChange={(selectedOption) => {
+                                field.onChange(
+                                  selectedOption ? selectedOption.value : ""
+                                );
+                              }}
+                              value={input.options.find(
+                                (option) => option.value === field.value
+                              )}
+                            />
+                            {errors[input.name] && (
+                              <ErrorMessage
+                                error={errors[input.name]?.message}
+                              />
                             )}
-                          />
+                          </>
                         )}
                       />
                     </OptionWrapper>
@@ -215,14 +238,15 @@ function FilterForm({
                     >
                       <label htmlFor="">{input.label}</label>
                       <input
-                        {...register(input.name)}
-                        value={input.value}
+                        {...(register && register(input.name))}
                         required={input.required}
                         type={input.type}
                         placeholder={input.placeholder}
                         name={input.name}
-                        onChange={(e) => e.target.value}
                       />
+                      {errors[input.name] && (
+                        <ErrorMessage error={errors[input.name]?.message} />
+                      )}
                     </InputWrapper>
                   )
                 )}

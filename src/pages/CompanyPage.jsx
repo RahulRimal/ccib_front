@@ -1,11 +1,9 @@
 import React, { useMemo } from "react";
-import useFetchTable from "../custom_hooks/useFetchTable";
 import { mainUrl } from "../constants";
 import BaseTable from "../components/Tables/BaseTable";
-import Button from "../components/Button";
-import { AiOutlinePlus } from "react-icons/ai";
-import { useTheme } from "styled-components";
+
 import useFetch from "../custom_hooks/useFetch";
+import * as yup from "yup";
 
 let filterFields = [
   {
@@ -13,64 +11,83 @@ let filterFields = [
     inputs: [
       {
         label: "Company name",
-        name: "company",
+        name: "name",
         type: "select",
         basis: 30,
         options: [],
-        required: true,
+        required: false,
         defaultValue: "",
+        placeholder: "Enter company name.",
       },
       {
         label: "Vat number",
         name: "vat_num",
-        type: "text",
+        type: "number",
         basis: 30,
         options: [],
-        required: true,
+        required: false,
         defaultValue: "",
+        placeholder: "Enter vat number.",
       },
       {
         label: "Pan number",
         name: "pan_num",
-        type: "text",
+        type: "number",
         basis: 30,
         options: [],
-        required: true,
+        required: false,
         defaultValue: "",
+        placeholder: "Enter pan number.",
       },
     ],
   },
 ];
 
+const schema = yup.object().shape({
+  company: yup.string(),
+  vat_num: yup
+    .string()
+    .nullable()
+    .test(
+      "vat-num-test",
+      "VAT number must be greater than 7 characters",
+      function (value) {
+        return !value || (value && value.length >= 7);
+      }
+    ),
+
+  pan_num: yup
+    .string()
+    .nullable()
+    .test(
+      "pan-num-test",
+      "PAN number must be greater than 7 characters",
+      function (value) {
+        return !value || (value && value.length >= 7);
+      }
+    ),
+});
 const handleCompanyResponse = (data) => {
   const company = data.map((item) => {
     return {
       label: item.name,
-      value: item.idx,
+      value: item.name,
     };
   });
   return company;
 };
 
 const CompanyPage = () => {
-  const theme = useTheme();
-  const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}/cooperative/companys/`,
-    columnsToHide: ["idx"],
-  });
-
-  const data = useMemo(() => rowData, [rowData]);
-
   //filter
-  const { loading: loadingCompanies, data: companies } = useFetch({
+  const { loading: loadingCompanies, data: company } = useFetch({
     url: `${mainUrl}/cooperative/companys`,
     responseHandler: handleCompanyResponse,
   });
-  if (companies) {
-    filterFields = filterFields.map((item) => {
+  if (company) {
+    filterFields.map((item) => {
       item.inputs.map((input) => {
         if (input.name === "company") {
-          input.options = companies.data;
+          input.options = company.data;
         }
         return input;
       });
@@ -81,12 +98,11 @@ const CompanyPage = () => {
   return (
     <div>
       <BaseTable
-        isLoading={loading}
-        data={data}
-        columns={columns}
+        url={`${mainUrl}/cooperative/companys`}
+        columnsToHide={["idx"]}
         filterFields={filterFields}
-        loading={loadingCompanies}
         noDataMessage={"Company not found"}
+        validationSchema={schema}
       />
     </div>
   );

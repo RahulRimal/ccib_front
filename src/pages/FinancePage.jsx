@@ -1,11 +1,9 @@
 import React, { useMemo } from "react";
-import useFetchTable from "../custom_hooks/useFetchTable";
 import { mainUrl } from "../constants";
 import BaseTable from "../components/Tables/BaseTable";
-import Button from "../components/Button";
-import { AiOutlinePlus } from "react-icons/ai";
 import { useTheme } from "styled-components";
 import useFetch from "../custom_hooks/useFetch";
+import * as yup from "yup";
 
 const filterFields = [
   {
@@ -24,11 +22,15 @@ const filterFields = [
   },
 ];
 
+const schema = yup.object().shape({
+  name: yup.string(),
+});
+
 const handleFinancesResponse = (data) => {
   const finances = data.map((item) => {
     return {
       label: item.name,
-      value: item.idx,
+      value: item.name,
     };
   });
   return finances;
@@ -48,12 +50,6 @@ const FinancePage = () => {
     });
   };
 
-  const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}/cooperative/finance/`,
-    columnsToHide: ["idx", "location", "name"],
-    responseHandler: handleResponce,
-  });
-
   const { loading: loadingFinances, data: finances } = useFetch({
     url: `${mainUrl}/cooperative/finance`,
     responseHandler: handleFinancesResponse,
@@ -61,17 +57,17 @@ const FinancePage = () => {
   if (finances) {
     filterFields[0].inputs[0].options = finances.data;
   }
-  const data = useMemo(() => rowData, [rowData]);
 
   return (
     <div>
       <BaseTable
-        isLoading={loading}
-        data={data}
-        columns={columns}
+        url={`${mainUrl}/cooperative/finance/`}
+        columnsToHide={["idx", "location", "name"]}
         filterFields={filterFields}
         loading={loadingFinances}
         noDataMessage="No Finance found"
+        handleResponse={handleResponce}
+        validationSchema={schema}
       />
     </div>
   );
