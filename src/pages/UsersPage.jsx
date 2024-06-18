@@ -4,13 +4,8 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import BaseTable from "../components/Tables/BaseTable";
-import axios from "axios";
-import { humanizeString } from "../helpers";
-import { DrawerWidthContext } from "../App";
-import UserCreditHistoryChart from "../components/Charts/UserCreditHistory";
+import * as yup from "yup";
 import { mainUrl } from "../constants";
-import useFetchTable from "../custom_hooks/useFetchTable";
-import UserDetailsTable from "../components/Tables/UserDetailsTable";
 
 const Wrapper = styled.main``;
 
@@ -72,6 +67,16 @@ let filterFields = [
   },
 ];
 
+const schema = yup.object().shape({
+  first_name: yup.string().required("First name is required"),
+  last_name: yup.string().required("Last name is required"),
+  phone_number: yup.string().required("Phone number is required"),
+  loans_account_number: yup
+    .string()
+    .required("Loan account number is required"),
+  loans_finance_idx: yup.string().required("Loan finance idx is required"),
+});
+
 const UsersTable = () => {
   const { loading, rowData, columns } = useFetchTable({
     url: `${mainUrl}/cooperative/financeusers/`,
@@ -87,6 +92,7 @@ const UsersTable = () => {
         url={`${mainUrl}cooperative/financeusers/`}
         columnsToHide={["id", "idx", "username"]}
         filterFields={filterFields}
+        validationSchema={schema}
         toolbarActions={
           <Button
             icon={<AiOutlinePlus />}

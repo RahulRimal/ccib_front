@@ -1,12 +1,11 @@
 import React, { useMemo } from "react";
-import useFetchTable from "../custom_hooks/useFetchTable";
 import { mainUrl } from "../constants";
 import BaseTable from "../components/Tables/BaseTable";
-import Button from "../components/Button";
-import { AiOutlinePlus } from "react-icons/ai";
+
 import { useTheme } from "styled-components";
 import { getFullName, humanizeString } from "../helpers";
 import useFetch from "../custom_hooks/useFetch";
+import * as yup from "yup";
 
 let filterFields = [
   {
@@ -49,6 +48,12 @@ let filterFields = [
     ],
   },
 ];
+
+const schema = yup.object().shape({
+  user: yup.string().required("User is required"),
+  finance: yup.string().required("Finance is required"),
+  status: yup.string().required("Status is required"),
+});
 
 const handleUsersResponse = (data) => {
   const users = data.map((item) => {
@@ -144,6 +149,7 @@ const LoanApplicationPage = () => {
         customRenderer={customRenderer}
         filterFields={filterFields}
         noDataMessage={"No Loan Applications"}
+        validationSchema={schema}
       />
     </div>
   );

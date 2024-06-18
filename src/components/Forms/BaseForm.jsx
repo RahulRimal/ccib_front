@@ -13,6 +13,7 @@ import { mainUrl } from "../../constants";
 import { ClipLoader } from "react-spinners";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../Backdrop";
+import apiService from "../../api_service";
 
 const SectionWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -63,7 +64,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
     console.log("Form submitted:", data);
 
     try {
-      const response = await axios.post(`${mainUrl}${endpoint}/`, data, {
+      const response = await apiService.post(`${mainUrl}${endpoint}/`, data, {
         headers: {
           "Content-Type": "application/json",
         },
