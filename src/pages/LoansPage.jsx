@@ -84,13 +84,13 @@ const schema = yup.object().shape({
 });
 
 const handleUsersResponse = (data) => {
-  const finances = data.map((item) => {
+  const users = data.map((item) => {
     return {
       label: item.first_name,
       value: item.idx,
     };
   });
-  return finances;
+  return users;
 };
 
 const LoansPage = () => {
@@ -109,7 +109,7 @@ const LoansPage = () => {
 
   //filter
   const { loading: loadingUsers, data: users } = useFetch({
-    url: `${mainUrl}/auth/users`,
+    url: `${mainUrl}/cooperative/financeusers`,
     responseHandler: handleUsersResponse,
   });
 
