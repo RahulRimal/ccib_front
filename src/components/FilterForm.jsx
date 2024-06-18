@@ -2,9 +2,9 @@ import styled, { useTheme } from "styled-components";
 import Button from "./Button";
 import Select from "react-select";
 import { Controller, useForm } from "react-hook-form";
-import axios from "axios";
 import ErrorMessage from "./Forms/Fields/ErrorMessage";
 import { yupResolver } from "@hookform/resolvers/yup";
+import apiService from "../api_service";
 
 const FormWrapper = styled.form`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -156,11 +156,10 @@ function FilterForm({
     if (isEmptyObject(data)) {
       return;
     }
+
     try {
       setLoading(true);
-      const response = await axios.get(url, {
-        params: data,
-      });
+      const response = await apiService.get(url, data);
       console.log(response);
       if (response.status === 200) {
         if (responseHandler) {
@@ -183,6 +182,7 @@ function FilterForm({
         return handleSubmit((data) => getTableInfo(data, baseUrl))(e);
       }}
       className={showFilters ? "show" : "hide"}
+      style={{ overflow: "visible" }}
     >
       <MainWrapper>
         {filterFields ? (
@@ -265,13 +265,14 @@ function FilterForm({
         )}
       </MainWrapper>
       {filterFields && (
-        <Button
-          text="Filter"
-          style={{
-            padding: `${theme.spacing.s8} ${theme.spacing.s20}`,
-            float: "right",
-          }}
-        />
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            text="Filter"
+            style={{
+              padding: `${theme.spacing.s8} ${theme.spacing.s20}`,
+            }}
+          />
+        </div>
       )}
     </FormWrapper>
   );
