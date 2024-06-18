@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { humanizeString } from "../helpers";
+import apiService from "../api_service";
 
 const useFetchTable = ({
   url,
@@ -17,9 +18,7 @@ const useFetchTable = ({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(url, {
-          params: queryParams,
-        });
+        const response = await apiService.get(url);
         if (response.status === 200) {
           let data = response.data;
           if (responseHandler) {

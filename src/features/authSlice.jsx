@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { mainUrl } from "../constants";
 import axios, { AxiosError } from 'axios';
 import { Cookies } from 'react-cookie';
+import apiService from "../api_service";
 
 class MultiMessageError extends Error {
   messages = [];
@@ -17,10 +18,12 @@ export const loginUser = createAsyncThunk(
     const { username, password } = loginInfo;
     const loginUrl = `${mainUrl}/auth/create-token/`;
     try {
-      const response = await axios.post(loginUrl, {
-        username: username,
-        password: password,
-      });
+      const response =  await apiService.post(loginUrl
+        , {
+          username: username,
+          password: password,
+        }
+      )
       if (response.status === 200) {
         return response.data
       }

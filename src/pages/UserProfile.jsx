@@ -182,7 +182,7 @@ const UserProfile = () => {
   const theme = useTheme();
   const { id } = useParams();
 
-  const { data, loading } = useFetch({ url: `${mainUrl}/auth/users/${id}/` });
+  const { data, loading } = useFetch({ url: `${mainUrl}/cooperative/financeusers/${id}/` });
 
   return (
     <Wrapper>
