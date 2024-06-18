@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import { mainUrl } from './constants';
+import { enqueueSnackbar } from 'notistack';
 
 const api = axios.create({
     baseURL: 'http://192.168.1.71:9000',
@@ -12,7 +14,6 @@ api.interceptors.request.use(
         const userCookie = new Cookies();
         const token = userCookie.get("access");
         if (token) config.headers['Authorization'] = `JWT ${token}`;
-        console.log('Request:', config);
         return config;
     },
     error => {
@@ -23,20 +24,46 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
     response => {
-        console.log('Response:', response);
         return response;
     },
-    error => {
+    async error => {
         if (error.response) {
+            
+            let cookie = new Cookies();
             console.error('Error Response:', error.response);
-            //   Handle specific error like 401 status
             if (error.response.status === 401) {
-                // Handle unauthorized access
+                if (error.request.responseURL === `${mainUrl}/auth/refresh-token/`) {
+                    cookie.remove('access');
+                    cookie.remove('refresh');
+                    window.location.href = '/signin';
+                    enqueueSnackbar('Session Expired, please login to continue', { variant: 'error' });
+                    return Promise.reject(error);
+                }
+                // Handle access token expiration
+                if (error.response.data.code && error.response.data.code === 'token_not_valid') {
+                    let refresh = cookie.get('refresh');
+                    try {
+                        const response = await api.post(`${mainUrl}/auth/refresh-token/`, {"refresh": refresh});
+                        cookie.set('access', response.data.access, { path: '/' });
+                        api.defaults.headers['Authorization'] = `JWT ${response.data.access}`;
+                        return api(error.config);
+                    } catch (error) {
+                        cookie.remove('access');
+                        cookie.remove('refresh');
+                        window.location.href = '/signin';
+                        enqueueSnackbar('Session Expired, please login to continue', { variant: 'error' });
+                        return Promise.reject(error);
+                    }
+                }
+                
+                enqueueSnackbar('Something went wrong', { variant: 'error' });
+                return Promise.reject(error);
             }
         }
         return Promise.reject(error);
     }
 );
+
 
 // API methods
 const get = (url, params = {}, config = {}) => api.get(url, {...config, params});

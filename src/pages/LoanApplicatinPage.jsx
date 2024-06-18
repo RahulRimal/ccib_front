@@ -107,7 +107,7 @@ const LoanApplicationPage = () => {
 
   //filter
   const { loading: loadingUsers, data: users } = useFetch({
-    url: `${mainUrl}cooperative/financeusers/`,
+    url: `${mainUrl}/cooperative/financeusers/`,
     responseHandler: handleUsersResponse,
   });
 
