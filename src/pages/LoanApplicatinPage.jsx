@@ -50,9 +50,9 @@ let filterFields = [
 ];
 
 const schema = yup.object().shape({
-  user: yup.string(),
-  finance: yup.string(),
-  status: yup.string(),
+  user: yup.string().required("User is required"),
+  finance: yup.string().required("Finance is required"),
+  status: yup.string().required("Status is required"),
 });
 
 const handleUsersResponse = (data) => {

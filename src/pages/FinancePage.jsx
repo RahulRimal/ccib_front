@@ -16,14 +16,13 @@ const filterFields = [
         basis: 30,
         options: [],
         required: true,
-        defaultValue: "pending",
       },
     ],
   },
 ];
 
 const schema = yup.object().shape({
-  name: yup.string(),
+  name: yup.string().required("Name is required"),
 });
 
 const handleFinancesResponse = (data) => {

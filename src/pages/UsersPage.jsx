@@ -68,11 +68,13 @@ let filterFields = [
 ];
 
 const schema = yup.object().shape({
-  first_name: yup.string(),
-  last_name: yup.string(),
-  phone_number: yup.string(),
-  loans_account_number: yup.string(),
-  loans_finance_idx: yup.string(),
+  first_name: yup.string().required("First name is required"),
+  last_name: yup.string().required("Last name is required"),
+  phone_number: yup.string().required("Phone number is required"),
+  loans_account_number: yup
+    .string()
+    .required("Loan account number is required"),
+  loans_finance_idx: yup.string().required("Loan finance idx is required"),
 });
 
 const UsersTable = () => {

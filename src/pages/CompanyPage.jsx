@@ -44,7 +44,7 @@ let filterFields = [
 ];
 
 const schema = yup.object().shape({
-  company: yup.string(),
+  company: yup.string().required("Company name is required"),
   vat_num: yup
     .string()
     .nullable()
@@ -54,7 +54,8 @@ const schema = yup.object().shape({
       function (value) {
         return !value || (value && value.length >= 7);
       }
-    ),
+    )
+    .required("Vat number is required"),
 
   pan_num: yup
     .string()
@@ -65,7 +66,8 @@ const schema = yup.object().shape({
       function (value) {
         return !value || (value && value.length >= 7);
       }
-    ),
+    )
+    .required("PAN number is required"),
 });
 const handleCompanyResponse = (data) => {
   const company = data.map((item) => {

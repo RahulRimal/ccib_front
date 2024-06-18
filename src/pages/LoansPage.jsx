@@ -64,9 +64,10 @@ let filterFields = [
 ];
 
 const schema = yup.object().shape({
-  status: yup.string(),
+  status: yup.string().required("Status is required"),
   account_number: yup
     .string()
+    .required("Account number is required")
     .nullable()
     .test(
       "account-number-test",
@@ -75,8 +76,11 @@ const schema = yup.object().shape({
         return !value || (value && value.length >= 10);
       }
     ),
-  user: yup.string(),
-  loan_nature: yup.string().oneOf(["term", "overdraft"], "Invalid loan nature"),
+  user: yup.string().required("User is required"),
+  loan_nature: yup
+    .string()
+    .oneOf(["term", "overdraft"], "Invalid loan nature")
+    .required("Loan nature is required"),
 });
 
 const handleUsersResponse = (data) => {

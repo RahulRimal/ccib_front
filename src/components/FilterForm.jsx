@@ -18,6 +18,7 @@ const MainWrapper = styled.div`
   padding: ${({ theme }) => theme.spacing.s12} 0;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${({ theme }) => theme.spacing.s16};
+
   @media (max-width: 1080px) {
     grid-template-columns: 1fr 2fr;
   }
@@ -28,6 +29,7 @@ const MainWrapper = styled.div`
 
 const SectionWrapper = styled.div`
   padding: ${({ theme }) => `${theme.spacing.s20} ${theme.spacing.s8}`};
+  padding-bottom: ${({ theme }) => theme.spacing.s32};
   border: 1px solid ${({ theme }) => theme.palette.border.primary};
   border-radius: ${({ theme }) => theme.borderRadius.container};
   display: flex;
@@ -105,11 +107,16 @@ const OptionWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing.s4};
   font-size: ${({ theme }) => theme.typography.fontSize.f16};
   box-sizing: border-box;
+  position: relative;
 
   label {
     min-width: ${({ theme }) => theme.sizing.s98};
     font-size: ${({ theme }) => theme.typography.fontSize.f14};
     font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
+  }
+  span {
+    position: absolute;
+    top: calc(100% + ${({ theme }) => theme.spacing.s2});
   }
 `;
 
