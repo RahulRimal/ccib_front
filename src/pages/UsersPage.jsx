@@ -73,6 +73,10 @@ let filterFields = [
 ];
 
 const UsersTable = () => {
+  const { loading, rowData, columns } = useFetchTable({
+    url: `${mainUrl}/cooperative/financeusers/`,
+    columnsToHide: ["id", "idx", "username"],
+  });
   const theme = useTheme();
   const navigate = useNavigate();
 
