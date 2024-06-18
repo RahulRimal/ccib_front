@@ -75,10 +75,11 @@ function SignIn() {
   const { loading } = useSelector((store) => store.auth);
 
   useEffect(() => {
+    // Check if user is already logged in and navigate to dashboard if so
     const cookie = new Cookies();
     if (cookie.get("access") && cookie.get("refresh")) {
       dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
-      // navigate("/");
+      navigate("/");
     }
   }, []);
 

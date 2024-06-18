@@ -6,6 +6,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import BaseTable from "../components/Tables/BaseTable";
 import * as yup from "yup";
 import { mainUrl } from "../constants";
+import useFetchTable from "../custom_hooks/useFetchTable";
 
 const Wrapper = styled.main``;
 
@@ -89,7 +90,7 @@ const UsersTable = () => {
     <div>
       <BaseTable
         title="Users list"
-        url={`${mainUrl}cooperative/financeusers/`}
+        url={`${mainUrl}/cooperative/financeusers/`}
         columnsToHide={["id", "idx", "username"]}
         filterFields={filterFields}
         validationSchema={schema}
