@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React from "react";
 import Button from "../components/Button";
@@ -134,7 +134,7 @@ function LandingPage() {
   // const navigate = useNavigate();
   return (
     <>
-      <MainBanner />
+      {/* <MainBanner /> */}
       <main style={{ width: "90%", margin: "auto" }}>
         <SectionWrapper>
           <SectionHeading>PAYEMENTS MODULE</SectionHeading>
@@ -167,7 +167,7 @@ function LandingPage() {
             >
               {commitment.map((item, key) => (
                 <div
-                key={key}
+                  key={key}
                   style={{
                     width: theme.sizing.s224,
                     display: "flex",
@@ -235,7 +235,6 @@ function LandingPage() {
         </div>
       </main>
     </>
-
   );
 }
 
