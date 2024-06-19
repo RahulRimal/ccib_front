@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Providers from "../Providers";
+// import Providers from "../Providers";
 // import { useTheme } from "styled-components";
 // import Navbar from "./components/Navbar";
 
@@ -23,9 +23,7 @@ export default function RootLayout({
       }}
     >
       {/* <Navbar /> */}
-      <main>
-        <Providers>{children}</Providers>
-      </main>
+      <main>{children}</main>
 
       {/* <Footer /> */}
     </div>
