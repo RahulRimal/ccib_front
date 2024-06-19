@@ -1,3 +1,5 @@
+import { Cookies } from "react-cookie";
+
 export const humanizeString = (str, { capitalizeOnlyOne = true } = {}) => {
   if (!str) return "";
   // Replace all underscores with spaces and split the string into an array of words
@@ -81,4 +83,10 @@ export const formatDate = (date, format = "YYYY-MM-DD") => {
   let isoString = date.toISOString();
 
   return isoString.slice(0, format.length);
+}
+
+export const tokensAvailable = () => {
+  const cookie = new Cookies();
+  if (cookie.get("access") && cookie.get("refresh")) return true
+  return false
 }

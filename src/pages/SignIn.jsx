@@ -13,6 +13,7 @@ import PasswordField from "../components/Forms/Fields/PasswordField";
 import CheckboxField from "../components/Forms/Fields/CheckboxField";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import { tokensAvailable } from "../helpers";
 
 const Grid = styled.div`
   display: grid;
@@ -76,8 +77,7 @@ function SignIn() {
 
   useEffect(() => {
     // Check if user is already logged in and navigate to dashboard if so
-    const cookie = new Cookies();
-    if (cookie.get("access") && cookie.get("refresh")) {
+    if (tokensAvailable()) {
       dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
       navigate("/");
     }
@@ -98,37 +98,6 @@ function SignIn() {
           enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
         }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
       });
-/* 
-      if (!username || !password)
-        return enqueueSnackbar("Please fill all the fields", {
-          variant: "error",
-          autoHideDuration: 2000,
-        });
-      if (username === "admin" && password === "admin") {
-        dispatch(authenticateUser());
-        navigate("/dashboard");
-        return enqueueSnackbar("Login successful", {
-          variant: "success",
-          autoHideDuration: 2000,
-        });
-      }
-
-      return enqueueSnackbar("Invalid credentials", {
-        variant: "error",
-        autoHideDuration: 2000,
-      });
- */
-      // dispatch(loginUser({ username, password })).unwrap().then((data) => {
-      //   enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
-      // }).catch((error) => {
-      //   const errs = JSON.parse(error.message)
-      //   errs.forEach((element, index) => {
-      //     setTimeout(() => {
-      //       enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
-      //     }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
-      //   });
-
-      // })
     });
   }
 
