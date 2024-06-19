@@ -328,6 +328,35 @@ body {
     transition: opacity 0.5s ease, max-height 0.3s ease;
     overflow: hidden; 
   }
+  .MenuMain {
+     
+    }
+    .showMenu {
+     animation:  showMenu 0.5s ease-in-out forwards;
+    }
+
+    .hideMenu {
+     animation:  hideMenu 0.5s ease-in-out forwards;
+    }
+
+    @keyframes showMenu {
+      from {
+        width: 100vw;
+      }
+      to {
+        width: calc( 100vw - 200px );
+      }
+    }
+
+    @keyframes hideMenu {
+      from {
+        width: calc( 100vw - 200px );
+      }
+      to {
+        width: 100vw;
+      }
+    }
+
 
 ul {
   display: flex;
@@ -339,6 +368,40 @@ ul {
 .shadow-md {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
+
+.mainWrapper {
+  display: grid;
+  width: 100%;
+}
+
+.open {
+  display: grid;
+  animation: drawerOpen 0.3s ease-in-out normal forwards;
+}
+
+.close {
+  display: grid;
+  animation: drawerClose 0.3s ease-in-out normal forwards;
+}
+
+@keyframes drawerOpen {
+  from {
+    grid-template-columns: 50px 1fr;
+  }
+  to {
+    grid-template-columns: 250px 1fr;
+  }
+}
+
+@keyframes drawerClose {
+  from {
+    grid-template-columns: 250px 1fr;
+  }
+  to {
+    grid-template-columns: 50px 1fr;
+  }
+}
+
 
 `;
 

@@ -40,7 +40,7 @@ const Drawer = ({ drawerWidth }) => {
   const navigate = useNavigate();
 
   return (
-    <Wrapper style={{ width: drawerWidth }}>
+    <Wrapper>
       <ul style={{ padding: 0, margin: 0 }}>
         {drawerWidth === drawerMinWidth ? (
           <>

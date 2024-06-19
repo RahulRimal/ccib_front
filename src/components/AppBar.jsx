@@ -13,7 +13,7 @@ import { useTheme } from "styled-components";
 import { useDispatch } from "react-redux";
 import { logOut } from "../features/authSlice";
 import { enqueueSnackbar } from "notistack";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Spacing system (px)
 // 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
@@ -50,6 +50,8 @@ const AppBar = ({ drawerWidth, toggleDrawer, toggleTheme }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState("");
 
+  const navigate = useNavigate();
+
   return (
     <div
       style={{
@@ -76,11 +78,16 @@ const AppBar = ({ drawerWidth, toggleDrawer, toggleTheme }) => {
         </IconButton>
       </DrawerHeader>
       <AppbarWrapper
+        // className={
+        //   "MenuMain" + " " + +drawerWidth === drawerMaxWidth
+        //     ? "showMenu"
+        //     : "hideMenu"
+        // }
         style={{
           width:
             drawerWidth === drawerMaxWidth
-              ? `calc(100% - ${drawerWidth}px)`
-              : "100%",
+              ? `calc(100vw - ${drawerWidth}px)`
+              : "100vw",
           marginLeft: "auto",
         }}
       >
@@ -121,6 +128,7 @@ const AppBar = ({ drawerWidth, toggleDrawer, toggleTheme }) => {
             <MenuItem
               onClick={() => {
                 dispatch(logOut());
+                navigate("/ccic");
                 enqueueSnackbar("You have been logged out", {
                   variant: "warning",
                   autoHideDuration: 2000,

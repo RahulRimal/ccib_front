@@ -78,27 +78,36 @@ function SignIn() {
     // Check if user is already logged in and navigate to dashboard if so
     const cookie = new Cookies();
     if (cookie.get("access") && cookie.get("refresh")) {
-      dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
       navigate("/");
+      dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
     }
   }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password = data.get('password');
-    dispatch(loginUser({ username, password })).unwrap().then((data) => {
-      enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
-      navigate("/");
-    }).catch((error) => {
-      const errs = JSON.parse(error.message)
-      errs.forEach((element, index) => {
-        setTimeout(() => {
-          enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
-        }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
-      });
-/* 
+    const username = data.get("username");
+    const password = data.get("password");
+    dispatch(loginUser({ username, password }))
+      .unwrap()
+      .then((data) => {
+        enqueueSnackbar("Login successful", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+        navigate("/");
+      })
+      .catch((error) => {
+        const errs = JSON.parse(error.message);
+        errs.forEach((element, index) => {
+          setTimeout(() => {
+            enqueueSnackbar(element, {
+              variant: "error",
+              autoHideDuration: 3000,
+            });
+          }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+        });
+        /* 
       if (!username || !password)
         return enqueueSnackbar("Please fill all the fields", {
           variant: "error",
@@ -118,19 +127,19 @@ function SignIn() {
         autoHideDuration: 2000,
       });
  */
-      // dispatch(loginUser({ username, password })).unwrap().then((data) => {
-      //   enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
-      // }).catch((error) => {
-      //   const errs = JSON.parse(error.message)
-      //   errs.forEach((element, index) => {
-      //     setTimeout(() => {
-      //       enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
-      //     }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
-      //   });
+        // dispatch(loginUser({ username, password })).unwrap().then((data) => {
+        //   enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
+        // }).catch((error) => {
+        //   const errs = JSON.parse(error.message)
+        //   errs.forEach((element, index) => {
+        //     setTimeout(() => {
+        //       enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
+        //     }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+        //   });
 
-      // })
-    });
-  }
+        // })
+      });
+  };
 
   return (
     <>
@@ -167,7 +176,7 @@ function SignIn() {
               name="password"
               placeholder="Password"
             />
-           {/*  <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
+            {/*  <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
               <CheckboxField name="Remember me" options={[{ value: true, label: "yes" }, { value: false, label: "no" }]} />
               <span>Remember me</span>
             </div> */}
