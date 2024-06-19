@@ -177,6 +177,7 @@ const PaginationButton = styled.div`
 const BaseTable = ({
   url,
   columnsToHide = [],
+  columnOrder=[],
   height,
   title,
   toolbarActions,
@@ -228,6 +229,7 @@ const BaseTable = ({
       grouping,
       sorting: sorting,
       globalFilter: filtering,
+      columnOrder
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,

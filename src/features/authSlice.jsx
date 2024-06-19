@@ -68,15 +68,13 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logOut: (state) => {
-      state.isLoggedIn = true;
       const userCookie = new Cookies();
       userCookie.remove("access", { path: "/" });
       userCookie.remove("refresh", { path: "/" });
 
-      state = {
+      return {
         ...initialState
       };
-      return state;
     },
     updateAuthentiaction: (state, action) => {
       const { name, value } = action.payload;

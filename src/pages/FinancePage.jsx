@@ -38,13 +38,13 @@ const handleFinancesResponse = (data) => {
 const FinancePage = () => {
   const theme = useTheme();
 
-  const handleResponce = (data) => {
+  const handleResponse = (data) => {
     return data.map((item) => {
-      const { name: locationName } = item.location;
+      const { name: location_name } = item.location;
       return {
         ...item,
-        financeName: item.name,
-        locationName,
+        finance_name: item.name,
+        location_name,
       };
     });
   };
@@ -61,11 +61,12 @@ const FinancePage = () => {
     <div>
       <BaseTable
         url={`${mainUrl}/cooperative/finance/`}
-        columnsToHide={["idx", "location", "name"]}
+        columnsToHide={["idx", "location", "name", "parent"]}
+        columnOrder={["finance_name", "location_name", "phone_number"]}
         filterFields={filterFields}
         loading={loadingFinances}
         noDataMessage="No Finance found"
-        handleResponse={handleResponce}
+        handleResponse={handleResponse}
         validationSchema={schema}
       />
     </div>
