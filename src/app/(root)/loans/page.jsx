@@ -5,6 +5,7 @@ import { useTheme } from "styled-components";
 import useFetch from "@/custom_hooks/useFetch";
 import * as yup from "yup";
 import { getFullName } from "@/helpers";
+import useFetchTable from "@/custom_hooks/useFetchTable";
 
 let filterFields = [
   {
@@ -126,13 +127,17 @@ const LoansPage = () => {
   }
   //filter
 
+  const { loading, rowData, columns } = useFetchTable({
+    url: `${mainUrl}/loans/`,
+    columnsToHide: ["idx"],
+    responseHandler: handleResponse,
+  });
+
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/loans/`}
         columnsToHide={["idx"]}
         filterFields={filterFields}
-        loading={loadingUsers}
         noDataMessage={"No loans found"}
         validationSchema={schema}
         handleResponse={handleResponse}

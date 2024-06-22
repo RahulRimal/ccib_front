@@ -85,9 +85,10 @@ const UsersTable = () => {
   return (
     <div>
       <BaseTable
+        loading={loading}
+        columns={columns}
+        rowData={rowData}
         title="Users list"
-        url={`${mainUrl}/cooperative/financeusers/`}
-        columnsToHide={["id", "idx", "username"]}
         filterFields={filterFields}
         validationSchema={schema}
         toolbarActions={

@@ -15,8 +15,6 @@ import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
 import { enqueueSnackbar } from "notistack";
 
-
-
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 3fr 2fr;
@@ -84,7 +82,7 @@ function SignIn() {
       dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
       router.push("/");
     }
-  }, []);
+  }, [dispatch, router]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -119,7 +117,6 @@ function SignIn() {
       }
     }
   };
-
 
   return (
     <>

@@ -6,6 +6,7 @@ import { useTheme } from "styled-components";
 import { getFullName, humanizeString } from "@/helpers";
 import useFetch from "@/custom_hooks/useFetch";
 import * as yup from "yup";
+import useFetchTable from "@/custom_hooks/useFetchTable";
 
 let filterFields = [
   {
@@ -140,14 +141,21 @@ const LoanApplicationPage = () => {
   }
   //filter
 
+  const { loading, rowData, columns } = useFetchTable({
+    url: `${mainUrl}/cooperative/loanapplications`,
+    columnsToHide: ["idx", "phone_number"],
+    responseHandler: handleResponse,
+    customRenderer,
+  });
+
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/loanapplications`}
-        columnsToHide={["idx", "phone_number"]}
-        handleResponse={handleResponse}
-        customRenderer={customRenderer}
+        loading={loading}
+        rowData={rowData}
+        columns={columns}
         filterFields={filterFields}
+        handleResponse={handleResponse}
         noDataMessage={"No Loan Applications"}
         validationSchema={schema}
       />

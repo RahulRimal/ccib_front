@@ -4,6 +4,8 @@ import BaseTable from "@/app/components/Tables/BaseTable";
 
 import useFetch from "@/custom_hooks/useFetch";
 import * as yup from "yup";
+import useFetchTable from "@/custom_hooks/useFetchTable";
+import { useState } from "react";
 
 let filterFields = [
   {
@@ -80,6 +82,8 @@ const handleCompanyResponse = (data) => {
 };
 
 const CompanyPage = () => {
+  const [tableLoading, setTableLoading] = useState(false);
+
   //filter
   const { loading: loadingCompanies, data: company } = useFetch({
     url: `${mainUrl}/cooperative/companys`,
@@ -97,14 +101,48 @@ const CompanyPage = () => {
     });
   }
 
+  const { loading, rowData, columns } = useFetchTable({
+    url: `${mainUrl}/cooperative/companys`,
+    columnsToHide: ["idx"],
+  });
+
+  const isEmptyObject = (obj) => Object.values(obj).every((value) => !value);
+  const applyFilter = async (data, handleResponse = null) => {
+    if (isEmptyObject(data)) {
+      return;
+    }
+
+    try {
+      setTableLoading(true);
+      const response = await apiService.get(
+        `${mainUrl}/cooperative/companys`,
+        data
+      );
+      console.log(response);
+      if (response.status === 200) {
+        if (handleResponse) {
+          response.data = handleResponse(response.data);
+        }
+        setData(response.data);
+      }
+      setTableLoading(false);
+    } catch (error) {
+      console.log(error);
+      setTableLoading(false);
+    }
+  };
+
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/companys`}
-        columnsToHide={["idx"]}
+        loading={loading}
+        rowData={rowData}
+        columns={columns}
+        onFilter={applyFilter}
         filterFields={filterFields}
         noDataMessage={"Company not found"}
         validationSchema={schema}
+        tableLoading={tableLoading}
       />
     </div>
   );
