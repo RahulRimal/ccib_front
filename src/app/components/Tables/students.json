@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "email": "Daevika_Gill46@yahoo.co.in",
+    "phone": { "1": "+91-677-4410427", "2": "+916004297915" },
+    "age": 13,
+    "date_of_birth": "1995-11-17T00:08:59.890Z",
+    "date_of_admission": "2011-10-17T00:40:01.399Z",
+    "address": {
+      "pincode": "714 689",
+      "city": "Richardson",
+      "street": "15353 Mandakini Mill",
+      "state": "Nagaland"
+    },
+    "firstName": "Adhiraj",
+    "middleName": "Austin",
+    "lastName": "Guneta"
+  },
+  {
+    "id": 2,
+    "email": "Charuvrat_Johar@hotmail.com",
+    "phone": { "1": "+916888210788", "2": "+918444116231" },
+    "age": 14,
+    "date_of_birth": "1998-06-21T06:55:55.055Z",
+    "date_of_admission": "2016-02-18T04:21:15.235Z",
+    "address": {
+      "pincode": "826 790",
+      "city": "Brockton",
+      "street": "3121 Rakesh Mountain",
+      "state": "Jharkhand"
+    },
+    "firstName": "Laxmi",
+    "middleName": "Drew",
+    "lastName": "Tagore"
+  },
+  {
+    "id": 3,
+    "email": "Daevika_Nayar89@gmail.com",
+    "phone": { "1": "+91-817-9116389", "2": "+917166130149" },
+    "age": 13,
+    "date_of_birth": "1998-11-04T00:31:31.091Z",
+    "date_of_admission": "2012-02-14T06:35:29.720Z",
+    "address": {
+      "pincode": "821 034",
+      "city": "Escondido",
+      "street": "0930 Arora Garden",
+      "state": "Haryana"
+    },
+    "firstName": "Anilabh",
+    "middleName": "Jaden",
+    "lastName": "Naik"
+  },
+  {
+    "id": 4,
+    "email": "Charuvrat_Johar@me.com",
+    "phone": { "1": "+91-817-9116389", "2": "+917166130149" },
+    "age": 13,
+    "date_of_birth": "1998-11-04T00:31:31.091Z",
+    "date_of_admission": "2012-02-14T06:35:29.720Z",
+    "address": {
+      "pincode": "821 034",
+      "city": "Escondido",
+      "street": "0930 Arora Garden",
+      "state": "Haryana"
+    },
+    "firstName": "Anilabh",
+    "middleName": "Jaden",
+    "lastName": "Naik"
+  }
+]
