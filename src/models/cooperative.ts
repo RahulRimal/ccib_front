@@ -83,7 +83,10 @@ type Inquiry = {
 
 type FinanceStaff = {
   idx: string;
-  user: User;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: number;
   finance: Finance;
 };
 

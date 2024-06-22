@@ -4,16 +4,30 @@ import { Cookies } from "react-cookie";
 import apiService from "@/api_service";
 
 
-class MultiMessageError extends Error {
+/* class MultiMessageError extends Error {
   messages = [];
   constructor(messages) {
     super(messages);
     this.messages = messages;
   }
-}
+} */
 
-export const loginUser = createAsyncThunk("auth/login", async (loginInfo) => {
-  const { username, password } = loginInfo;
+type InitialState = {
+  loading: boolean;
+  isLoggedIn: boolean;
+  user: {
+    idx: string;
+    first_name: string;
+    last_name: string;
+    username: string;
+    email: string;
+    phone: string;
+  };
+};
+
+
+export const loginUser = createAsyncThunk("auth/login", async (loginInfo: { username: string; password: string }) => {
+  const { username, password} = loginInfo;
   const loginUrl = `${mainUrl}/auth/create-token/`;
   try {
     const response = await apiService.post(loginUrl, {
@@ -32,7 +46,9 @@ export const loginUser = createAsyncThunk("auth/login", async (loginInfo) => {
       }
 });
 
-const initialState = {
+
+
+const initialState: InitialState = {
   loading: false,
   isLoggedIn: false,
   user: {
@@ -72,7 +88,7 @@ export const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        const { refresh, access } = action.payload;
+        const { refresh, access }: { refresh: string; access: string } = action.payload;
         const userCookie = new Cookies();
         userCookie.set("access", access, { path: "/" });
         userCookie.set("refresh", refresh, { path: "/" });
