@@ -131,6 +131,7 @@ const customStyles = {
 function FilterForm({
   showFilters,
   filterFields,
+  onFilter = null,
   baseUrl,
   setData,
   setLoading,
@@ -152,34 +153,38 @@ function FilterForm({
 
   const isEmptyObject = (obj) => Object.values(obj).every((value) => !value);
 
-  const getTableInfo = async (data, url) => {
-    if (isEmptyObject(data)) {
-      return;
-    }
+  // const getTableInfo = async (data, url) => {
+  //   if (isEmptyObject(data)) {
+  //     return;
+  //   }
 
-    try {
-      setLoading(true);
-      const response = await apiService.get(url, data);
-      console.log(response);
-      if (response.status === 200) {
-        if (responseHandler) {
-          response.data = responseHandler(response.data);
-        }
-        setData(response.data);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
+  //   try {
+  //     setLoading(true);
+  //     const response = await apiService.get(url, data);
+  //     console.log(response);
+  //     if (response.status === 200) {
+  //       if (responseHandler) {
+  //         response.data = responseHandler(response.data);
+  //       }
+  //       setData(response.data);
+  //     }
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <FormWrapper
       method="GET"
       onSubmit={(e) => {
         e.preventDefault();
-        return handleSubmit((data) => getTableInfo(data, baseUrl))(e);
+        // return handleSubmit((data) => getTableInfo(data, baseUrl))(e);
+        return handleSubmit((data, e) => {
+          e.preventDefault();
+          onFilter(data, responseHandler);
+        });
       }}
       className={showFilters ? "show" : "hide"}
       style={{ overflow: "visible" }}

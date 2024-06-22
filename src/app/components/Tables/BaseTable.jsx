@@ -175,16 +175,18 @@ const PaginationButton = styled.div`
 `;
 
 const BaseTable = ({
-  url,
-  columnsToHide = [],
   columnOrder = [],
+  rowData,
+  columns,
+  loading,
+  tableLoading,
   height,
   title,
+  onFilter = null,
   toolbarActions,
   navigateOnRowClick,
   filterFields,
   handleResponse,
-  customRenderer,
   showAdvanceFilters = true,
   noDataMessage,
   validationSchema,
@@ -194,23 +196,14 @@ const BaseTable = ({
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
   const [data, setData] = useState([]);
-  const [tableLoading, setTableLoading] = useState(false);
+  // const [tableLoading, setTableLoading] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [grouping, setGrouping] = useState([]);
 
-  let formUrl = url;
-
-  const { loading, rowData, columns } = useFetchTable({
-    url: formUrl || url,
-    columnsToHide,
-    customRenderer: customRenderer,
-    responseHandler: handleResponse,
-  });
-
   useEffect(() => {
     setData(rowData);
-    setTableLoading(loading);
+    // setTableLoading(loading);
   }, [rowData, loading]);
 
   const table = useReactTable({
@@ -268,11 +261,11 @@ const BaseTable = ({
     <>
       {showAdvanceFilters && showFilterForm && (
         <FilterForm
-          baseUrl={formUrl}
+          // baseUrl={url}
+          onFilter={onFilter}
           showFilters={showFilterForm}
           filterFields={filterFields}
           setData={setData}
-          setLoading={setTableLoading}
           responseHandler={handleResponse}
           validationSchema={validationSchema}
         />

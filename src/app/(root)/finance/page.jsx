@@ -5,6 +5,7 @@ import BaseTable from "@/app/components/Tables/BaseTable";
 import { useTheme } from "styled-components";
 import useFetch from "@/custom_hooks/useFetch";
 import * as yup from "yup";
+import useFetchTable from "@/custom_hooks/useFetchTable";
 
 const filterFields = [
   {
@@ -58,17 +59,23 @@ const FinancePage = () => {
     filterFields[0].inputs[0].options = finances.data;
   }
 
+  const { loading, rowData, columns } = useFetchTable({
+    url: `${mainUrl}/cooperative/finance/`,
+    columnsToHide: ["idx", "location", "name", "parent"],
+    responseHandler: handleResponse,
+  });
+
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/finance/`}
-        columnsToHide={["idx", "location", "name", "parent"]}
+        rowData={rowData}
+        columns={columns}
         columnOrder={["finance_name", "location_name", "phone_number"]}
         filterFields={filterFields}
-        loading={loadingFinances}
+        loading={loading}
         noDataMessage="No Finance found"
-        handleResponse={handleResponse}
         validationSchema={schema}
+        handleResponse={handleResponse}
       />
     </div>
   );
