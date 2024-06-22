@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { mainUrl } from "../app/constants";
 import { Cookies } from "react-cookie";
-import apiService from "../app/constants";
+import apiService from "@/api_service";
+
 
 class MultiMessageError extends Error {
   messages = [];
@@ -20,24 +21,15 @@ export const loginUser = createAsyncThunk("auth/login", async (loginInfo) => {
       password: password,
     });
     if (response.status === 200) {
-      return response.data;
+      return await response.json();
     }
     if (response.status === 400) {
       console.log("Invalid credentials");
     }
-    return response.data;
+    return await response.json();
   } catch (error) {
-    let data = null;
-    if (error.response !== undefined && error.response.data !== undefined) {
-      if (error.response.data["details"] == undefined) {
-        data = error.response.data["detail"];
-        data = [data]; // Converting to array because reaised error is being catched and treated as array in signIn page
-      } else {
-        data = error.response.data["details"];
+    throw error; 
       }
-      throw new Error(JSON.stringify(data));
-    }
-  }
 });
 
 const initialState = {

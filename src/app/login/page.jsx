@@ -2,17 +2,20 @@
 import React, { useEffect } from "react";
 import styled, { useTheme } from "styled-components";
 import { MdOutlineLock } from "react-icons/md";
-import Button from "../components/Button";
+import Button from "@/app/components/Button";
 import { ClipLoader } from "react-spinners";
-import InputField from "../components/Forms/Fields/InputField";
+import InputField from "@/app/components/Forms/Fields/InputField";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, updateAuthentiaction } from "../../features/authSlice";
-import { enqueueSnackbar } from "notistack";
-import Backdrop from "../components/Backdrop";
-import PasswordField from "../components/Forms/Fields/PasswordField";
+import { loginUser, updateAuthentiaction } from "@/features/authSlice";
+import Backdrop from "@/app/components/Backdrop";
+import PasswordField from "@/app/components/Forms/Fields/PasswordField";
 // import CheckboxField from "../components/Forms/Fields/CheckboxField";
-import { tokensAvailable } from "../../helpers";
+import { tokensAvailable } from "@/helpers";
 import { useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
+import { enqueueSnackbar } from "notistack";
+
+
 
 const Grid = styled.div`
   display: grid;
@@ -71,7 +74,10 @@ function SignIn() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { loading } = useSelector((store) => store.auth);
+  // const { loading } = useSelector((store) => store.auth);
+  const loading = false;
+
+  // const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (tokensAvailable()) {
@@ -105,7 +111,7 @@ function SignIn() {
           }, index * 500);
         });
       } catch (parseError) {
-        enqueueSnackbar("An unexpected error occurred", {
+        enqueueSnackbar("An unexpected error occurredddd", {
           variant: "error",
           autoHideDuration: 3000,
         });
@@ -113,6 +119,7 @@ function SignIn() {
       }
     }
   };
+
 
   return (
     <>
@@ -169,7 +176,6 @@ function SignIn() {
           </form>
         </LoginContainer>
       </Grid>
-
       <Backdrop open={loading}>
         <ClipLoader color="#fff" />
       </Backdrop>

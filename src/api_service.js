@@ -1,86 +1,142 @@
-import axios from "axios";
 import { Cookies } from "react-cookie";
-import { mainUrl } from "./app/constants";
+import { mainUrl } from "@/app/constants";
 import { enqueueSnackbar } from "notistack";
 
-const api = axios.create({
-  baseURL: "http:localhost:8000",
-  timeout: 10000,
-});
-
-// Request interceptor
-api.interceptors.request.use(
-  (config) => {
-    const userCookie = new Cookies();
-    const token = userCookie.get("access");
-    if (token) config.headers["Authorization"] = `JWT ${token}`;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+class CustomFetchError extends Error {
+  constructor(message, data) {
+    super(message);
+    this.data = data;
   }
-);
+}
 
-// Response interceptor
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    if (error.response) {
-      let cookie = new Cookies();
-      console.error("Error Response:", error.response);
-      if (error.response.status === 401) {
-        if (error.request.responseURL === `${mainUrl}/auth/refresh-token/`) {
-          cookie.remove("access");
-          cookie.remove("refresh");
-          window.location.href = "/signin";
-          enqueueSnackbar("Session Expired, please login to continue", {
-            variant: "error",
-          });
-          return Promise.reject(error);
-        }
-        // Handle access token expiration
-        if (
-          error.response.data.code &&
-          error.response.data.code === "token_not_valid"
-        ) {
-          let refresh = cookie.get("refresh");
-          try {
-            const response = await api.post(`${mainUrl}/auth/refresh-token/`, {
-              refresh: refresh,
-            });
-            cookie.set("access", response.data.access, { path: "/" });
-            api.defaults.headers[
-              "Authorization"
-            ] = `JWT ${response.data.access}`;
-            return api(error.config);
-          } catch (error) {
-            cookie.remove("access");
-            cookie.remove("refresh");
+const customFetch = async (url, options = {}) => {
+  const cookies = new Cookies();
+  const token = cookies.get("access");
+
+  const headers = {
+    ...options.headers,
+    ...(token ? { "Authorization": `JWT ${token}` } : {}),
+    "Content-Type": "application/json",
+  };
+
+  const config = {
+    ...options,
+    headers,
+    mode: 'cors', // Ensure CORS mode is enabled
+  };
+
+  console.log("Request URL:", url);
+  console.log("Request Config:", config);
+
+  try {
+    const response = await fetch(url, config);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      if (response.status === 401) {
+        if (errorData.code === "token_not_valid") {
+          const refreshToken = cookies.get("refresh");
+          if (refreshToken) {
+            try {
+              const refreshResponse = await fetch(`${mainUrl}/auth/refresh-token/`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ refresh: refreshToken }),
+              });
+
+              if (refreshResponse.ok) {
+                const refreshData = await refreshResponse.json();
+                cookies.set("access", refreshData.access, { path: "/" });
+                return customFetch(url, options); // Retry original request
+              } else {
+                cookies.remove("access");
+                cookies.remove("refresh");
+                window.location.href = "/signin";
+                enqueueSnackbar("Session Expired, please login to continue", {
+                  variant: "error",
+                });
+                return;
+              }
+            } catch (error) {
+              cookies.remove("access");
+              cookies.remove("refresh");
+              window.location.href = "/signin";
+              enqueueSnackbar("Session Expired, please login to continue", {
+                variant: "error",
+              });
+              return;
+            }
+          } else {
+            cookies.remove("access");
+            cookies.remove("refresh");
             window.location.href = "/signin";
             enqueueSnackbar("Session Expired, please login to continue", {
               variant: "error",
             });
-            return Promise.reject(error);
+            return;
+          }
+        } else {
+          if (!errorData) {
+            throw new CustomFetchError("Something went wrong", null);
+          } else {
+            let data = null;
+            if (errorData.details === undefined) {
+              data = [errorData.detail]; // Converting to array because raised error is being caught and treated as array in signIn page
+            } else {
+              data = errorData.details;
+            }
+            throw new CustomFetchError(JSON.stringify(data));
           }
         }
-
-        enqueueSnackbar("Something went wrong", { variant: "error" });
-        return Promise.reject(error);
       }
     }
-    return Promise.reject(error);
-  }
-);
 
-// API methods
-const get = (url, params = {}, config = {}) =>
-  api.get(url, { ...config, params });
-const post = (url, data, config = {}) => api.post(url, data, config);
-const put = (url, data, config = {}) => api.put(url, data, config);
-const patch = (url, data, config = {}) => api.patch(url, data, config);
-const del = (url, config = {}) => api.delete(url, config);
+    return response;
+  } catch (error) {
+    if (error instanceof CustomFetchError) {
+      throw error; // Rethrow custom errors to be handled outside
+    } else {
+      console.error("Fetch error:", error);
+      enqueueSnackbar("Something went wrong", { variant: "error" });
+      return Promise.reject(error);
+    }
+  }
+};
+
+const get = (url, params = {}, options = {}) => {
+  const queryString = new URLSearchParams(params).toString();
+  return customFetch(`${url}?${queryString}`, options);
+};
+
+const post = (url, data, options = {}) =>
+  customFetch(url, {
+    ...options,
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+const put = (url, data, options = {}) =>
+  customFetch(url, {
+    ...options,
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+const patch = (url, data, options = {}) =>
+  customFetch(url, {
+    ...options,
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+
+const del = (url, options = {}) =>
+  customFetch(url, {
+    ...options,
+    method: "DELETE",
+  });
 
 const apiService = {
   get,

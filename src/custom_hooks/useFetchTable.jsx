@@ -19,7 +19,7 @@ const useFetchTable = ({
         setLoading(true);
         const response = await apiService.get(url);
         if (response.status === 200) {
-          let data = response.data;
+          let data = await response.json();
           if (responseHandler) {
             data = responseHandler(data);
           }
