@@ -233,7 +233,7 @@ function Footer() {
               type={"text"}
               editable
               style={{
-                color: theme.palette.text.primary,
+                color: theme.palette.text.white,
                 marginBottom: theme.spacing.s0,
               }}
             />
@@ -244,7 +244,7 @@ function Footer() {
               type={"email"}
               editable
               style={{
-                color: theme.palette.text.primary,
+                color: theme.palette.text.white,
                 marginBottom: theme.spacing.s0,
               }}
             />
