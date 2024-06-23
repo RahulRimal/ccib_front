@@ -194,8 +194,6 @@ const BaseTable = ({
   const [showFilterForm, setShowFilterForm] = useState(false);
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
-  const [data, setData] = useState([]);
-  const [, setTableLoading] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [grouping, setGrouping] = useState([]);
