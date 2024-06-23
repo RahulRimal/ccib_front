@@ -6,8 +6,12 @@ import * as yup from "yup";
 import { mainUrl } from "@/app/constants";
 import useFetchTable from "@/custom_hooks/useFetchTable";
 import { useRouter } from "next/navigation";
+import {AdvanceFilter} from "@/models/misc";
+import { useEffect, useState } from "react";
+import apiService from "@/api_service";
 
-let filterFields = [
+
+let filterFields: AdvanceFilter[] = [
   {
     title: "Fields",
     inputs: [
@@ -76,20 +80,47 @@ const schema = yup.object().shape({
 });
 
 const UsersTable = () => {
+
+  const {rows, setRows} = useState([]);
+  const {tableLoading, setTableLoading} = useState(false);
+
   const { loading, rowData, columns } = useFetchTable({
     url: `${mainUrl}/cooperative/financeusers/`,
     columnsToHide: ["id", "idx", "username"],
   });
   const router = useRouter();
 
+  const handleFilter = async (data: any, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    setTableLoading(true); 
+
+    const response = await apiService.get({
+      url: `${mainUrl}/cooperative/financeusers/`,
+      params: data
+    });
+
+    const resData  = await response.json();
+
+    
+    setRows(rowData);
+    setTableLoading(false);
+    
+  };
+
+  useEffect(() => {
+    setRows(rowData);
+  }, [rowData, setRows]);
+
   return (
     <div>
       <BaseTable
         loading={loading}
         columns={columns}
-        rowData={rowData}
+        rowData={rows}
         title="Users list"
         filterFields={filterFields}
+        onFilter={handleFilter}
         validationSchema={schema}
         toolbarActions={
           <Button

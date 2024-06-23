@@ -32,6 +32,7 @@ const OverdueLoansTable = () => {
     url: `${mainUrl}/cooperative/loans/overdue_loans/?finance=FBXV6ZkP3REMxfTUCFSJmP`,
     customRenderer: customRenderer,
   });
+  
   return (
     <>
       <BaseTable

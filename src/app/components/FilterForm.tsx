@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import ErrorMessage from "./Forms/Fields/ErrorMessage";
 import { yupResolver } from "@hookform/resolvers/yup";
 import apiService from "../../api_service";
+import { AdvanceFilter } from "@/models/misc";
 
 const FormWrapper = styled.form`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -128,16 +129,19 @@ const customStyles = {
   }),
 };
 
+type Props = {
+  showFilters: boolean;
+  filterFields: AdvanceFilter[];
+  onFilter: (data:object) => void;
+  validationSchema: any;
+};
+
 function FilterForm({
   showFilters,
   filterFields,
-  onFilter = null,
-  baseUrl,
-  setData,
-  setLoading,
+  onFilter,
   validationSchema,
-  responseHandler = null,
-}) {
+}: Props) {
   const theme = useTheme();
 
   const {
@@ -151,7 +155,7 @@ function FilterForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const isEmptyObject = (obj) => Object.values(obj).every((value) => !value);
+  // const isEmptyObject = (obj) => Object.values(obj).every((value) => !value);
 
   // const getTableInfo = async (data, url) => {
   //   if (isEmptyObject(data)) {
@@ -180,11 +184,11 @@ function FilterForm({
       method="GET"
       onSubmit={(e) => {
         e.preventDefault();
-        // return handleSubmit((data) => getTableInfo(data, baseUrl))(e);
-        return handleSubmit((data, e) => {
-          e.preventDefault();
-          onFilter(data, responseHandler);
-        });
+        return handleSubmit((data) => onFilter(data))(e);
+        // return handleSubmit((data:object, e:any) => {
+        //   e.preventDefault();
+        //   onFilter(data);
+        // });
       }}
       className={showFilters ? "show" : "hide"}
       style={{ overflow: "visible" }}

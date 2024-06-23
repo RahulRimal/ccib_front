@@ -108,7 +108,8 @@ const customFetch = async (url, options = {}) => {
 
 const get = (url, params = {}, options = {}) => {
   const queryString = new URLSearchParams(params).toString();
-  return customFetch(`${url}?${queryString}`, options);
+  if (queryString) url += `?${queryString}`;
+  return customFetch( url, options);
 };
 
 const post = (url, data, options = {}) =>

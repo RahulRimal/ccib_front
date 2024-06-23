@@ -1,7 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const IconButton = ({ type, onClick, onHover, showBgOnHover = true, children }) => {
+
+
+
+type Props = {
+  type?: string;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onHover?: () => void;
+  showBgOnHover: boolean;
+  children: React.ReactNode;
+};
+
+
+const IconButton = ({ type, onClick, onHover, showBgOnHover=true, children}: Props) => {
   return (
     <Wrapper type={type} onMouseOver={onHover} onClick={onClick} showBgOnHover={showBgOnHover}  >
       {children}
@@ -20,8 +32,6 @@ const Wrapper = styled.button`
 cursor: pointer;
 border: none;
 background: none;
-/* width: ${({ width }) => width || 'auto'}; */
-/* height: ${({ height }) => height || 'auto'}; */
 
 :hover {
   &:hover {

@@ -17,7 +17,7 @@ const useFetchTable = ({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await apiService.get(url);
+        const response = await apiService.get(url, queryParams);
         if (response.status === 200) {
           let data = await response.json();
           if (responseHandler) {

@@ -12,6 +12,10 @@ import {
   getFilteredRowModel,
   getExpandedRowModel,
   getGroupedRowModel,
+  ColumnDef,
+  GroupingState,
+  OnChangeFn,
+  SortingState,
 } from "@tanstack/react-table";
 import { ClipLoader } from "react-spinners";
 import SearchBar from "../SearchBar";
@@ -21,8 +25,9 @@ import Menu from "../Menu";
 import { humanizeString } from "../../../helpers";
 import Button from "../Button";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import FilterForm from "../FilterForm";
 import useFetchTable from "../../../custom_hooks/useFetchTable";
+import { AdvanceFilter } from "@/models/misc";
+import FilterForm from "../FilterForm";
 
 const Toolbar = styled.div`
   padding: ${({ theme }) => theme.spacing.s16};
@@ -154,7 +159,7 @@ const Title = styled.h1`
   font-size: ${({ theme }) => theme.typography.fontSize.f24};
 `;
 
-const PaginationButton = styled.div`
+const PaginationButton = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,46 +173,55 @@ const PaginationButton = styled.div`
     font-size: ${({ theme }) => theme.typography.fontSize.f24};
     border: 2px solid
       ${({ theme, disabled }) =>
-        disabled ? theme.palette.disabled.button : theme.palette.primary.main};
+    disabled ? theme.palette.disabled.button : theme.palette.primary.main};
     border-radius: ${({ theme }) => theme.borderRadius.container};
-    cursor: pointer;
+    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   }
 `;
 
-const BaseTable = ({
+type BaseTableProps<TData> = {
+  columnOrder: string[];
+  rowData: TData[];
+  columns: ColumnDef<TData, any>[];
+  loading: boolean;
+  tableLoading?: boolean;
+  height?: string;
+  title?: string;
+  onFilter?: (filters: any) => void;
+  toolbarActions?: React.ReactNode;
+  navigateOnRowClick?: (data: TData) => void;
+  filterFields: AdvanceFilter[];
+  showAdvanceFilters?: boolean;
+  noDataMessage?: string;
+  validationSchema?: object;
+};
+
+const BaseTable = <TData,>({
   columnOrder = [],
-  rowData,
+  rowData = [],
   columns,
-  loading,
-  tableLoading,
+  loading = true,
+  tableLoading = false,
   height,
   title,
-  onFilter = null,
+  onFilter,
   toolbarActions,
   navigateOnRowClick,
   filterFields,
-  handleResponse,
   showAdvanceFilters = true,
-  noDataMessage,
+  noDataMessage = 'No data available',
   validationSchema,
-}) => {
+}: BaseTableProps<TData>) => {
   const theme = useTheme();
   const [showFilterForm, setShowFilterForm] = useState(false);
-  const [sorting, setSorting] = useState([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
-  const [data, setData] = useState([]);
-  // const [tableLoading, setTableLoading] = useState(false);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [grouping, setGrouping] = useState([]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [grouping, setGrouping] = useState<string[]>([]);
 
-  useEffect(() => {
-    setData(rowData);
-    // setTableLoading(loading);
-  }, [rowData, loading]);
-
-  const table = useReactTable({
-    data,
+  const table = useReactTable<TData>({
+    data: rowData || [],
     columns,
     onGroupingChange: setGrouping,
     getExpandedRowModel: getExpandedRowModel(),
@@ -242,7 +256,7 @@ const BaseTable = ({
       </div>
     );
   }
-  if (rowData.length === 0) {
+  if (rowData && rowData.length === 0) {
     return (
       <div
         style={{
@@ -261,12 +275,9 @@ const BaseTable = ({
     <>
       {showAdvanceFilters && showFilterForm && (
         <FilterForm
-          // baseUrl={url}
           onFilter={onFilter}
           showFilters={showFilterForm}
           filterFields={filterFields}
-          setData={setData}
-          responseHandler={handleResponse}
           validationSchema={validationSchema}
         />
       )}
@@ -299,15 +310,9 @@ const BaseTable = ({
         <div style={{ display: "flex", gap: theme.spacing.s12 }}>
           {showAdvanceFilters && (
             <div>
-              {showFilterForm ? (
-                <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
-                  <TbFilterEdit className="icon" />
-                </IconButton>
-              ) : (
-                <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
-                  <TbFilter className="icon" />
-                </IconButton>
-              )}
+              <IconButton onClick={() => setShowFilterForm(!showFilterForm)}>
+                {showFilterForm ? <TbFilterEdit className="icon" /> : <TbFilter className="icon" />}
+              </IconButton>
             </div>
           )}
           <div>
@@ -325,8 +330,8 @@ const BaseTable = ({
               anchorEl={anchorEl}
               setAnchorEl={setAnchorEl}
             >
-              {table.getAllColumns().map((item) => (
-                <div style={{ display: "flex", gap: theme.spacing.s8 }}>
+              {table.getAllColumns().map((item, index) => (
+                <div key={index} style={{ display: "flex", gap: theme.spacing.s8 }}>
                   <input
                     type="checkbox"
                     disabled={!item.getCanHide()}
@@ -334,13 +339,13 @@ const BaseTable = ({
                     checked={item.getIsVisible()}
                     onChange={item.getToggleVisibilityHandler()}
                   />
-                  <p>{humanizeString(item.columnDef.header)}</p>
+                  <p>{humanizeString(item.columnDef.header as string)}</p>
                 </div>
               ))}
             </Menu>
           </div>
         </div>
-      </Toolbar>{" "}
+      </Toolbar>
       <TableWrapper style={{ height: height ? height : "auto" }}>
         <StyledTable>
           <thead style={{ width: table.getTotalSize() }}>
@@ -358,7 +363,7 @@ const BaseTable = ({
                       style={{
                         cursor: "pointer",
                         width: header.getSize(),
-                        borderCollapse: isGrouped ? "collapse" : "none",
+                        borderCollapse: isGrouped ? "collapse" : undefined,
                       }}
                     >
                       {flexRender(
@@ -375,9 +380,7 @@ const BaseTable = ({
                       <div
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`${
-                          header.column.getIsResizing() && "active"
-                        }`}
+                        className={`${header.column.getIsResizing() && "active"}`}
                         style={{
                           backgroundColor:
                             header.column.getIsResizing() &&
@@ -393,16 +396,11 @@ const BaseTable = ({
 
           <tbody>
             {tableLoading ? (
-              <div
-                style={{
-                  height: theme.sizing.s44,
-                  marginTop: theme.spacing.s16,
-                }}
-              >
-                <LoadingWrapper>
+              <tr>
+                <td colSpan={columns.length} style={{ textAlign: "center" }}>
                   <ClipLoader />
-                </LoadingWrapper>
-              </div>
+                </td>
+              </tr>
             ) : (
               table.getRowModel().rows.map((row) => (
                 <DataRow
@@ -424,14 +422,9 @@ const BaseTable = ({
               ))
             )}
 
-            {data.length === 0 && (
-              <div
-                style={{
-                  height: theme.sizing.s44,
-                  marginTop: theme.spacing.s16,
-                }}
-              >
-                <LoadingWrapper>
+            {rowData.length === 0 && (
+              <tr>
+                <td colSpan={columns.length} style={{ textAlign: "center" }}>
                   <p
                     style={{
                       margin: theme.spacing.s16,
@@ -441,8 +434,8 @@ const BaseTable = ({
                   >
                     No result found!
                   </p>
-                </LoadingWrapper>
-              </div>
+                </td>
+              </tr>
             )}
           </tbody>
         </StyledTable>

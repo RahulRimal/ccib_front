@@ -46,36 +46,11 @@ const users = [
 ];
 
 const FinanceUsersTable = () => {
-  /*     const columns = [
-        {
-            accessorKey: "name",
-            header: "Name",
-        },
-        {
-            accessorKey: "email",
-            header: "Email",
-        },
-        {
-            accessorKey: "status",
-            header: "Status",
-        },
-        {
-            accessorKey: "amount",
-            header: "Amount",
-        },
-        {
-            accessorKey: "dob",
-            header: "Date of Birth",
-        },
-        {
-            accessorKey: "phone_number",
-            header: "Phone Number",
-        },
-    ]; */
 
   const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}/auth/users/?loans__finance__idx=36MHASzorqBBdKP2CccsYm`,
-    columnsToHide: ["idx", "username"],
+    // url: `${mainUrl}/auth/users/?loans__finance__idx=36MHASzorqBBdKP2CccsYm`,
+    url: `${mainUrl}/cooperative/financeusers/`,
+    // columnsToHide: ["idx"],
   });
   return (
     <>

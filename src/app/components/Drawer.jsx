@@ -11,7 +11,8 @@ import {
   MdPeople,
 } from "react-icons/md";
 
-import { drawerMinWidth } from "../layout";
+
+import { drawerMinWidth } from "../(root)/layout";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FaUsersSlash } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";

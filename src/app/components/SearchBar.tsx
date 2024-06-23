@@ -46,9 +46,15 @@ const Input = styled.input`
 `;
 
 
+type Props = {
+    placeholder: string;
+    value?: string;
+    setValue: (value: string) => void;
+    style?: React.CSSProperties;
+    inputStyle?: React.CSSProperties;
+};
 
-
-const SearchBar = ({ placeholder, value, setValue, style, inputStyle }) => {
+const SearchBar = ({ placeholder, value, setValue, style, inputStyle }: Props) => {
     const searchBarStyle = { ...style };
     const inputStyles = { ...inputStyle };
     return (

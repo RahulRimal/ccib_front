@@ -1,7 +1,8 @@
 import { FaLocationArrow, FaSortDown, FaSortUp } from "react-icons/fa6";
 import { MdOutlineAttachEmail, MdOutlinePhonePaused } from "react-icons/md";
 
-export const mainUrl = "http://192.168.1.71:9000";
+// export const mainUrl = "http://192.168.1.71:9000";
+export const mainUrl = "http://192.168.1.79:9000";
 
 export const ContactInfo = [
   {
