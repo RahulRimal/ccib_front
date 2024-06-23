@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import SectionHeading from "../components/ScetionHeading";
 import RankSlider from "../components/RankSlider";
 import styled, { useTheme } from "styled-components";
@@ -325,7 +325,7 @@ function ReportPage() {
   const theme = useTheme();
 
   const [downloading, setDownloading] = useState(false);
-  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
+  const { toPDF, targetRef } = usePDF({ filename: "reports.pdf" });
 
   const customRenderer = {
     status: (info) => {
