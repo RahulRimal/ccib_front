@@ -8,7 +8,7 @@ const FormGroup = styled.div`
   padding-bottom: ${({ theme }) => theme.spacing.s8};
 
   & > div {
-    /* display: flex; */
+    display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.spacing.s4};
     margin: ${({ theme }) => theme.spacing.s8} 0;
@@ -59,12 +59,14 @@ const FormGroup = styled.div`
 `;
 
 const Prefix = styled.div`
+  display: flex;
   position: absolute;
   left: ${({ theme }) => theme.spacing.s12};
 `;
 
 const Suffix = styled.div`
   position: absolute;
+  display: flex;
   right: ${({ theme }) => theme.spacing.s12};
 `;
 
@@ -111,6 +113,10 @@ const InputField = ({
           required={required}
           defaultValue={defaultValue}
         />
+
+        <label htmlFor={name} style={{ textTransform: "capitalize" }}>
+          {label}
+        </label>
         {suffix && (
           <Suffix
             onClick={onSuffixClick}
@@ -119,10 +125,6 @@ const InputField = ({
             {suffix}
           </Suffix>
         )}
-
-        <label htmlFor={name} style={{ textTransform: "capitalize" }}>
-          {label}
-        </label>
       </div>
       {error && <ErrorMessage error={error} />}
     </FormGroup>
