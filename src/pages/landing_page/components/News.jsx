@@ -26,7 +26,6 @@ const CardWrapper = styled.div`
   flex-direction: column;
   flex-basis: 30.33%;
   flex-grow: 1;
-  gap: ${({ theme }) => theme.spacing.s20};
   position: relative;
   background: ${({ theme }) => theme.palette.background.default};
   border-radius: ${({ theme }) => theme.borderRadius.container};
@@ -43,7 +42,7 @@ const CardBody = styled.div`
     line-height: 1.5;
     color: ${({ theme }) => theme.palette.text.secondary};
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -52,7 +51,7 @@ const CardBody = styled.div`
 const ImageWrapper = styled.div`
   img {
     width: 100%;
-    height: ${({ theme }) => theme.sizing.s192};
+    height: ${({ theme }) => theme.sizing.s256};
     object-fit: cover;
     object-position: center;
     border-radius: ${({ theme }) => theme.borderRadius.container};
