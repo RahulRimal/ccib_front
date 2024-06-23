@@ -86,20 +86,29 @@ function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password = data.get('password');
-    dispatch(loginUser({ username, password })).unwrap().then((data) => {
-      enqueueSnackbar("Login successful", { variant: "success", autoHideDuration: 2000 });
-      navigate("/");
-    }).catch((error) => {
-      const errs = JSON.parse(error.message)
-      errs.forEach((element, index) => {
-        setTimeout(() => {
-          enqueueSnackbar(element, { variant: "error", autoHideDuration: 3000 });
-        }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+    const username = data.get("username");
+    const password = data.get("password");
+    dispatch(loginUser({ username, password }))
+      .unwrap()
+      .then((data) => {
+        enqueueSnackbar("Login successful", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+        navigate("/");
+      })
+      .catch((error) => {
+        const errs = JSON.parse(error.message);
+        errs.forEach((element, index) => {
+          setTimeout(() => {
+            enqueueSnackbar(element, {
+              variant: "error",
+              autoHideDuration: 3000,
+            });
+          }, index * 500); // Multiply the index by 2000 to get a cumulative delay of 2 seconds between each message
+        });
       });
-    });
-  }
+  };
 
   return (
     <>
@@ -136,12 +145,12 @@ function SignIn() {
               name="password"
               placeholder="Password"
             />
-           {/*  <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
+            {/*  <div style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: theme.spacing.s4 }}>
               <CheckboxField name="Remember me" options={[{ value: true, label: "yes" }, { value: false, label: "no" }]} />
               <span>Remember me</span>
             </div> */}
             <Button
-              style={{ width: "100%" }}
+              style={{ width: "100%", padding: ` ${theme.spacing.s12} 0` }}
               type="submit"
               text={"SIGN IN"}
               bg={"red"}

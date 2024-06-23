@@ -19,25 +19,23 @@ const DropdownWrapper = styled.div`
     position: absolute;
     left: 1%;
   }
+  .react-select__menu {
+    z-index: 99;
+  }
   .react-select__control {
     height: ${({ theme }) => theme.sizing.s52};
-    padding: 0 ${({ theme }) => theme.spacing.s8};
-    display: flex;
-    align-items: center;
-    border: 1px solid ${({ theme }) => theme.palette.border.primary};
+    border-radius: ${({ theme }) => theme.borderRadius.input};
     background-color: ${({ theme }) => theme.palette.background.dark};
+    border: 2px solid ${({ theme }) => theme.palette.border.secondary};
+  }
+  .react-select__control--is-focused {
+    border: 2px solid ${({ theme }) => theme.palette.border.focused};
 
-    &--menu-is-open {
-      border: 3px solid ${({ theme }) => theme.palette.primary.main};
-      &:hover {
-        border: 3px solid ${({ theme }) => theme.palette.primary.main};
-      }
+    &:hover {
+      border-color: ${({ theme }) => theme.palette.border.focused};
     }
   }
-  .react-select__value-container {
-    position: relative;
-    height: 100%;
-  }
+
   .react-select__input-container {
     height: 100%;
     text-align: left;
@@ -48,7 +46,6 @@ const DropdownWrapper = styled.div`
     position: absolute;
   }
 `;
-
 const customStyles = {
   cursor: "pointer",
   option: (provided, state) => ({
@@ -56,7 +53,6 @@ const customStyles = {
     color: state.isSelected && "black",
   }),
 };
-
 const OptionField = ({
   options = [],
   name,
