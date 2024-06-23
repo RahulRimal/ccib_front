@@ -10,7 +10,7 @@ const useFetchTable = ({
   responseHandler = null,
   customRenderer = null,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
   const [columns, setColumns] = useState([]);
 

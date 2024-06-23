@@ -7,6 +7,7 @@ import BaseTable from "../components/Tables/BaseTable";
 import * as yup from "yup";
 import { mainUrl } from "../constants";
 import useFetchTable from "../custom_hooks/useFetchTable";
+import apiService from "../api_service";
 
 const Wrapper = styled.main``;
 
@@ -79,26 +80,42 @@ const schema = yup.object().shape({
 });
 
 const UsersTable = () => {
-  const { loading, rowData, columns } = useFetchTable({
-    url: `${mainUrl}/cooperative/financeusers/`,
-    columnsToHide: ["id", "idx", "username"],
-  });
+  
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const [tableLoading, setTableLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const url = `${mainUrl}/cooperative/financeusers/`
+
+  const { loading, rowData, columns } = useFetchTable({
+    url: url,
+    columnsToHide: ["id", "idx", "username"],
+  });
+
+  useEffect(() => {
+      setData(rowData);
+  }, [rowData]);
+
+
 
   return (
     <div>
       <BaseTable
         title="Users list"
-        url={`${mainUrl}/cooperative/financeusers/`}
-        columnsToHide={["id", "idx", "username"]}
+        rows={data}
+        columns={columns}
+        loading={loading}
+        tableLoading={tableLoading}
         filterFields={filterFields}
+        onFilter={(data) => apiService.filterTable(data, url, setData, setTableLoading)}
         validationSchema={schema}
         toolbarActions={
           <Button
             icon={<AiOutlinePlus />}
             text="Add User"
-            onClick={() => navigate("application")}
+            onClick={() => navigate("/add/users")}
           />
         }
         navigateOnRowClick={(data) => navigate(`/users/${data.idx}`)}
@@ -107,7 +124,7 @@ const UsersTable = () => {
   );
 };
 
-const UsersPage = ({}) => {
+const UsersPage = ({ }) => {
   return (
     <Wrapper>
       <UsersTable />

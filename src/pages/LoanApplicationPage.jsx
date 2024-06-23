@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { mainUrl } from "../constants";
 import BaseTable from "../components/Tables/BaseTable";
 
@@ -6,6 +6,8 @@ import { useTheme } from "styled-components";
 import { getFullName, humanizeString } from "../helpers";
 import useFetch from "../custom_hooks/useFetch";
 import * as yup from "yup";
+import useFetchTable from "../custom_hooks/useFetchTable";
+import apiService from "../api_service";
 
 let filterFields = [
   {
@@ -74,36 +76,61 @@ const handleFinancesResponse = (data) => {
   return finances;
 };
 
+
+
+
+const handleResponse = (data) => {
+  return data.map((item) => {
+    const { first_name, middle_name, last_name, phone_number } = item.user;
+    return {
+      ...item,
+      user: getFullName({ first_name, middle_name, last_name }),
+      phone_number,
+      finance: item.finance.name,
+    };
+  });
+};
+
 const LoanApplicationPage = () => {
   const theme = useTheme();
 
-  const handleResponse = (data) => {
-    return data.map((item) => {
-      const { first_name, middle_name, last_name, phone_number } = item.user;
-      return {
-        ...item,
-        user: getFullName({ first_name, middle_name, last_name }),
-        phone_number,
-        finance: item.finance.name,
-      };
-    });
-  };
+  const [tableLoading, setTableLoading] = useState(false);
+  const [data, setData] = useState([]);
+  
+  const url = `${mainUrl}/cooperative/loanapplications/`
 
   const customRenderer = {
-    status: (info) => {
-      const colors = {
-        pending: theme.palette.warning.main,
-        approved: theme.palette.success.main,
-        rejected: theme.palette.error.main,
-      };
-      const value = info.getValue();
-      return (
-        <p style={{ color: colors[value] }}>
-          {humanizeString(info.getValue())}
-        </p>
-      );
-    },
-  };
+  status: (info) => {
+    const colors = {
+      pending: theme.palette.warning.main,
+      approved: theme.palette.success.main,
+      rejected: theme.palette.error.main,
+    };
+    const value = info.getValue();
+    return (
+      <p style={{ color: colors[value] }}>
+        {humanizeString(info.getValue())}
+      </p>
+    );
+  },
+}
+
+
+
+  const { loading, rowData, columns } = useFetchTable({
+    url: url,
+    columnsToHide: ["idx", "phone_number"],
+    customRenderer,
+    responseHandler: handleResponse
+  });
+
+
+  useEffect(() => {
+    setData(rowData);
+  }, [rowData]);
+
+
+
 
   //filter
   const { loading: loadingUsers, data: users } = useFetch({
@@ -138,16 +165,16 @@ const LoanApplicationPage = () => {
       return item;
     });
   }
-  //filter
 
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/loanapplications`}
-        columnsToHide={["idx", "phone_number"]}
-        handleResponse={handleResponse}
-        customRenderer={customRenderer}
+        rows={data}
+        columns={columns}
+        loading={loading}
+        tableLoading={tableLoading}
         filterFields={filterFields}
+        onFilter={(data) => apiService.filterTable(data, url, setData, setTableLoading, { responseHandler: handleResponse })}
         noDataMessage={"No Loan Applications"}
         validationSchema={schema}
       />
