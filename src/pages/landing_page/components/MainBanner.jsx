@@ -107,8 +107,7 @@ function MainBanner() {
         >
           <SwiperSlide
             style={{
-              backgroundImage:
-                "url(https://source.unsplash.com/random?wallpapers)",
+              backgroundImage: "url(https://picsum.photos/300)",
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: "100%",
@@ -121,8 +120,7 @@ function MainBanner() {
 
           <SwiperSlide
             style={{
-              backgroundImage:
-                "url(https://source.unsplash.com/random?wallpapers)",
+              backgroundImage: "url(https://picsum.photos/1000)",
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: "100%",
@@ -134,8 +132,7 @@ function MainBanner() {
           </SwiperSlide>
           <SwiperSlide
             style={{
-              backgroundImage:
-                "url(https://source.unsplash.com/random?wallpapers)",
+              backgroundImage: "url(https://picsum.photos/500)",
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: "100%",

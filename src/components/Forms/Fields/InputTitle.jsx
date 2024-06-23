@@ -17,9 +17,9 @@ const Wrapper = styled.p`
   }
 `;
 
-function InputTitle({ title, required }) {
+function InputTitle({ title, required, style }) {
   return (
-    <Wrapper>
+    <Wrapper style={style}>
       {title} {required && <span>*</span>}
     </Wrapper>
   );

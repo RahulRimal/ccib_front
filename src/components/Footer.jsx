@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.s28};
   color: ${({ theme }) => theme.palette.text.primary};
-  width: 90%;
+  width: 85%;
   margin: auto;
   & > div {
     flex: 3;
@@ -30,16 +30,7 @@ const ColumnWrapper = styled.div`
       font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
     }
   }
-  &::after {
-    content: "";
-    display: block;
-    padding-right: ${({ theme }) => theme.spacing.s2};
-    background-color: ${({ theme }) => theme.palette.background.default};
-    position: absolute;
-    right: ${({ theme }) => theme.spacing.s0};
-    top: 15%;
-    bottom: 15%;
-  }
+
   &:first-child {
     padding-left: ${({ theme }) => theme.spacing.s0};
   }
@@ -60,6 +51,7 @@ const LogoWrapper = styled.div`
 const ColumnTitle = styled.h4`
   border-bottom: 2px solid ${({ theme }) => theme.palette.background.default};
   display: inline-block;
+  font-size: ${({ theme }) => theme.typography.fontSize.f18};
   color: ${({ theme }) => theme.palette.text.white};
   margin: ${({ theme }) => theme.spacing.s0};
   padding-right: ${({ theme }) => theme.spacing.s8};
@@ -111,8 +103,7 @@ const SubLinkWrapper = styled.ul`
   right: ${({ theme }) => theme.spacing.s0};
   top: 100%;
   z-index: 99;
-  padding: ${({ theme }) => theme.spacing.s8}
-    ${({ theme }) => theme.spacing.s12};
+  padding: ${({ theme }) => ` ${theme.spacing.s8} ${theme.spacing.s12}`};
   border-radius: ${({ theme }) => theme.borderRadius.container};
   li {
     height: ${({ theme }) => theme.sizing.s30};
@@ -180,7 +171,7 @@ function Footer() {
         {FooterLinks &&
           FooterLinks.map((item, i) => (
             <ColumnWrapper key={i}>
-              <ColumnTitle style={{}}>{item.title}</ColumnTitle>
+              <ColumnTitle>{item.title}</ColumnTitle>
               <ul
                 style={{ gap: theme.spacing.s8, marginTop: theme.spacing.s24 }}
               >
@@ -223,33 +214,39 @@ function Footer() {
           ))}
         <ColumnWrapper
           style={{
-            backgroundColor: theme.palette.background.dark,
-            borderRadius: theme.borderRadius.container,
-            padding: `${theme.spacing.s32} ${theme.spacing.s16}`,
+            color: theme.palette.text.white,
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
             justifyContent: "center",
           }}
         >
           <h2>Subscribe to our newsletter</h2>
-          <p style={{ marginBottom: theme.spacing.s16 }}>
-            Get News Updates to your inbox
-          </p>
-          <form action="" style={{ width: "80%" }}>
+
+          <form
+            action=""
+            style={{ width: "100%", marginTop: theme.spacing.s12 }}
+          >
             <InputField
               name={"username"}
+              title={"Your name"}
               placeholder={"Name"}
               type={"text"}
-              required
               editable
+              style={{
+                color: theme.palette.text.white,
+                marginBottom: theme.spacing.s0,
+              }}
             />
             <InputField
               name={"email"}
+              title={"Email"}
               placeholder={"Email"}
               type={"email"}
-              required
               editable
+              style={{
+                color: theme.palette.text.white,
+                marginBottom: theme.spacing.s0,
+              }}
             />
             <Button
               text={"Get Updates"}

@@ -93,7 +93,7 @@ const InputField = ({
 
   return (
     <FormGroup key={idx && idx}>
-      <InputTitle title={title} required={required} />
+      <InputTitle style={textStyles} title={title} required={required} />
       <div>
         {prefix && <Prefix onClick={onPrefixClick}>{prefix}</Prefix>}
         <input
