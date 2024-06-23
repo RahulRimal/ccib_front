@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import { ClipLoader } from "react-spinners";
 import InputField from "../components/Forms/Fields/InputField";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, updateAuthentiaction } from "../features/authSlice";
+import { loginUser, updateAuthentication } from "../features/authSlice";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../components/Backdrop";
 import PasswordField from "../components/Forms/Fields/PasswordField";
@@ -78,7 +78,7 @@ function SignIn() {
   useEffect(() => {
     // Check if user is already logged in and navigate to dashboard if so
     if (tokensAvailable()) {
-      dispatch(updateAuthentiaction({ name: "isLoggedIn", value: true }));
+      dispatch(updateAuthentication({ name: "isLoggedIn", value: true }));
       navigate("/");
     }
   }, []);
