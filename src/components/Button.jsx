@@ -14,7 +14,7 @@ const ButtonWrapper = styled.button`
   justify-content: center;
   gap: 8px;
   padding: 8px 12px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   border-radius: ${({ theme }) => theme.borderRadius.input};
   background-color: ${({ theme, disabled }) =>
     disabled ? theme.palette.disabled.button : theme.palette.primary.main};

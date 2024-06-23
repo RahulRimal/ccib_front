@@ -90,3 +90,6 @@ export const tokensAvailable = () => {
   if (cookie.get("access") && cookie.get("refresh")) return true
   return false
 }
+
+
+export const isEmptyObject = (obj) => Object.values(obj).every((value) => !value);

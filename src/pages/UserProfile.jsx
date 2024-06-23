@@ -319,13 +319,15 @@ const UserProfile = () => {
           </div>
           <Divider />
         </div>
-        {data &&
-          Object.keys(data).map((key) => (
-            <UserInfo key={key}>
-              <span>{humanizeString(key)}: </span>
-              {humanizeString(data[key])}
-            </UserInfo>
-          ))}
+        <div style={{padding: `${theme.spacing.s12} 0`}}>
+          {data &&
+            Object.keys(data).map((key) => (
+              <UserInfo key={key}>
+                <span>{humanizeString(key)}: </span>
+                {humanizeString(data[key])}
+              </UserInfo>
+            ))}
+        </div>
       </Sidebar>
     </Wrapper>
   );

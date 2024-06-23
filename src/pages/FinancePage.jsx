@@ -1,9 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { mainUrl } from "../constants";
 import BaseTable from "../components/Tables/BaseTable";
 import { useTheme } from "styled-components";
 import useFetch from "../custom_hooks/useFetch";
 import * as yup from "yup";
+import useFetchTable from "../custom_hooks/useFetchTable";
+import apiService from "../api_service";
 
 const filterFields = [
   {
@@ -25,48 +27,56 @@ const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
 });
 
-const handleFinancesResponse = (data) => {
-  const finances = data.map((item) => {
+
+const handleResponse = (data) => {
+  return data.map((item) => {
+    const { name: location_name } = item.location;
     return {
-      label: item.name,
-      value: item.name,
+      ...item,
+      finance_name: item.name,
+      location_name,
     };
   });
-  return finances;
 };
+
+
 
 const FinancePage = () => {
   const theme = useTheme();
 
-  const handleResponse = (data) => {
-    return data.map((item) => {
-      const { name: location_name } = item.location;
-      return {
-        ...item,
-        finance_name: item.name,
-        location_name,
-      };
-    });
-  };
+  const [tableLoading, setTableLoading] = useState(false);
+  const [data, setData] = useState([]);
 
-  const { loading: loadingFinances, data: finances } = useFetch({
-    url: `${mainUrl}/cooperative/finance`,
-    responseHandler: handleFinancesResponse,
+  const url = `${mainUrl}/cooperative/finance`;
+  const { loading, rowData, columns } = useFetchTable({
+    url: url,
+    responseHandler: handleResponse,
+    columnsToHide: ["idx", "location", "name", "parent"],
   });
-  if (finances) {
-    filterFields[0].inputs[0].options = finances.data;
-  }
+
+  useEffect(() => {
+    setData(rowData);
+
+    if (rowData && rowData.length > 0) {
+      filterFields[0].inputs[0].options = rowData.map((item) => {
+        return {
+          label: item.name,
+          value: item.name,
+        };
+      });
+    }
+  }, [rowData])
 
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/finance/`}
-        columnsToHide={["idx", "location", "name", "parent"]}
+        rows={data}
+        columns={columns}
         columnOrder={["finance_name", "location_name", "phone_number"]}
         filterFields={filterFields}
-        loading={loadingFinances}
+        onFilter={(data) => apiService.filterTable(data, url, setData, setTableLoading, { responseHandler: handleResponse })} loading={loading}
+        tableLoading={tableLoading}
         noDataMessage="No Finance found"
-        handleResponse={handleResponse}
         validationSchema={schema}
       />
     </div>

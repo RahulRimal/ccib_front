@@ -168,53 +168,38 @@ const PaginationButton = styled.div`
     font-size: ${({ theme }) => theme.typography.fontSize.f24};
     border: 2px solid
       ${({ theme, disabled }) =>
-        disabled ? theme.palette.disabled.button : theme.palette.primary.main};
+    disabled ? theme.palette.disabled.button : theme.palette.primary.main};
     border-radius: ${({ theme }) => theme.borderRadius.container};
     cursor: pointer;
   }
 `;
 
 const BaseTable = ({
-  url,
-  columnsToHide = [],
-  columnOrder=[],
+  rows,
+  columns,
+  loading,
+  tableLoading,
+  columnOrder = [],
   height,
   title,
   toolbarActions,
   navigateOnRowClick,
   filterFields,
-  handleResponse,
-  customRenderer,
+  onFilter,
   showAdvanceFilters = true,
-  noDataMessage,
+  noDataMessage = "No data found",
   validationSchema,
 }) => {
   const theme = useTheme();
   const [showFilterForm, setShowFilterForm] = useState(false);
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
-  const [data, setData] = useState([]);
-  const [tableLoading, setTableLoading] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [grouping, setGrouping] = useState([]);
 
-  let formUrl = url;
-
-  const { loading, rowData, columns } = useFetchTable({
-    url: formUrl || url,
-    columnsToHide,
-    customRenderer: customRenderer,
-    responseHandler: handleResponse,
-  });
-
-  useEffect(() => {
-    setData(rowData);
-    setTableLoading(loading);
-  }, [rowData, loading]);
-
   const table = useReactTable({
-    data,
+    data: rows || [],
     columns,
     onGroupingChange: setGrouping,
     getExpandedRowModel: getExpandedRowModel(),
@@ -249,7 +234,7 @@ const BaseTable = ({
       </div>
     );
   }
-  if (rowData.length === 0) {
+  if ((!columns || columns.length === 0) && (!rows || rows.length === 0)) {
     return (
       <div
         style={{
@@ -268,12 +253,9 @@ const BaseTable = ({
     <>
       {showAdvanceFilters && showFilterForm && (
         <FilterForm
-          baseUrl={formUrl}
           showFilters={showFilterForm}
           filterFields={filterFields}
-          setData={setData}
-          setLoading={setTableLoading}
-          responseHandler={handleResponse}
+          onFilter={onFilter}
           validationSchema={validationSchema}
         />
       )}
@@ -382,9 +364,8 @@ const BaseTable = ({
                       <div
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`${
-                          header.column.getIsResizing() && "active"
-                        }`}
+                        className={`${header.column.getIsResizing() && "active"
+                          }`}
                         style={{
                           backgroundColor:
                             header.column.getIsResizing() &&
@@ -431,7 +412,7 @@ const BaseTable = ({
               ))
             )}
 
-            {data.length === 0 && (
+            {rows && rows.length === 0 && (
               <div
                 style={{
                   height: theme.sizing.s44,

@@ -131,11 +131,8 @@ const customStyles = {
 function FilterForm({
   showFilters,
   filterFields,
-  baseUrl,
-  setData,
-  setLoading,
+  onFilter,
   validationSchema,
-  responseHandler = null,
 }) {
   const theme = useTheme();
 
@@ -150,36 +147,12 @@ function FilterForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const isEmptyObject = (obj) => Object.values(obj).every((value) => !value);
-
-  const getTableInfo = async (data, url) => {
-    if (isEmptyObject(data)) {
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const response = await apiService.get(url, data);
-      console.log(response);
-      if (response.status === 200) {
-        if (responseHandler) {
-          response.data = responseHandler(response.data);
-        }
-        setData(response.data);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
   return (
     <FormWrapper
       method="GET"
       onSubmit={(e) => {
         e.preventDefault();
-        return handleSubmit((data) => getTableInfo(data, baseUrl))(e);
+        if(onFilter) return handleSubmit((data) => onFilter(data))();
       }}
       className={showFilters ? "show" : "hide"}
       style={{ overflow: "visible" }}
@@ -268,6 +241,7 @@ function FilterForm({
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
             text="Filter"
+            disabled={isSubmitting || !onFilter}
             style={{
               padding: `${theme.spacing.s8} ${theme.spacing.s20}`,
             }}
