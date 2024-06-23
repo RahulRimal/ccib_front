@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { TbFilter, TbFilterEdit } from "react-icons/tb";
+import * as XLSX from "xlsx";
 
 import {
   useReactTable,
@@ -23,6 +24,7 @@ import Button from "../Button";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import FilterForm from "../FilterForm";
 import useFetchTable from "../../custom_hooks/useFetchTable";
+import { CSVLink } from "react-csv";
 
 const Toolbar = styled.div`
   padding: ${({ theme }) => theme.spacing.s16};
@@ -177,7 +179,7 @@ const PaginationButton = styled.div`
 const BaseTable = ({
   url,
   columnsToHide = [],
-  columnOrder=[],
+  columnOrder = [],
   height,
   title,
   toolbarActions,
@@ -229,7 +231,7 @@ const BaseTable = ({
       grouping,
       sorting: sorting,
       globalFilter: filtering,
-      columnOrder
+      columnOrder,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
@@ -264,6 +266,56 @@ const BaseTable = ({
       </div>
     );
   }
+  const headers = table
+    .getHeaderGroups()[0]
+    .headers.map((header) => header.column.columnDef.header);
+
+  const exldata = table.getCoreRowModel().rows.map((row) => {
+    const obj = {};
+    row
+      .getAllCells()
+      .forEach((cell) => (obj[cell.column.id] = cell.getValue()));
+    return obj;
+  });
+  const exportToExcel = () => {
+    const data = exldata;
+    // const data = [
+    //   { name: 'John Doe', age: 28, gender: 'Male' },
+    //   { name: 'Jane Smith', age: 34, gender: 'Female' },
+    // ];
+
+    // const headers = ['Name', 'Age', 'Gender'];
+    const title = "User Data";
+    // Create a new worksheet
+    const worksheet = XLSX.utils.json_to_sheet([]);
+
+    // Add the title to the worksheet
+    XLSX.utils.sheet_add_aoa(worksheet, [[title]], { origin: "A1" });
+
+    // Merge the cells for the title row
+    const merge = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }, // Adjust the merge range based on the number of columns
+    ];
+    if (!worksheet["!merges"]) worksheet["!merges"] = [];
+    worksheet["!merges"] = worksheet["!merges"].concat(merge);
+
+    // Add headers to the worksheet starting from the second row
+    XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: "A2" });
+
+    // Add data starting from the third row
+    XLSX.utils.sheet_add_json(worksheet, data, {
+      origin: "A3",
+      skipHeader: true,
+    });
+
+    // Create a new workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    // Write the workbook to a file
+    XLSX.writeFile(workbook, "data.xlsx");
+  };
+
   return (
     <>
       {showAdvanceFilters && showFilterForm && (
@@ -277,6 +329,10 @@ const BaseTable = ({
           validationSchema={validationSchema}
         />
       )}
+      <CSVLink data={rowData} filename={"data.csv"}>
+        Download me
+      </CSVLink>
+      <button onClick={() => exportToExcel(rowData)}>Export to Excel</button>
       <Toolbar>
         <div
           style={{

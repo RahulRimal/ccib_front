@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import LoanForm from "./pages/LoanForm";
 import FinancePage from "./pages/FinancePage";
 import CompanyPage from "./pages/CompanyPage";
-import LoanApplicationPage from "./pages/LoanApplicatinPage";
+import LoanApplicationPage from "./pages/LoanApplicationPage";
 import LoansPage from "./pages/LoansPage";
 import Footer from "./components/Footer";
 import Dashboard from "./pages/Dashboard/Dashboard";
