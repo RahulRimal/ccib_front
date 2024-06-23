@@ -6,9 +6,9 @@ import { TbMessages } from "react-icons/tb";
 
 const NewsWrapper = styled.div`
   display: flex;
-  width: 90%;
+  width: 100%;
   margin: auto;
-  gap: ${({ theme }) => theme.spacing.s20};
+  gap: ${({ theme }) => theme.spacing.s28};
   flex-wrap: wrap;
 
   @media (max-width: 1200px) {
