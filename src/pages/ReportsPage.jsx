@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import SectionHeading from "../components/ScetionHeading";
 import RankSlider from "../components/RankSlider";
 import styled, { useTheme } from "styled-components";
@@ -15,6 +15,10 @@ import useFetchTable from "../custom_hooks/useFetchTable";
 import { useNavigate } from "react-router-dom";
 import { mainUrl } from "../constants";
 import { getFullName, humanizeString } from "../helpers";
+import { usePDF } from "react-to-pdf";
+import { FaRegFilePdf } from "react-icons/fa6";
+import Backdrop from "../components/Backdrop";
+import { ClipLoader } from "react-spinners";
 
 const columns1 = [
   {
@@ -296,18 +300,32 @@ const Wrapper = styled.div`
   }
 `;
 
+const PdfButton = styled.div`
+  color: ${({ theme }) => theme.palette.text.white};
+  padding: ${({ theme }) => theme.spacing.s8};
+  position: fixed;
+  bottom: ${({ theme }) => theme.spacing.s28};
+  right: ${({ theme }) => theme.spacing.s12};
+  background: ${({ theme }) => theme.palette.primary.main};
+  font-size: ${({ theme }) => theme.typography.fontSize.f20};
+  cursor: pointer;
+`;
+
+const handleResponse = (data) => {
+  return data.map((item) => {
+    const { first_name, middle_name, last_name } = item.user;
+    return {
+      ...item,
+      user: getFullName({ first_name, middle_name, last_name }),
+      finance: item.finance.name,
+    };
+  });
+};
 function ReportPage() {
   const theme = useTheme();
-  const handleResponse = (data) => {
-    return data.map((item) => {
-      const { first_name, middle_name, last_name } = item.user;
-      return {
-        ...item,
-        user: getFullName({ first_name, middle_name, last_name }),
-        finance: item.finance.name,
-      };
-    });
-  };
+
+  const [downloading, setDownloading] = useState(false);
+  const { toPDF, targetRef } = usePDF({ filename: "reports.pdf" });
 
   const customRenderer = {
     status: (info) => {
@@ -332,255 +350,276 @@ function ReportPage() {
   };
   const data = useMemo(() => rowData, [rowData]);
 
+  const handlePdfGeneration = () => {
+    setDownloading(true);
+    setTimeout(async () => {
+      await toPDF();
+      setDownloading(false);
+    }, 500);
+  };
+
   return (
-    <div>
-      <ReportSection
-        headingText={"Consumner Loan Score Report"}
-        headerTextCenter
-        style={{ marginTop: theme.spacing.s48 }}
-      />
-      <ReportSection
-        headingText={"Quick Reports"}
-        style={{ marginTop: theme.spacing.s48 }}
-        headerTextLeft
-        headerWidth={"30%"}
+    <>
+      <Backdrop
+        open={downloading}
+        style={{
+          position: "fixed",
+          zIndex: 999,
+        }}
       >
-        <Wrapper style={{ padding: theme.spacing.s12 }}>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: theme.spacing.s64,
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <QuickReportCard
-              icon={<GiSpeedometer fontSize={theme.typography.fontSize.f86} />}
-              color={theme.palette.warning.main}
-              value={"180"}
-              text={"Evaluation Month Feb 24"}
-            />
-            <QuickReportCard
-              icon={<FcComboChart fontSize={theme.typography.fontSize.f86} />}
-              color={theme.palette.warning.main}
-              value={"23.43%"}
-              text={"Probrability of Default % Month Feb 24"}
-              interval={"Jan-24 - Mar-24"}
-            />
-            <QuickReportCard
-              color={theme.palette.warning.main}
-              value={"Prime A"}
-              text={"Evaluation Month Feb 24"}
-            />
-          </div>
-          <div>
-            <SectionHeading
-              text={"Categories : "}
-              fontSize={theme.typography.fontSize.f20}
-              color={theme.palette.error.main}
-              left
+        <ClipLoader color="#fff" />
+      </Backdrop>
+      <div ref={targetRef} style={{ position: "relative" }}>
+        <PdfButton onClick={handlePdfGeneration}>
+          <FaRegFilePdf />
+        </PdfButton>
+        <ReportSection
+          headingText={"Consumner Loan Score Report"}
+          headerTextCenter
+          style={{ marginTop: theme.spacing.s48 }}
+        />
+        <ReportSection
+          headingText={"Quick Reports"}
+          style={{ marginTop: theme.spacing.s48 }}
+          headerTextLeft
+          headerWidth={"30%"}
+        >
+          <Wrapper style={{ padding: theme.spacing.s12 }}>
+            <div
               style={{
-                marginTop: theme.spacing.s12,
-                marginBottom: 0,
-                padding: `${theme.spacing.s8} 0`,
-                fontWeight: theme.typography.fontWeight.medium,
-              }}
-            />
-            <RankSlider />
-          </div>
-          <div style={{ marginTop: theme.spacing.s48 }}>
-            <p
-              style={{
-                fontWeight: theme.typography.fontWeight.semiBold,
-                fontSize: theme.typography.fontSize.f16,
-                paddingBottom: theme.spacing.s8,
+                display: "flex",
+                flexWrap: "wrap",
+                gap: theme.spacing.s64,
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              Explanation:
-            </p>
-            <Explanation text={"10.23%"} notText={"10.23%"} />
-          </div>
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Score Reports for last 3 months"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        headerWidth={"30%"}
-      >
-        <Wrapper style={{ background: theme.palette.background.default }}>
-          <ScoreHistoryChart style={{ height: "550px" }} />
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Report Details"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        headerWidth={"30%"}
-      >
-        <Wrapper>
-          <DetailsTable />
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Search Details"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        headerWidth={"30%"}
-      >
-        <Wrapper>
-          <DetailsTable />
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Blacklist Indicator"}
-        style={{ marginTop: theme.spacing.s32 }}
-        width={"100%"}
-        headerTextLeft
-      >
-        <Wrapper>
-          <BaseTable isLoading={loading} data={data} columns={columns} />
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Blacklist Indicator"}
-        style={{ marginTop: theme.spacing.s32 }}
-        width={"100%"}
-        headerTextLeft
-      >
-        <Wrapper style={{ padding: `0 ${theme.spacing.s12}` }}>
-          <p>No Data Available</p>
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Blacklist History"}
-        style={{ marginTop: theme.spacing.s32 }}
-        width={"100%"}
-        headerTextLeft
-      >
-        <Wrapper style={{ padding: `0 ${theme.spacing.s12}` }}>
-          <p>No Data Available</p>
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Credit Profile Overview"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        width={"60%"}
-      >
-        <Wrapper>
-          <BaseTable data={data} columns={columns2} />
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Classification of Active Accounts by Institution Type"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        width={"100%"}
-      >
-        <Wrapper>
-          <BaseTable data={data} columns={columns4} width={"100%"} />
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Classification of Active Accounts by Product Type"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        width={"100%"}
-      >
-        <Wrapper>
-          <BaseTable columns={columns1} data={data} />
-        </Wrapper>
-        <Wrapper>
-          <BaseTable data={data} columns={columns1} width={"100%"} />
-        </Wrapper>
-        <Wrapper>
-          <BaseTable data={data} columns={columns1} width={"100%"} />
-        </Wrapper>
-      </ReportSection>
-      <div style={{ display: "flex", maxHeight: "fit-content", gap: "12px" }}>
+              <QuickReportCard
+                icon={
+                  <GiSpeedometer fontSize={theme.typography.fontSize.f86} />
+                }
+                color={theme.palette.warning.main}
+                value={"180"}
+                text={"Evaluation Month Feb 24"}
+              />
+              <QuickReportCard
+                icon={<FcComboChart fontSize={theme.typography.fontSize.f86} />}
+                color={theme.palette.warning.main}
+                value={"23.43%"}
+                text={"Probrability of Default % Month Feb 24"}
+                interval={"Jan-24 - Mar-24"}
+              />
+              <QuickReportCard
+                color={theme.palette.warning.main}
+                value={"Prime A"}
+                text={"Evaluation Month Feb 24"}
+              />
+            </div>
+            <div>
+              <SectionHeading
+                text={"Categories : "}
+                fontSize={theme.typography.fontSize.f20}
+                color={theme.palette.error.main}
+                left
+                style={{
+                  marginTop: theme.spacing.s12,
+                  marginBottom: 0,
+                  padding: `${theme.spacing.s8} 0`,
+                  fontWeight: theme.typography.fontWeight.medium,
+                }}
+              />
+              <RankSlider />
+            </div>
+            <div style={{ marginTop: theme.spacing.s48 }}>
+              <p
+                style={{
+                  fontWeight: theme.typography.fontWeight.semiBold,
+                  fontSize: theme.typography.fontSize.f16,
+                  paddingBottom: theme.spacing.s8,
+                }}
+              >
+                Explanation:
+              </p>
+              <Explanation text={"10.23%"} notText={"10.23%"} />
+            </div>
+          </Wrapper>
+        </ReportSection>
         <ReportSection
-          headingText={"Total Liability Summary"}
+          headingText={"Score Reports for last 3 months"}
           style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          headerWidth={"30%"}
+        >
+          <Wrapper style={{ background: theme.palette.background.default }}>
+            <ScoreHistoryChart style={{ height: "550px" }} />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Report Details"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          headerWidth={"30%"}
+        >
+          <Wrapper>
+            <DetailsTable />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Search Details"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          headerWidth={"30%"}
+        >
+          <Wrapper>
+            <DetailsTable />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Blacklist Indicator"}
+          style={{ marginTop: theme.spacing.s32 }}
+          width={"100%"}
           headerTextLeft
         >
           <Wrapper>
-            <BaseTable data={data} columns={columns3} />
+            <BaseTable isLoading={loading} data={data} columns={columns} />
           </Wrapper>
         </ReportSection>
-        <Wrapper
-          style={{
-            backgroundColor: theme.palette.background.default,
-            height: "inherit",
-          }}
+        <ReportSection
+          headingText={"Blacklist Indicator"}
+          style={{ marginTop: theme.spacing.s32 }}
+          width={"100%"}
+          headerTextLeft
         >
-          <AmountOverdueChart />
-        </Wrapper>
-      </div>
-
-      <ReportSection
-        headingText={"Inquiry Summary"}
-        style={{ marginTop: theme.spacing.s32 }}
-        width={"70%"}
-        headerTextLeft
-      >
-        <Wrapper>
-          <BaseTable data={data} columns={columns6} />
-        </Wrapper>
-      </ReportSection>
-
-      <ReportSection
-        headingText={"Classification of Active Loans by Institution Type"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        width={"100%"}
-      >
-        <Wrapper>
-          <BaseTable data={data} columns={columns4} width={"100%"} />
-        </Wrapper>
-      </ReportSection>
-
-      <ReportSection
-        headingText={"Classification of Active Loans by Product Type"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        headerWidth={"100%"}
-      >
-        <Wrapper>
-          <BaseTable columns={columns4} data={data} />
-        </Wrapper>
-        <Wrapper>
-          <BaseTable data={data} columns={columns4} width={"100%"} />
-        </Wrapper>
-      </ReportSection>
-      <ReportSection
-        headingText={"Classification of Active Accounts by Product Type"}
-        style={{ marginTop: theme.spacing.s32 }}
-        headerTextLeft
-        width={"100%"}
-      >
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            gap: theme.spacing.s20,
-            // flexWrap: "wrap",
-          }}
+          <Wrapper style={{ padding: `0 ${theme.spacing.s12}` }}>
+            <p>No Data Available</p>
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Blacklist History"}
+          style={{ marginTop: theme.spacing.s32 }}
+          width={"100%"}
+          headerTextLeft
+        >
+          <Wrapper style={{ padding: `0 ${theme.spacing.s12}` }}>
+            <p>No Data Available</p>
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Credit Profile Overview"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          width={"60%"}
         >
           <Wrapper>
-            <PieChart data={data1} title={"Overdue"} />
+            <BaseTable data={data} columns={columns2} />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Classification of Active Accounts by Institution Type"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          width={"100%"}
+        >
+          <Wrapper>
+            <BaseTable data={data} columns={columns4} width={"100%"} />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Classification of Active Accounts by Product Type"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          width={"100%"}
+        >
+          <Wrapper>
+            <BaseTable columns={columns1} data={data} />
           </Wrapper>
           <Wrapper>
-            <PieChart data={data2} title={"Institution Type(Inquiry)"} />
+            <BaseTable data={data} columns={columns1} width={"100%"} />
           </Wrapper>
           <Wrapper>
-            <PieChart data={data3} title={"Inquiry Reason"} />
+            <BaseTable data={data} columns={columns1} width={"100%"} />
+          </Wrapper>
+        </ReportSection>
+        <div style={{ display: "flex", maxHeight: "fit-content", gap: "12px" }}>
+          <ReportSection
+            headingText={"Total Liability Summary"}
+            style={{ marginTop: theme.spacing.s32 }}
+            headerTextLeft
+          >
+            <Wrapper>
+              <BaseTable data={data} columns={columns3} />
+            </Wrapper>
+          </ReportSection>
+          <Wrapper
+            style={{
+              backgroundColor: theme.palette.background.default,
+              height: "inherit",
+            }}
+          >
+            <AmountOverdueChart />
           </Wrapper>
         </div>
-      </ReportSection>
-    </div>
+        <ReportSection
+          headingText={"Inquiry Summary"}
+          style={{ marginTop: theme.spacing.s32 }}
+          width={"70%"}
+          headerTextLeft
+        >
+          <Wrapper>
+            <BaseTable data={data} columns={columns6} />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Classification of Active Loans by Institution Type"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          width={"100%"}
+        >
+          <Wrapper>
+            <BaseTable data={data} columns={columns4} width={"100%"} />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Classification of Active Loans by Product Type"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          headerWidth={"100%"}
+        >
+          <Wrapper>
+            <BaseTable columns={columns4} data={data} />
+          </Wrapper>
+          <Wrapper>
+            <BaseTable data={data} columns={columns4} width={"100%"} />
+          </Wrapper>
+        </ReportSection>
+        <ReportSection
+          headingText={"Classification of Active Accounts by Product Type"}
+          style={{ marginTop: theme.spacing.s32 }}
+          headerTextLeft
+          width={"100%"}
+        >
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: theme.spacing.s20,
+              // flexWrap: "wrap",
+            }}
+          >
+            <Wrapper>
+              <PieChart data={data1} title={"Overdue"} />
+            </Wrapper>
+            <Wrapper>
+              <PieChart data={data2} title={"Institution Type(Inquiry)"} />
+            </Wrapper>
+            <Wrapper>
+              <PieChart data={data3} title={"Inquiry Reason"} />
+            </Wrapper>
+          </div>
+        </ReportSection>
+      </div>
+    </>
   );
 }
 
