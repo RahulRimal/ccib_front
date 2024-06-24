@@ -1,7 +1,7 @@
 import React, { Children } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ backgroundColor?: string }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -16,7 +16,19 @@ const Wrapper = styled.div`
   backdrop-filter: blur(1px);
 `;
 
-const Backdrop = ({ open, style, children, backgroundColor }) => {
+type Props = {
+  open: boolean;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
+  backgroundColor?: string;
+};
+
+const Backdrop: React.FC<Props> = ({
+  open,
+  style,
+  children,
+  backgroundColor,
+}) => {
   const backdropStyles = { ...style };
   return (
     <Wrapper

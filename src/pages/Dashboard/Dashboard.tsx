@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
 import QuickDetailsCard, {
-  QuickDetails,
+  // QuickDetails,
   profitability,
 } from "./components/QuickDetailsCard";
 import BaseChart, {
@@ -63,7 +63,11 @@ function Dashboard() {
             }}
           >
             {Object.keys(quickSummary).map((key, index) => (
-              <QuickDetailsCard key={index} item={quickSummary[key]} />
+              <QuickDetailsCard
+                key={index}
+                item={quickSummary[key]}
+                style={{}}
+              />
             ))}
           </div>
         </section>

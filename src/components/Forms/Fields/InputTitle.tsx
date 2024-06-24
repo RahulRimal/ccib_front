@@ -17,7 +17,15 @@ const Wrapper = styled.p`
   }
 `;
 
-function InputTitle({ title, required, style }) {
+function InputTitle({
+  title,
+  required,
+  style,
+}: {
+  title: string | React.ReactNode;
+  required: boolean;
+  style?: React.CSSProperties;
+}) {
   return (
     <Wrapper style={style}>
       {title} {required && <span>*</span>}

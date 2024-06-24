@@ -168,7 +168,7 @@ const PaginationButton = styled.div`
     font-size: ${({ theme }) => theme.typography.fontSize.f24};
     border: 2px solid
       ${({ theme, disabled }) =>
-    disabled ? theme.palette.disabled.button : theme.palette.primary.main};
+        disabled ? theme.palette.disabled.button : theme.palette.primary.main};
     border-radius: ${({ theme }) => theme.borderRadius.container};
     cursor: pointer;
   }
@@ -214,7 +214,7 @@ const BaseTable = ({
       grouping,
       sorting: sorting,
       globalFilter: filtering,
-      columnOrder
+      columnOrder,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
@@ -364,8 +364,9 @@ const BaseTable = ({
                       <div
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`${header.column.getIsResizing() && "active"
-                          }`}
+                        className={`${
+                          header.column.getIsResizing() && "active"
+                        }`}
                         style={{
                           backgroundColor:
                             header.column.getIsResizing() &&
