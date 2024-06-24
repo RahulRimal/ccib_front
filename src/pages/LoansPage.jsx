@@ -1,10 +1,12 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { mainUrl } from "../constants";
 import BaseTable from "../components/Tables/BaseTable";
 import { useTheme } from "styled-components";
 import useFetch from "../custom_hooks/useFetch";
 import * as yup from "yup";
 import { getFullName } from "../helpers";
+import apiService from "../api_service";
+import useFetchTable from "../custom_hooks/useFetchTable";
 
 let filterFields = [
   {
@@ -92,20 +94,29 @@ const handleUsersResponse = (data) => {
   });
   return users;
 };
+const handleResponse = (data) => {
+  return data.map((item) => {
+    const { first_name, middle_name, last_name } = item.user;
+    return {
+      ...item,
+      user: getFullName({ first_name, middle_name, last_name }),
+      finance: item.finance.name,
+    };
+  });
+};
 
 const LoansPage = () => {
-  const theme = useTheme();
+  const [tableLoading, setTableLoading] = useState(false);
+  const [data, setData] = useState([]);
 
-  const handleResponse = (data) => {
-    return data.map((item) => {
-      const { first_name, middle_name, last_name } = item.user;
-      return {
-        ...item,
-        user: getFullName({ first_name, middle_name, last_name }),
-        finance: item.finance.name,
-      };
-    });
-  };
+  const theme = useTheme();
+  const url = `${mainUrl}/cooperative/loans/`;
+
+  const { loading, rowData, columns } = useFetchTable({
+    url: url,
+    responseHandler: handleResponse,
+    columnsToHide: ["idx"],
+  });
 
   //filter
   const { loading: loadingUsers, data: users } = useFetch({
@@ -126,16 +137,26 @@ const LoansPage = () => {
   }
   //filter
 
+  useEffect(() => {
+    setData(rowData);
+  }, [rowData]);
+
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/loans/`}
+        rows={data}
+        columns={columns}
         columnsToHide={["idx"]}
         filterFields={filterFields}
-        loading={loadingUsers}
+        onFilter={(data) => {
+          apiService.filterTable(data, url, setData, setTableLoading, {
+            responseHandler: handleResponse,
+          });
+        }}
+        loading={loading}
         noDataMessage={"No loans found"}
         validationSchema={schema}
-        handleResponse={handleResponse}
+        tableLoading={tableLoading}
       />
     </div>
   );

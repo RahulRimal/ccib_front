@@ -1,9 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { mainUrl } from "../constants";
 import BaseTable from "../components/Tables/BaseTable";
 
 import useFetch from "../custom_hooks/useFetch";
 import * as yup from "yup";
+import useFetchTable from "../custom_hooks/useFetchTable";
+import apiService from "../api_service";
 
 let filterFields = [
   {
@@ -44,7 +46,7 @@ let filterFields = [
 ];
 
 const schema = yup.object().shape({
-  company: yup.string().required("Company name is required"),
+  name: yup.string().required("Company name is required"),
   vat_num: yup
     .string()
     .nullable()
@@ -69,40 +71,42 @@ const schema = yup.object().shape({
     )
     .required("PAN number is required"),
 });
-const handleCompanyResponse = (data) => {
-  const company = data.map((item) => {
-    return {
-      label: item.name,
-      value: item.name,
-    };
-  });
-  return company;
-};
 
 const CompanyPage = () => {
-  //filter
-  const { loading: loadingCompanies, data: company } = useFetch({
-    url: `${mainUrl}/cooperative/companys`,
-    responseHandler: handleCompanyResponse,
+  const [tableLoading, setTableLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const url = `${mainUrl}/cooperative/companys`;
+
+  const { loading, rowData, columns } = useFetchTable({
+    url: url,
+    columnsToHide: ["idx"],
   });
-  if (company) {
-    filterFields.map((item) => {
-      item.inputs.map((input) => {
-        if (input.name === "company") {
-          input.options = company.data;
-        }
-        return input;
+
+  useEffect(() => {
+    setData(rowData);
+    if (rowData && rowData.length > 0) {
+      filterFields[0].inputs[0].options = rowData.map((item) => {
+        return {
+          label: item.name,
+          value: item.name,
+        };
       });
-      return item;
-    });
-  }
+    }
+  }, [rowData]);
 
   return (
     <div>
       <BaseTable
-        url={`${mainUrl}/cooperative/companys`}
+        rows={data}
+        columns={columns}
         columnsToHide={["idx"]}
         filterFields={filterFields}
+        onFilter={(data) =>
+          apiService.filterTable(data, url, setData, setTableLoading)
+        }
+        loading={loading}
+        tableLoading={tableLoading}
         noDataMessage={"Company not found"}
         validationSchema={schema}
       />
