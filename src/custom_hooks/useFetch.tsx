@@ -5,7 +5,7 @@ import apiService from "../api_service";
 type UseFetchProps = {
   url: string;
   returnResponse?: boolean;
-  responseHandler?: any;
+  responseHandler?: null | ((data: any) => any);
 };
 
 const useFetch = ({

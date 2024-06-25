@@ -24,6 +24,7 @@ export type Finance = {
   email?: string | null;
   description: string;
   location?: { name: string };
+  phone_number?: string | number;
   website_url?: string | null;
 };
 

@@ -114,7 +114,7 @@ const LoansPage = () => {
   const theme = useTheme();
   const url = `${mainUrl}/cooperative/loans/`;
 
-  const { loading, rowData, columns } = useFetchTable({
+  const { loading, rowData, columns } = useFetchTable<Loan>({
     url: url,
     responseHandler: handleResponse,
     columnsToHide: ["idx"],
@@ -160,8 +160,8 @@ const LoansPage = () => {
         tableLoading={tableLoading}
         height={""}
         title={""}
-        toolbarActions={""}
-        navigateOnRowClick={""}
+        toolbarActions={() => null}
+        navigateOnRowClick={false}
       />
     </div>
   );

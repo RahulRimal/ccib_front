@@ -14,8 +14,7 @@ const MainWrapper = styled.div`
 `;
 
 const SectionWrapper = styled.div`
-  padding: ${({ theme }) => theme.spacing.s12}
-    ${({ theme }) => theme.spacing.s8};
+  padding: ${({ theme }) => ` ${theme.spacing.s12} ${theme.spacing.s8}`};
   border: 1px solid ${({ theme }) => theme.palette.border.focused};
   border-radius: ${({ theme }) => theme.borderRadius.container};
   display: flex;

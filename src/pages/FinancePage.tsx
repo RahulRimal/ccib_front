@@ -10,13 +10,6 @@ import { AdvanceFilter, Option } from "../models/misc";
 import { Finance } from "../models/cooperative";
 import { type } from "os";
 
-// type Finance = {
-//   name: string;
-//   location: { name: string };
-//   phone_number: string;
-//   [key: string]: any;
-// };
-
 const filterFields: AdvanceFilter[] = [
   {
     title: "Fields",
@@ -57,7 +50,7 @@ const FinancePage: React.FC = () => {
   const [data, setData] = useState<Finance[]>([]);
 
   const url = `${mainUrl}/cooperative/finance`;
-  const { loading, rowData, columns } = useFetchTable({
+  const { loading, rowData, columns } = useFetchTable<Finance>({
     url: url,
     responseHandler: handleResponse as any,
     columnsToHide: ["idx", "location", "name", "parent"],
@@ -94,10 +87,10 @@ const FinancePage: React.FC = () => {
         tableLoading={tableLoading}
         noDataMessage="No Finance found"
         validationSchema={schema}
-        height={undefined}
-        title={undefined}
-        toolbarActions={undefined}
-        navigateOnRowClick={undefined}
+        height={""}
+        title={""}
+        toolbarActions={() => null}
+        navigateOnRowClick={false}
       />
     </div>
   );

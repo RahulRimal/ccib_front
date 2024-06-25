@@ -118,7 +118,7 @@ const LoanApplicationPage = () => {
     },
   };
 
-  const { loading, rowData, columns } = useFetchTable({
+  const { loading, rowData, columns } = useFetchTable<LoanApplication>({
     url: url,
     columnsToHide: ["idx", "phone_number"],
     customRenderer,
@@ -178,10 +178,10 @@ const LoanApplicationPage = () => {
         }
         noDataMessage={"No Loan Applications"}
         validationSchema={schema}
-        height={undefined}
-        title={undefined}
-        toolbarActions={undefined}
-        navigateOnRowClick={undefined}
+        height={""}
+        title={""}
+        toolbarActions={() => null}
+        navigateOnRowClick={false}
       />
     </div>
   );

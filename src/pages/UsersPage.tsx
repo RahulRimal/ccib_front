@@ -90,7 +90,7 @@ const UsersTable = () => {
 
   const url = `${mainUrl}/cooperative/financeusers/`;
 
-  const { loading, rowData, columns } = useFetchTable({
+  const { loading, rowData, columns } = useFetchTable<User>({
     url: url,
     columnsToHide: ["id", "idx", "username"],
   });

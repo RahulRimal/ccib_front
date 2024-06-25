@@ -7,7 +7,7 @@ import styled from "styled-components";
 //Sizing system (px)
 // 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
 
-const ButtonWrapper = styled.button`
+const ButtonWrapper = styled.button<{ disabled?: boolean }>`
   border: none;
   display: flex;
   align-items: center;

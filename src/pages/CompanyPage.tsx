@@ -79,7 +79,7 @@ const CompanyPage = () => {
 
   const url = `${mainUrl}/cooperative/companys`;
 
-  const { loading, rowData, columns } = useFetchTable({
+  const { loading, rowData, columns } = useFetchTable<Company>({
     url: url,
     columnsToHide: ["idx"],
   });

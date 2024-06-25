@@ -47,21 +47,6 @@ const FormInputField = styled.div`
     }
   }
 `;
-// type Option = {
-//   value: string;
-//   label: string;
-// };
-
-// type Fields = {
-//   type: string;
-//   labels: string;
-//   label: string;
-//   required: boolean;
-//   options: Option[];
-//   name: string;
-//   placeholder: string;
-//   defaultValue: Option;
-// };
 
 const BaseForm = ({
   loading,
@@ -89,7 +74,7 @@ const BaseForm = ({
 
   const theme = useTheme();
 
-  const onSubmitHandler = async (data: {}) => {
+  const onSubmitHandler = async (data: Record<string, any[]>) => {
     console.log("Form submitted:", data);
 
     try {
@@ -105,7 +90,7 @@ const BaseForm = ({
         autoHideDuration: 2000,
       });
       reset();
-    } catch (error: Array<string> | string[] | any) {
+    } catch (error: string[] | any) {
       if (error.response) {
         if (error.response.status === 404) {
           console.log("Error 404: Invalid endpoint");
@@ -218,11 +203,8 @@ const BaseForm = ({
                       name={field.name}
                       title={field.label}
                       options={field.options}
-                      // register={register}
                       error={errors[field.name]?.message}
                       defaultChecked={field.defaultValue}
-                      // placeholder={field.placeholder}
-                      // defaultValue={field.defaultValue}
                     />
                   )) ||
                   (field.type !== "textarea" &&

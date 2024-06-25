@@ -8,6 +8,7 @@ import { mainUrl } from "../constants";
 import axios, { AxiosError } from "axios";
 import { Cookies } from "react-cookie";
 import apiService from "../api_service";
+import { Finance } from "../models/cooperative";
 
 type LoginUserPayload = {
   refresh: string;
@@ -53,17 +54,20 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+type Staff = {
+  idx: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  finance: Finance;
+};
+
 type InitialState = {
   loading: boolean;
   isLoggedIn: boolean;
-  user: {
-    idx: string;
-    first_name: string;
-    last_name: string;
-    username: string;
-    email: string;
-    phone: string;
-  };
+  user: Staff;
 };
 
 const initialState: InitialState = {
@@ -76,6 +80,18 @@ const initialState: InitialState = {
     username: "",
     email: "",
     phone: "",
+    finance: {
+      idx: "",
+      name: "",
+      parent: "",
+      email: "",
+      description: "",
+      location: {
+        name: "",
+      },
+      phone_number: "",
+      website_url: "",
+    },
   },
 };
 

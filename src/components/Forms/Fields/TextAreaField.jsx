@@ -84,6 +84,7 @@ const TextAreaField = ({
           name={name}
           {...(register && register(name))}
           placeholder={placeholder}
+          defaultValue={value}
           required={required}
           readOnly={!editable && "readonly"}
           onClick={onClick}

@@ -84,19 +84,19 @@ const get = <T>(
 
 const post = <T>(
   url: string,
-  data: any,
+  data: Record<string, any>,
   config: AxiosRequestConfig = {}
 ): Promise<AxiosResponse<T>> => api.post<T>(url, data, config);
 
 const put = <T>(
   url: string,
-  data: any,
+  data: Record<string, any>,
   config: AxiosRequestConfig = {}
 ): Promise<AxiosResponse<T>> => api.put<T>(url, data, config);
 
 const patch = <T>(
   url: string,
-  data: any,
+  data: Record<string, any>,
   config: AxiosRequestConfig = {}
 ): Promise<AxiosResponse<T>> => api.patch<T>(url, data, config);
 
@@ -136,7 +136,7 @@ export const filterTable = async <T>(
   }
 };
 
-const apiService = {
+const apiService = <Record<string, any>>{
   get,
   post,
   put,
