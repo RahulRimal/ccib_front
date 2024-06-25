@@ -2,9 +2,19 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import apiService from "../api_service";
 
-const useFetch = ({ url, returnResponse = false, responseHandler = null }) => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
+type UseFetchProps = {
+  url: string;
+  returnResponse?: boolean;
+  responseHandler?: any;
+};
+
+const useFetch = ({
+  url,
+  returnResponse = false,
+  responseHandler = null,
+}: UseFetchProps) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>(null);
 
   useEffect(() => {
     try {

@@ -8,10 +8,12 @@ import * as yup from "yup";
 import { mainUrl } from "../constants";
 import useFetchTable from "../custom_hooks/useFetchTable";
 import apiService from "../api_service";
+import { User } from "../models/cooperative";
+import { AdvanceFilter } from "../models/misc";
 
 const Wrapper = styled.main``;
 
-let filterFields = [
+let filterFields: AdvanceFilter[] = [
   {
     title: "Fields",
     inputs: [
@@ -80,14 +82,13 @@ const schema = yup.object().shape({
 });
 
 const UsersTable = () => {
-  
   const theme = useTheme();
   const navigate = useNavigate();
 
   const [tableLoading, setTableLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<User[]>([]);
 
-  const url = `${mainUrl}/cooperative/financeusers/`
+  const url = `${mainUrl}/cooperative/financeusers/`;
 
   const { loading, rowData, columns } = useFetchTable({
     url: url,
@@ -95,10 +96,8 @@ const UsersTable = () => {
   });
 
   useEffect(() => {
-      setData(rowData);
+    setData(rowData);
   }, [rowData]);
-
-
 
   return (
     <div>
@@ -109,7 +108,9 @@ const UsersTable = () => {
         loading={loading}
         tableLoading={tableLoading}
         filterFields={filterFields}
-        onFilter={(data) => apiService.filterTable(data, url, setData, setTableLoading)}
+        onFilter={(data: User) =>
+          apiService.filterTable(data, url, setData, setTableLoading)
+        }
         validationSchema={schema}
         toolbarActions={
           <Button
@@ -118,13 +119,14 @@ const UsersTable = () => {
             onClick={() => navigate("/add/users")}
           />
         }
-        navigateOnRowClick={(data) => navigate(`/users/${data.idx}`)}
+        navigateOnRowClick={(data: User) => navigate(`/users/${data.idx}`)}
+        height={""}
       />
     </div>
   );
 };
 
-const UsersPage = ({ }) => {
+const UsersPage = ({}) => {
   return (
     <Wrapper>
       <UsersTable />

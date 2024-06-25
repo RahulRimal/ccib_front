@@ -3,8 +3,10 @@ import BaseForm from "./BaseForm";
 import useFetch from "../../custom_hooks/useFetch";
 import { mainUrl } from "../../constants";
 import * as yup from "yup";
+import { FormFields } from "../../models/misc";
+import { Finance, User } from "../../models/cooperative";
 
-let fields = [
+let fields: FormFields[] = [
   {
     label: "User",
     name: "user",
@@ -73,7 +75,6 @@ let fields = [
     step: "0.01",
     required: true,
     defaultValue: 0.0,
-    readOnly: true,
     placeholder: "Calculated Loan Outstanding",
   },
   {
@@ -220,7 +221,7 @@ const schema = yup.object().shape({
 const title = "Create Loan Account";
 const endpoint = "cooperative/loans";
 
-const handleUsersResponse = (data) => {
+const handleUsersResponse = (data: User[]) => {
   const users = data.map((item) => {
     return {
       label: item.first_name,
@@ -230,7 +231,7 @@ const handleUsersResponse = (data) => {
   return users;
 };
 
-const handleFinancesResponse = (data) => {
+const handleFinancesResponse = (data: Finance[]) => {
   const finances = data.map((item) => {
     return {
       label: item.name,

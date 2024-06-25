@@ -1,9 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled, { useTheme } from "styled-components";
-import Select from "react-select";
-import { Controller } from "react-hook-form";
-import { current } from "@reduxjs/toolkit";
+import Select, { SingleValue, StylesConfig } from "react-select";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  UseControllerProps,
+  UseFormRegister,
+} from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 import InputTitle from "./InputTitle";
 
@@ -46,21 +50,41 @@ const DropdownWrapper = styled.div`
     position: absolute;
   }
 `;
-const customStyles = {
-  cursor: "pointer",
+
+const customStyles: StylesConfig<{ value: string; label: string }> = {
   option: (provided, state) => ({
     ...provided,
-    color: state.isSelected && "black",
+    color: state.isSelected ? "black" : provided.color,
+    cursor: "pointer",
   }),
 };
-const OptionField = ({
+
+type Option = {
+  value: string | number | boolean;
+  label: string;
+};
+
+type OptionFieldProps = {
+  name: UseControllerProps<any>["name"];
+  required?: boolean;
+  error?: string;
+  title?: string;
+  control: Control<{ [key: string]: any[] }>;
+  register: UseFormRegister<{ [key: string]: any }>;
+  options?: Option[];
+  defaultValue?: any | null;
+  placeholder?: string;
+};
+
+const OptionField: React.FC<OptionFieldProps> = ({
   options = [],
   name,
   required = false,
   error,
   title,
   control,
-  defaultValue = { defaultValue: "" },
+  register,
+  defaultValue = null,
   placeholder = "Select an option",
 }) => {
   const theme = useTheme();
@@ -71,8 +95,8 @@ const OptionField = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
-        render={({ field }) => (
+        defaultValue={defaultValue?.value || ""}
+        render={({ field }: { field: any }) => (
           <>
             <Select
               {...field}
@@ -91,7 +115,9 @@ const OptionField = ({
                 },
               })}
               onChange={(selectedOption) => {
-                field.onChange(selectedOption ? selectedOption.value : "");
+                field.onChange(
+                  (selectedOption as SingleValue<Option>)?.value || ""
+                );
               }}
               value={options.find((option) => option.value === field.value)}
             />

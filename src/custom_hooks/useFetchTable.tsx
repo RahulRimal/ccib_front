@@ -1,7 +1,18 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { humanizeString } from "../helpers";
 import apiService from "../api_service";
+
+type UseFetchTableProps = {
+  url: string;
+  queryParams?: Record<string, null>;
+  columnsToHide?: string[];
+  responseHandler?: Function | null;
+  customRenderer?: Record<
+    string,
+    (info: { getValue: () => string }) => JSX.Element
+  > | null;
+};
 
 const useFetchTable = ({
   url,
@@ -9,10 +20,12 @@ const useFetchTable = ({
   columnsToHide = [],
   responseHandler = null,
   customRenderer = null,
-}) => {
+}: UseFetchTableProps) => {
   const [loading, setLoading] = useState(true);
-  const [rowData, setRowData] = useState([]);
-  const [columns, setColumns] = useState([]);
+  const [rowData, setRowData] = useState<any[]>([]);
+  const [columns, setColumns] = useState<
+    Array<{ header: string; accessorKey: string }>
+  >([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,12 +33,13 @@ const useFetchTable = ({
         setLoading(true);
         const response = await apiService.get(url);
         if (response.status === 200) {
-          let data = response.data;
+          let data: any[] = response.data as any[];
           if (responseHandler) {
             data = responseHandler(data);
+            console.log(data);
           }
           setRowData(data);
-          let cols = Object.keys(data[0]);
+          let cols: any[] = Object.keys(data[0]) as any;
           cols = cols.map((item) => ({
             header: humanizeString(item),
             accessorKey: item,

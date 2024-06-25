@@ -6,8 +6,10 @@ import useFetch from "../custom_hooks/useFetch";
 import * as yup from "yup";
 import useFetchTable from "../custom_hooks/useFetchTable";
 import apiService from "../api_service";
+import { AdvanceFilter } from "../models/misc";
+import { Company } from "../models/cooperative";
 
-let filterFields = [
+let filterFields: AdvanceFilter[] = [
   {
     title: "Fields",
     inputs: [
@@ -52,29 +54,28 @@ const schema = yup.object().shape({
     .nullable()
     .test(
       "vat-num-test",
-      "VAT number must be greater than 7 characters",
+      "VAT number must be at least 7 characters",
       function (value) {
-        return !value || (value && value.length >= 7);
+        return !value || value.length >= 7;
       }
     )
-    .required("Vat number is required"),
-
+    .required("VAT number is required"),
   pan_num: yup
     .string()
     .nullable()
     .test(
       "pan-num-test",
-      "PAN number must be greater than 7 characters",
+      "PAN number must be at least 7 characters",
       function (value) {
-        return !value || (value && value.length >= 7);
+        return !value || value.length >= 7;
       }
     )
     .required("PAN number is required"),
 });
 
 const CompanyPage = () => {
-  const [tableLoading, setTableLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [tableLoading, setTableLoading] = useState<boolean>(false);
+  const [data, setData] = useState<Company[]>([]);
 
   const url = `${mainUrl}/cooperative/companys`;
 
@@ -86,12 +87,14 @@ const CompanyPage = () => {
   useEffect(() => {
     setData(rowData);
     if (rowData && rowData.length > 0) {
-      filterFields[0].inputs[0].options = rowData.map((item) => {
-        return {
-          label: item.name,
-          value: item.name,
-        };
-      });
+      filterFields[0].inputs[0].options = rowData.map(
+        (item: { name: string }) => {
+          return {
+            label: item.name,
+            value: item.name,
+          };
+        }
+      );
     }
   }, [rowData]);
 
@@ -100,15 +103,18 @@ const CompanyPage = () => {
       <BaseTable
         rows={data}
         columns={columns}
-        columnsToHide={["idx"]}
         filterFields={filterFields}
-        onFilter={(data) =>
+        onFilter={(data: Company[]) =>
           apiService.filterTable(data, url, setData, setTableLoading)
         }
         loading={loading}
         tableLoading={tableLoading}
         noDataMessage={"Company not found"}
         validationSchema={schema}
+        height={""}
+        title={""}
+        toolbarActions={() => null}
+        navigateOnRowClick={false}
       />
     </div>
   );
