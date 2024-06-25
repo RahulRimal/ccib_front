@@ -6,8 +6,11 @@ import useFetch from "../custom_hooks/useFetch";
 import * as yup from "yup";
 import useFetchTable from "../custom_hooks/useFetchTable";
 import apiService from "../api_service";
+import { AdvanceFilter, Option } from "../models/misc";
+import { Finance } from "../models/cooperative";
+import { type } from "os";
 
-const filterFields = [
+const filterFields: AdvanceFilter[] = [
   {
     title: "Fields",
     inputs: [
@@ -18,6 +21,8 @@ const filterFields = [
         basis: 30,
         options: [],
         required: true,
+        defaultValue: "",
+        placeholder: "",
       },
     ],
   },
@@ -27,10 +32,9 @@ const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
 });
 
-
-const handleResponse = (data) => {
+const handleResponse = (data: Finance[]) => {
   return data.map((item) => {
-    const { name: location_name } = item.location;
+    const location_name = item.location?.name ?? "";
     return {
       ...item,
       finance_name: item.name,
@@ -39,18 +43,16 @@ const handleResponse = (data) => {
   });
 };
 
-
-
-const FinancePage = () => {
+const FinancePage: React.FC = () => {
   const theme = useTheme();
 
   const [tableLoading, setTableLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Finance[]>([]);
 
   const url = `${mainUrl}/cooperative/finance`;
-  const { loading, rowData, columns } = useFetchTable({
+  const { loading, rowData, columns } = useFetchTable<Finance>({
     url: url,
-    responseHandler: handleResponse,
+    responseHandler: handleResponse as any,
     columnsToHide: ["idx", "location", "name", "parent"],
   });
 
@@ -58,14 +60,16 @@ const FinancePage = () => {
     setData(rowData);
 
     if (rowData && rowData.length > 0) {
-      filterFields[0].inputs[0].options = rowData.map((item) => {
-        return {
-          label: item.name,
-          value: item.name,
-        };
-      });
+      filterFields[0].inputs[0].options = rowData.map(
+        (item: { name: string }) => {
+          return {
+            label: item.name,
+            value: item.name,
+          };
+        }
+      );
     }
-  }, [rowData])
+  }, [rowData]);
 
   return (
     <div>
@@ -74,10 +78,19 @@ const FinancePage = () => {
         columns={columns}
         columnOrder={["finance_name", "location_name", "phone_number"]}
         filterFields={filterFields}
-        onFilter={(data) => apiService.filterTable(data, url, setData, setTableLoading, { responseHandler: handleResponse })} loading={loading}
+        onFilter={(data: Finance[]) =>
+          apiService.filterTable(data, url, setData, setTableLoading, {
+            responseHandler: handleResponse as any,
+          })
+        }
+        loading={loading}
         tableLoading={tableLoading}
         noDataMessage="No Finance found"
         validationSchema={schema}
+        height={""}
+        title={""}
+        toolbarActions={() => null}
+        navigateOnRowClick={false}
       />
     </div>
   );

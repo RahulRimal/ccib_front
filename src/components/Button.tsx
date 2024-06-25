@@ -7,7 +7,7 @@ import styled from "styled-components";
 //Sizing system (px)
 // 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
 
-const ButtonWrapper = styled.button`
+const ButtonWrapper = styled.button<{ disabled?: boolean }>`
   border: none;
   display: flex;
   align-items: center;
@@ -24,10 +24,33 @@ const ButtonWrapper = styled.button`
   transition: background-color 0.3s ease;
 `;
 
-const Button = ({ icon, isSubmitting, text, onClick, disabled, type, style }) => {
+type ButtonProps = {
+  icon?: React.ReactNode;
+  isSubmitting?: boolean;
+  text: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  style?: React.CSSProperties;
+};
+
+const Button: React.FC<ButtonProps> = ({
+  icon,
+  isSubmitting,
+  text,
+  onClick,
+  disabled,
+  type,
+  style,
+}) => {
   const buttonStyle = { ...style };
   return (
-    <ButtonWrapper  type={type} disabled={disabled} style={buttonStyle} onClick={onClick}>
+    <ButtonWrapper
+      type={type}
+      disabled={disabled}
+      style={buttonStyle}
+      onClick={onClick}
+    >
       {isSubmitting ? (
         "Submitting..."
       ) : (

@@ -14,6 +14,8 @@ import { ClipLoader } from "react-spinners";
 import { enqueueSnackbar } from "notistack";
 import Backdrop from "../Backdrop";
 import apiService from "../../api_service";
+import { ObjectSchema } from "yup";
+import { FormFields } from "../../models/misc";
 
 const SectionWrapper = styled.div`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -46,21 +48,33 @@ const FormInputField = styled.div`
   }
 `;
 
-const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
+const BaseForm = ({
+  loading,
+  title,
+  fields,
+  schema,
+  endpoint,
+}: {
+  loading?: boolean;
+  title: string;
+  fields: FormFields[];
+  schema: ObjectSchema<{}>;
+  endpoint: string;
+}) => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitted, isSubmitSuccessful },
     reset,
-  } = useForm({
+  } = useForm<Record<string, any[]>>({
     mode: "onChange",
     resolver: yupResolver(schema),
   });
 
   const theme = useTheme();
 
-  const onSubmitHandler = async (data) => {
+  const onSubmitHandler = async (data: Record<string, any[]>) => {
     console.log("Form submitted:", data);
 
     try {
@@ -76,7 +90,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
         autoHideDuration: 2000,
       });
       reset();
-    } catch (error) {
+    } catch (error: string[] | any) {
       if (error.response) {
         if (error.response.status === 404) {
           console.log("Error 404: Invalid endpoint");
@@ -88,7 +102,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
 
         Object.keys(error.response.data).map((item, index) => {
           setTimeout(() => {
-            error.response.data[item].map((errorMessage) => {
+            error.response.data[item].map((errorMessage: {}) => {
               enqueueSnackbar(`${item}: ${errorMessage}`, {
                 variant: "error",
                 autoHideDuration: 2000,
@@ -162,21 +176,24 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
                       name={field.name}
                       title={field.label}
                       options={field.options}
-                      register={register}
                       error={errors[field.name]?.message}
                       control={control}
-                      defaultValue={field.defaultValue}
                     />
                   )) ||
                   (field.type === "textarea" && (
                     <TextAreaField
+                      key={i}
                       required={field.required}
                       placeholder={field.placeholder}
                       name={field.name}
                       title={field.label}
-                      options={field.options}
                       register={register}
                       error={errors[field.name]?.message}
+                      value={""}
+                      label={""}
+                      onClick={() => {}}
+                      style={{}}
+                      idx={i}
                     />
                   )) ||
                   (field.type === "radio" && (
@@ -185,13 +202,9 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
                       required={field.required}
                       name={field.name}
                       title={field.label}
-                      labels={field.labels}
-                      type={field.type}
                       options={field.options}
-                      register={register}
                       error={errors[field.name]?.message}
-                      placeholder={field.placeholder}
-                      defaultValue={field.defaultValue}
+                      defaultChecked={field.defaultValue}
                     />
                   )) ||
                   (field.type !== "textarea" &&
@@ -209,6 +222,14 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
                         error={errors[field.name]?.message}
                         placeholder={field.placeholder}
                         defaultValue={field.defaultValue}
+                        value={""}
+                        prefix={""}
+                        suffix={""}
+                        onClick={() => {}}
+                        onPrefixClick={() => {}}
+                        onSuffixClick={() => {}}
+                        style={""}
+                        idx={""}
                       />
                     ))
               )}
@@ -240,6 +261,7 @@ const BaseForm = ({ loading, title, fields, schema, endpoint }) => {
         <Backdrop
           open={isSubmitting}
           backgroundColor="rgba(255, 255, 255, 0.7)"
+          style={{}}
         >
           <ClipLoader color="#000000" />
         </Backdrop>

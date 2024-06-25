@@ -3,8 +3,10 @@ import BaseForm from "./BaseForm";
 import useFetch from "../../custom_hooks/useFetch";
 import { mainUrl } from "../../constants";
 import * as yup from "yup";
+import { FormFields } from "../../models/misc";
+import { Finance, User } from "../../models/cooperative";
 
-let fields = [
+let fields: FormFields[] = [
   {
     label: "User",
     name: "user",
@@ -27,7 +29,6 @@ let fields = [
     type: "textarea",
     required: true,
     defaultValue: "",
-    maxLength: 500,
     placeholder: "Enter Reason",
   },
   {
@@ -54,7 +55,7 @@ const schema = yup.object().shape({
 const title = "Inquiry";
 const endpoint = "cooperative/inquiries";
 
-const handleUsersResponse = (data) => {
+const handleUsersResponse = (data: User[]) => {
   const users = data.map((item) => {
     return {
       label: item.first_name,
@@ -64,7 +65,7 @@ const handleUsersResponse = (data) => {
   return users;
 };
 
-const handleFinancesResponse = (data) => {
+const handleFinancesResponse = (data: Finance[]) => {
   const finances = data.map((item) => {
     return {
       label: item.name,
@@ -74,7 +75,7 @@ const handleFinancesResponse = (data) => {
   return finances;
 };
 
-const InquiryForm = () => {
+const BlackListApplicationForm = () => {
   const { loading: loadingUsers, data: users } = useFetch({
     url: `${mainUrl}/auth/users`,
     responseHandler: handleUsersResponse,
@@ -112,4 +113,4 @@ const InquiryForm = () => {
   );
 };
 
-export default InquiryForm;
+export default BlackListApplicationForm;

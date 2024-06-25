@@ -7,8 +7,10 @@ import * as yup from "yup";
 import { getFullName } from "../helpers";
 import apiService from "../api_service";
 import useFetchTable from "../custom_hooks/useFetchTable";
+import { AdvanceFilter } from "../models/misc";
+import { Loan, User } from "../models/cooperative";
 
-let filterFields = [
+let filterFields: AdvanceFilter[] = [
   {
     title: "Fields",
     inputs: [
@@ -75,7 +77,7 @@ const schema = yup.object().shape({
       "account-number-test",
       "Account number must be at least 10 characters",
       function (value) {
-        return !value || (value && value.length >= 10);
+        return !value || value.length >= 10;
       }
     ),
   user: yup.string().required("User is required"),
@@ -85,7 +87,7 @@ const schema = yup.object().shape({
     .required("Loan nature is required"),
 });
 
-const handleUsersResponse = (data) => {
+const handleUsersResponse = (data: User[]) => {
   const users = data.map((item) => {
     return {
       label: item.first_name,
@@ -94,7 +96,7 @@ const handleUsersResponse = (data) => {
   });
   return users;
 };
-const handleResponse = (data) => {
+const handleResponse = (data: Loan[]) => {
   return data.map((item) => {
     const { first_name, middle_name, last_name } = item.user;
     return {
@@ -107,12 +109,12 @@ const handleResponse = (data) => {
 
 const LoansPage = () => {
   const [tableLoading, setTableLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Loan[]>([]);
 
   const theme = useTheme();
   const url = `${mainUrl}/cooperative/loans/`;
 
-  const { loading, rowData, columns } = useFetchTable({
+  const { loading, rowData, columns } = useFetchTable<Loan>({
     url: url,
     responseHandler: handleResponse,
     columnsToHide: ["idx"],
@@ -146,17 +148,20 @@ const LoansPage = () => {
       <BaseTable
         rows={data}
         columns={columns}
-        columnsToHide={["idx"]}
         filterFields={filterFields}
-        onFilter={(data) => {
+        onFilter={(data: Loan[]) => {
           apiService.filterTable(data, url, setData, setTableLoading, {
-            responseHandler: handleResponse,
+            responseHandler: handleResponse as any,
           });
         }}
         loading={loading}
         noDataMessage={"No loans found"}
         validationSchema={schema}
         tableLoading={tableLoading}
+        height={""}
+        title={""}
+        toolbarActions={() => null}
+        navigateOnRowClick={false}
       />
     </div>
   );

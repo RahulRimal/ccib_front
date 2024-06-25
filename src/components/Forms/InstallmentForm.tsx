@@ -3,8 +3,11 @@ import BaseForm from "./BaseForm";
 import useFetch from "../../custom_hooks/useFetch";
 import { mainUrl } from "../../constants";
 import * as yup from "yup";
+import { FormFields, Option } from "../../models/misc";
+import { Installment, Loan } from "../../models/cooperative";
+import LoanApplication from "../../models/LoanApplication";
 
-let fields = [
+let fields: FormFields[] = [
   {
     label: "Loan",
     name: "loan",
@@ -33,7 +36,6 @@ let fields = [
     label: "Total Due",
     name: "total_due",
     type: "number",
-    step: "0.01",
     required: true,
     defaultValue: 0.0,
     placeholder: "Enter Total Due Amount",
@@ -42,7 +44,6 @@ let fields = [
     label: "Total Paid",
     name: "total_paid",
     type: "number",
-    step: "0.01",
     required: true,
     defaultValue: 0.0,
     placeholder: "Enter Total Paid Amount",
@@ -51,7 +52,6 @@ let fields = [
     label: "Total Outstanding",
     name: "total_outstanding",
     type: "number",
-    step: "0.01",
     required: true,
     defaultValue: 0.0,
     placeholder: "Enter Total Outstanding Amount",
@@ -94,14 +94,14 @@ const schema = yup.object().shape({
 const title = "Installment";
 const endpoint = "cooperative/installments";
 
-const handleResponse = (data) => {
-  data = data.map((item) => {
+const handleResponse = (data: Installment[]) => {
+  const instellments = data.map((item) => {
     return {
       label: item.idx,
       value: item.idx,
     };
   });
-  return data;
+  return instellments;
 };
 
 const InstallmentForm = () => {

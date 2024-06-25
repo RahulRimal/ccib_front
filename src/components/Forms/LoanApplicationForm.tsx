@@ -3,8 +3,10 @@ import BaseForm from "./BaseForm";
 import useFetch from "../../custom_hooks/useFetch";
 import { mainUrl } from "../../constants";
 import * as yup from "yup";
+import { FormFields } from "../../models/misc";
+import LoanApplication from "../../models/LoanApplication";
 
-let fields = [
+let fields: FormFields[] = [
   {
     label: "Loan Amount",
     name: "loan_amount",
@@ -135,24 +137,18 @@ const schema = yup.object().shape({
     .string()
     .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
     .nullable(),
-  loan_amount: yup.string().required("Loan amount is required"),
-  finance: yup.number().required("Finance is required"),
-  status: yup
-    .string()
-    .oneOf(["pending", "approved", "rejected"], "Invalid status")
-    .required("Status is required"),
 });
 const title = "Loan Application";
 const endpoint = "cooperative/loanapplications";
 
-const handleResponse = (data) => {
-  data = data.map((item) => {
+const handleResponse = (data: LoanApplication[]) => {
+  const loanApplication = data.map((item) => {
     return {
       label: item.idx,
       value: item.idx,
     };
   });
-  return data;
+  return loanApplication;
 };
 const LoanApplicationForm = () => {
   const { loading, data } = useFetch({

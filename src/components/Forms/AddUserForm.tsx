@@ -3,7 +3,9 @@ import BaseForm from "./BaseForm";
 import useFetch from "../../custom_hooks/useFetch";
 import { mainUrl } from "../../constants";
 import * as yup from "yup";
-let fields = [
+import { FormFields } from "../../models/misc";
+
+let fields: FormFields[] = [
   {
     label: "First Name",
     name: "first_name",
