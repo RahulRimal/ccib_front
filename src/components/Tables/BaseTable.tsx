@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import React, {
+  ReactElement,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import styled, { useTheme } from "styled-components";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { TbFilter, TbFilterEdit } from "react-icons/tb";
@@ -12,6 +18,7 @@ import {
   getFilteredRowModel,
   getExpandedRowModel,
   getGroupedRowModel,
+  ColumnDef,
 } from "@tanstack/react-table";
 import { ClipLoader } from "react-spinners";
 import SearchBar from "../SearchBar";
@@ -23,6 +30,7 @@ import Button from "../Button";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import FilterForm from "../FilterForm";
 import useFetchTable from "../../custom_hooks/useFetchTable";
+import { Resolver } from "react-hook-form";
 
 const Toolbar = styled.div`
   padding: ${({ theme }) => theme.spacing.s16};
@@ -154,7 +162,7 @@ const Title = styled.h1`
   font-size: ${({ theme }) => theme.typography.fontSize.f24};
 `;
 
-const PaginationButton = styled.div`
+const PaginationButton = styled.div<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,6 +182,23 @@ const PaginationButton = styled.div`
   }
 `;
 
+type BaseTableProps = {
+  rows: object[];
+  columns: ColumnDef<object, any>[];
+  loading?: boolean;
+  tableLoading?: boolean;
+  columnOrder?: string[];
+  height?: string;
+  title?: string;
+  toolbarActions?: ReactElement<any, any>;
+  navigateOnRowClick?: Function;
+  filterFields?: object[];
+  onFilter?: Function;
+  showAdvanceFilters?: boolean;
+  noDataMessage?: string;
+  validationSchema?: object;
+};
+
 const BaseTable = ({
   rows,
   columns,
@@ -189,14 +214,14 @@ const BaseTable = ({
   showAdvanceFilters = true,
   noDataMessage = "No data found",
   validationSchema,
-}) => {
+}: BaseTableProps) => {
   const theme = useTheme();
   const [showFilterForm, setShowFilterForm] = useState(false);
-  const [sorting, setSorting] = useState([]);
+  const [sorting, setSorting] = useState<any[]>([]);
   const [filtering, setFiltering] = useState("");
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [grouping, setGrouping] = useState([]);
+  const [grouping, setGrouping] = useState<string[]>([]);
 
   const table = useReactTable({
     data: rows || [],
@@ -249,6 +274,7 @@ const BaseTable = ({
       </div>
     );
   }
+
   return (
     <>
       {showAdvanceFilters && showFilterForm && (
@@ -282,6 +308,8 @@ const BaseTable = ({
               placeholder={"Search"}
               value={filtering}
               setValue={setFiltering}
+              style={{}}
+              inputStyle={{}}
             />
           </div>
         </div>
@@ -289,18 +317,29 @@ const BaseTable = ({
           {showAdvanceFilters && (
             <div>
               {showFilterForm ? (
-                <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
+                <IconButton
+                  onClick={() => setShowFilterForm(!showFilterForm)}
+                  type={""}
+                >
                   <TbFilterEdit className="icon" />
                 </IconButton>
               ) : (
-                <IconButton onClick={(e) => setShowFilterForm(!showFilterForm)}>
+                <IconButton
+                  onClick={() => setShowFilterForm(!showFilterForm)}
+                  type={""}
+                >
                   <TbFilter className="icon" />
                 </IconButton>
               )}
             </div>
           )}
           <div>
-            <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+            <IconButton
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                setAnchorEl(e.currentTarget as any)
+              }
+              type={""}
+            >
               <HiMiniViewColumns className="icon" />
             </IconButton>
 
@@ -336,7 +375,7 @@ const BaseTable = ({
             {table.getHeaderGroups().map((headerGroup) => (
               <HeadingRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  const isGrouped =
+                  const isGrouped: boolean =
                     header.subHeaders && header.subHeaders.length > 0;
                   return (
                     <th
@@ -347,7 +386,7 @@ const BaseTable = ({
                       style={{
                         cursor: "pointer",
                         width: header.getSize(),
-                        borderCollapse: isGrouped ? "collapse" : "none",
+                        // borderCollapse : isGrouped ? "collapse" : "none",
                       }}
                     >
                       {flexRender(

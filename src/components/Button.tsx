@@ -27,7 +27,7 @@ const ButtonWrapper = styled.button<{ disabled?: boolean }>`
 type ButtonProps = {
   icon?: React.ReactNode;
   isSubmitting?: boolean;
-  text: string;
+  text?: string;
   onClick?: () => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";

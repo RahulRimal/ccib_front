@@ -8,7 +8,6 @@ import useFetchTable from "../custom_hooks/useFetchTable";
 import apiService from "../api_service";
 import { AdvanceFilter, Option } from "../models/misc";
 import { Finance } from "../models/cooperative";
-import { type } from "os";
 
 const filterFields: AdvanceFilter[] = [
   {
@@ -89,8 +88,6 @@ const FinancePage: React.FC = () => {
         validationSchema={schema}
         height={""}
         title={""}
-        toolbarActions={() => null}
-        navigateOnRowClick={false}
       />
     </div>
   );

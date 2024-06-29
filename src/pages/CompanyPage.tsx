@@ -113,8 +113,6 @@ const CompanyPage = () => {
         validationSchema={schema}
         height={""}
         title={""}
-        toolbarActions={() => null}
-        navigateOnRowClick={false}
       />
     </div>
   );

@@ -178,10 +178,6 @@ const LoanApplicationPage = () => {
         }
         noDataMessage={"No Loan Applications"}
         validationSchema={schema}
-        height={""}
-        title={""}
-        toolbarActions={() => null}
-        navigateOnRowClick={false}
       />
     </div>
   );

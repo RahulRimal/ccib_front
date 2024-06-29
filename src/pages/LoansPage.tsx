@@ -158,10 +158,6 @@ const LoansPage = () => {
         noDataMessage={"No loans found"}
         validationSchema={schema}
         tableLoading={tableLoading}
-        height={""}
-        title={""}
-        toolbarActions={() => null}
-        navigateOnRowClick={false}
       />
     </div>
   );
