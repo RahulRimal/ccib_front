@@ -149,7 +149,7 @@ const LoansPage = () => {
         rows={data}
         columns={columns}
         filterFields={filterFields}
-        onFilter={(data: Loan[]) => {
+        onFilter={(data: Record<string, any>) => {
           apiService.filterTable(data, url, setData, setTableLoading, {
             responseHandler: handleResponse as any,
           });

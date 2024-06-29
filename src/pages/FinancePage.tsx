@@ -77,7 +77,7 @@ const FinancePage: React.FC = () => {
         columns={columns}
         columnOrder={["finance_name", "location_name", "phone_number"]}
         filterFields={filterFields}
-        onFilter={(data: Finance[]) =>
+        onFilter={(data: Record<string, any>) =>
           apiService.filterTable(data, url, setData, setTableLoading, {
             responseHandler: handleResponse as any,
           })

@@ -104,7 +104,7 @@ const CompanyPage = () => {
         rows={data}
         columns={columns}
         filterFields={filterFields}
-        onFilter={(data: Company[]) =>
+        onFilter={(data: Record<string, any>) =>
           apiService.filterTable(data, url, setData, setTableLoading)
         }
         loading={loading}

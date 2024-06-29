@@ -171,7 +171,7 @@ const LoanApplicationPage = () => {
         loading={loading}
         tableLoading={tableLoading}
         filterFields={filterFields}
-        onFilter={(data: LoanApplication[]) =>
+        onFilter={(data: Record<string, any>) =>
           apiService.filterTable(data, url, setData, setTableLoading, {
             responseHandler: handleResponse as any,
           })

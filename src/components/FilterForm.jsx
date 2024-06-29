@@ -133,6 +133,7 @@ function FilterForm({
   filterFields,
   onFilter,
   validationSchema,
+  ...props
 }) {
   const theme = useTheme();
 
@@ -149,6 +150,7 @@ function FilterForm({
 
   return (
     <FormWrapper
+      {...props}
       method="GET"
       onSubmit={(e) => {
         e.preventDefault();

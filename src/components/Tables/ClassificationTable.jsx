@@ -1,17 +1,17 @@
-import React, { useMemo, useState } from "react";
-import styled, { useTheme } from "styled-components";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import {
-  useReactTable,
-  getCoreRowModel,
   flexRender,
+  getCoreRowModel,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  getGroupedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  getFilteredRowModel,
-  getExpandedRowModel,
-  getGroupedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
+import { useState } from "react";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
+import styled, { useTheme } from "styled-components";
 import data from "./students.json";
 
 const TableWrapper = styled.div`

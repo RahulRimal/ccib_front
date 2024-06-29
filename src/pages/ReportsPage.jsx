@@ -1,24 +1,21 @@
-import React, { useMemo, useState } from "react";
-import SectionHeading from "../components/ScetionHeading";
-import RankSlider from "../components/RankSlider";
-import styled, { useTheme } from "styled-components";
-import { GiSpeedometer } from "react-icons/gi";
-import { FcComboChart } from "react-icons/fc";
-import DetailsTable from "../components/Tables/DetailsTable";
-import ClassificationTable from "../components/Tables/ClassificationTable";
-import ScoreHistoryChart from "../components/Charts/ScoreHistoryChart";
-import AmountOverdueChart from "../components/Charts/AmountOverdueChart";
-import BaseTable from "../components/Tables/BaseTable";
-import PieChart from "../components/Charts/PieChart";
-import data from "../components/Tables/students.json";
-import useFetchTable from "../custom_hooks/useFetchTable";
-import { useNavigate } from "react-router-dom";
-import { mainUrl } from "../constants";
-import { getFullName, humanizeString } from "../helpers";
-import { usePDF } from "react-to-pdf";
+import { useMemo, useState } from "react";
 import { FaRegFilePdf } from "react-icons/fa6";
-import Backdrop from "../components/Backdrop";
+import { FcComboChart } from "react-icons/fc";
+import { GiSpeedometer } from "react-icons/gi";
 import { ClipLoader } from "react-spinners";
+import { usePDF } from "react-to-pdf";
+import styled, { useTheme } from "styled-components";
+import Backdrop from "../components/Backdrop";
+import AmountOverdueChart from "../components/Charts/AmountOverdueChart";
+import PieChart from "../components/Charts/PieChart";
+import ScoreHistoryChart from "../components/Charts/ScoreHistoryChart";
+import RankSlider from "../components/RankSlider";
+import SectionHeading from "../components/ScetionHeading";
+import BaseTable from "../components/Tables/BaseTable";
+import DetailsTable from "../components/Tables/DetailsTable";
+import { mainUrl } from "../constants";
+import useFetchTable from "../custom_hooks/useFetchTable";
+import { getFullName, humanizeString } from "../helpers";
 
 const columns1 = [
   {

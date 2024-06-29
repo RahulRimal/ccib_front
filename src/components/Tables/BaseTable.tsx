@@ -31,6 +31,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import FilterForm from "../FilterForm";
 import useFetchTable from "../../custom_hooks/useFetchTable";
 import { Resolver } from "react-hook-form";
+import { AdvanceFilter } from "../../models/misc";
 
 const Toolbar = styled.div`
   padding: ${({ theme }) => theme.spacing.s16};
@@ -176,35 +177,35 @@ const PaginationButton = styled.div<{ disabled: boolean }>`
     font-size: ${({ theme }) => theme.typography.fontSize.f24};
     border: 2px solid
       ${({ theme, disabled }) =>
-        disabled ? theme.palette.disabled.button : theme.palette.primary.main};
+    disabled ? theme.palette.disabled.button : theme.palette.primary.main};
     border-radius: ${({ theme }) => theme.borderRadius.container};
     cursor: pointer;
   }
 `;
 
-type BaseTableProps = {
-  rows: object[];
-  columns: ColumnDef<object, any>[];
+type BaseTableProps<T> = {
+  rows: T[];
+  columns: ColumnDef<T, string | number | undefined>[];
   loading?: boolean;
   tableLoading?: boolean;
   columnOrder?: string[];
   height?: string;
   title?: string;
   toolbarActions?: ReactElement<any, any>;
-  navigateOnRowClick?: Function;
-  filterFields?: object[];
-  onFilter?: Function;
+  navigateOnRowClick?: (row: T) => void;
+  filterFields?: AdvanceFilter[];
+  onFilter?: (data: Record<string, any>) => void;
   showAdvanceFilters?: boolean;
   noDataMessage?: string;
   validationSchema?: object;
 };
 
-const BaseTable = ({
+const BaseTable = <T extends object>({
   rows,
   columns,
-  loading,
-  tableLoading,
-  columnOrder = [],
+  loading = true,
+  tableLoading = false,
+  columnOrder,
   height,
   title,
   toolbarActions,
@@ -214,9 +215,9 @@ const BaseTable = ({
   showAdvanceFilters = true,
   noDataMessage = "No data found",
   validationSchema,
-}: BaseTableProps) => {
+}: BaseTableProps<T>) => {
   const theme = useTheme();
-  const [showFilterForm, setShowFilterForm] = useState(false);
+  const [showFilterForm, setShowFilterForm] = useState<boolean>(false); // Always set this initial state to false
   const [sorting, setSorting] = useState<any[]>([]);
   const [filtering, setFiltering] = useState("");
 
@@ -248,6 +249,7 @@ const BaseTable = ({
   if (loading) {
     return (
       <div
+        role="loding-table"
         style={{
           display: "flex",
           justifyContent: "center",
@@ -259,9 +261,11 @@ const BaseTable = ({
       </div>
     );
   }
-  if ((!columns || columns.length === 0) && (!rows || rows.length === 0)) {
+  
+  if (columns.length === 0) {
     return (
       <div
+        role="no-data"
         style={{
           textAlign: "center",
           marginTop: theme.spacing.s24,
@@ -277,12 +281,13 @@ const BaseTable = ({
 
   return (
     <>
-      {showAdvanceFilters && showFilterForm && (
+      {showFilterForm && (
         <FilterForm
           showFilters={showFilterForm}
           filterFields={filterFields}
           onFilter={onFilter}
           validationSchema={validationSchema}
+          role="advance-filters-form"
         />
       )}
       <Toolbar>
@@ -295,7 +300,7 @@ const BaseTable = ({
             gap: theme.spacing.s4,
           }}
         >
-          {title && <Title>{title}</Title>}
+          {title && <Title role="table-title">{title}</Title>}
           <div
             style={{
               display: "flex",
@@ -316,29 +321,20 @@ const BaseTable = ({
         <div style={{ display: "flex", gap: theme.spacing.s12 }}>
           {showAdvanceFilters && (
             <div>
-              {showFilterForm ? (
-                <IconButton
-                  onClick={() => setShowFilterForm(!showFilterForm)}
-                  type={""}
-                >
-                  <TbFilterEdit className="icon" />
-                </IconButton>
-              ) : (
-                <IconButton
-                  onClick={() => setShowFilterForm(!showFilterForm)}
-                  type={""}
-                >
-                  <TbFilter className="icon" />
-                </IconButton>
-              )}
+              <IconButton role="toggle-advance-filters"
+                onClick={() => setShowFilterForm(!showFilterForm)}
+              >
+                {showFilterForm ? <TbFilterEdit className="icon" /> : <TbFilter className="icon" />
+                }
+              </IconButton>
             </div>
           )}
           <div>
             <IconButton
+              role="show-hide-columns-menu"
               onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
                 setAnchorEl(e.currentTarget as any)
               }
-              type={""}
             >
               <HiMiniViewColumns className="icon" />
             </IconButton>
@@ -356,6 +352,7 @@ const BaseTable = ({
               {table.getAllColumns().map((item) => (
                 <div style={{ display: "flex", gap: theme.spacing.s8 }}>
                   <input
+                    key={item.id}
                     type="checkbox"
                     disabled={!item.getCanHide()}
                     style={{ cursor: "pointer" }}
@@ -368,7 +365,7 @@ const BaseTable = ({
             </Menu>
           </div>
         </div>
-      </Toolbar>{" "}
+      </Toolbar>
       <TableWrapper style={{ height: height ? height : "auto" }}>
         <StyledTable>
           <thead style={{ width: table.getTotalSize() }}>
@@ -403,9 +400,8 @@ const BaseTable = ({
                       <div
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`${
-                          header.column.getIsResizing() && "active"
-                        }`}
+                        className={`${header.column.getIsResizing() && "active"
+                          }`}
                         style={{
                           backgroundColor:
                             header.column.getIsResizing() &&
@@ -422,6 +418,7 @@ const BaseTable = ({
           <tbody>
             {tableLoading ? (
               <div
+                role="table-loading-indicator"
                 style={{
                   height: theme.sizing.s44,
                   marginTop: theme.spacing.s16,
@@ -452,7 +449,7 @@ const BaseTable = ({
               ))
             )}
 
-            {rows && rows.length === 0 && (
+            {rows.length === 0 && (
               <div
                 style={{
                   height: theme.sizing.s44,
@@ -461,13 +458,14 @@ const BaseTable = ({
               >
                 <LoadingWrapper>
                   <p
+                    role="no-row-data"
                     style={{
                       margin: theme.spacing.s16,
                       fontSize: theme.sizing.f18,
                       fontWeight: theme.typography.fontWeight.semiBold,
                     }}
                   >
-                    No result found!
+                   No result found!
                   </p>
                 </LoadingWrapper>
               </div>

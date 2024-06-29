@@ -112,7 +112,7 @@ export const filterTable = async <T>(
   setTableLoading: Dispatch<SetStateAction<boolean>>,
   {
     responseHandler = null,
-  }: { responseHandler?: ((data: any) => T[]) | null } = {}
+  }: { responseHandler?: ((data: T[]) => T[]) | null } = {}
 ): Promise<void> => {
   setTableLoading(true);
 

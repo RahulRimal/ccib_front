@@ -10,6 +10,7 @@ import useFetchTable from "../custom_hooks/useFetchTable";
 import apiService from "../api_service";
 import { User } from "../models/cooperative";
 import { AdvanceFilter } from "../models/misc";
+import { ColumnDef } from "@tanstack/react-table";
 
 const Wrapper = styled.main``;
 
@@ -104,11 +105,11 @@ const UsersTable = () => {
       <BaseTable
         title="Users list"
         rows={data}
-        columns={columns}
+        columns={columns as ColumnDef<User, string | number | undefined>[]}
         loading={loading}
         tableLoading={tableLoading}
         filterFields={filterFields}
-        onFilter={(data: User) =>
+        onFilter={(data: Record<string, any>) =>
           apiService.filterTable(data, url, setData, setTableLoading)
         }
         validationSchema={schema}
