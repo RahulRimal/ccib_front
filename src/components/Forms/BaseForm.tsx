@@ -222,14 +222,6 @@ const BaseForm = ({
                         error={errors[field.name]?.message}
                         placeholder={field.placeholder}
                         defaultValue={field.defaultValue}
-                        value={""}
-                        prefix={""}
-                        suffix={""}
-                        onClick={() => {}}
-                        onPrefixClick={() => {}}
-                        onSuffixClick={() => {}}
-                        style={""}
-                        idx={""}
                       />
                     ))
               )}

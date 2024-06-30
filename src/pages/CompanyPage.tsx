@@ -107,12 +107,11 @@ const CompanyPage = () => {
         onFilter={(data: Record<string, any>) =>
           apiService.filterTable(data, url, setData, setTableLoading)
         }
+        onReset={() => setData(rowData)}
         loading={loading}
         tableLoading={tableLoading}
         noDataMessage={"Company not found"}
         validationSchema={schema}
-        height={""}
-        title={""}
       />
     </div>
   );

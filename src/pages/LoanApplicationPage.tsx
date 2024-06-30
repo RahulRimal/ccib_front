@@ -176,6 +176,7 @@ const LoanApplicationPage = () => {
             responseHandler: handleResponse as any,
           })
         }
+        onReset={() => setData(rowData)}
         noDataMessage={"No Loan Applications"}
         validationSchema={schema}
       />

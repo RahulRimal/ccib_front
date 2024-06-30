@@ -82,6 +82,7 @@ const FinancePage: React.FC = () => {
             responseHandler: handleResponse as any,
           })
         }
+        onReset={() => setData(rowData)}
         loading={loading}
         tableLoading={tableLoading}
         noDataMessage="No Finance found"

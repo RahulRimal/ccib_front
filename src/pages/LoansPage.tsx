@@ -154,6 +154,7 @@ const LoansPage = () => {
             responseHandler: handleResponse as any,
           });
         }}
+        onReset={() => setData(rowData)}
         loading={loading}
         noDataMessage={"No loans found"}
         validationSchema={schema}

@@ -70,6 +70,27 @@ const Suffix = styled.div`
   right: ${({ theme }) => theme.spacing.s12};
 `;
 
+type InputFieldProps = {
+  title?: string;
+  name: string;
+  value?: string | number | boolean;
+  placeholder?: string;
+  type?: string;
+  label?: string;
+  required?: boolean;
+  editable?: boolean;
+  prefix?: React.ReactSVGElement;
+  suffix?: React.ReactSVGElement;
+  onClick?: () => void;
+  onPrefixClick?: () => void;
+  onSuffixClick?: () => void;
+  style?: React.CSSProperties;
+  error?: string;
+  register?: any;
+  idx?: number;
+  defaultValue?: string | number | null;
+};
+
 const InputField = ({
   title,
   name,
@@ -89,7 +110,7 @@ const InputField = ({
   register,
   idx,
   defaultValue,
-}) => {
+}: InputFieldProps) => {
   const theme = useTheme();
   const textStyles = { ...style };
 
@@ -105,6 +126,7 @@ const InputField = ({
           }}
           {...(register && register(name))}
           name={name}
+          aria-label={name}
           type={type}
           className="form-control"
           placeholder={placeholder}

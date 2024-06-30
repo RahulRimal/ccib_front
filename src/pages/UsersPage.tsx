@@ -112,6 +112,7 @@ const UsersTable = () => {
         onFilter={(data: Record<string, any>) =>
           apiService.filterTable(data, url, setData, setTableLoading)
         }
+        onReset={() => setData(rowData)}
         validationSchema={schema}
         toolbarActions={
           <Button

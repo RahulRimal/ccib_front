@@ -1,10 +1,12 @@
 import styled, { useTheme } from "styled-components";
 import Button from "./Button";
 import Select from "react-select";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 import ErrorMessage from "./Forms/Fields/ErrorMessage";
 import { yupResolver } from "@hookform/resolvers/yup";
 import apiService from "../api_service";
+import { AnyObject, Lazy, ObjectSchema } from "yup";
+import { AdvanceFilter } from "../models/misc";
 
 const FormWrapper = styled.form`
   background-color: ${({ theme }) => theme.palette.background.default};
@@ -19,12 +21,12 @@ const MainWrapper = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${({ theme }) => theme.spacing.s16};
 
-  @media (max-width: 1080px) {
+  /* @media (max-width: 1080px) {
     grid-template-columns: 1fr 2fr;
   }
   @media (max-width: 778px) {
     grid-template-columns: 1fr;
-  }
+  } */
 `;
 
 const SectionWrapper = styled.div`
@@ -122,19 +124,28 @@ const OptionWrapper = styled.div`
 
 const customStyles = {
   cursor: "pointer",
-  option: (provided, state) => ({
+  option: (provided: any, state: { isSelected: any }) => ({
     ...provided,
     color: state.isSelected && "black",
   }),
 };
 
+type FilterFormProps = {
+  showFilters: boolean;
+  filterFields: AdvanceFilter[] | undefined;
+  onFilter: Function | undefined;
+  onReset: Function | undefined;
+  validationSchema:
+    | ObjectSchema<FieldValues, AnyObject, any, "">
+    | Lazy<{ [x: string]: any }, AnyObject, any>;
+};
 function FilterForm({
   showFilters,
   filterFields,
   onFilter,
+  onReset,
   validationSchema,
-  ...props
-}) {
+}: FilterFormProps) {
   const theme = useTheme();
 
   const {
@@ -150,14 +161,19 @@ function FilterForm({
 
   return (
     <FormWrapper
-      {...props}
       method="GET"
       onSubmit={(e) => {
         e.preventDefault();
-        if(onFilter) return handleSubmit((data) => onFilter(data))();
+        if (onFilter)
+          return handleSubmit((data) => {
+            console.log(data);
+
+            onFilter(data);
+          })();
       }}
       className={showFilters ? "show" : "hide"}
       style={{ overflow: "visible" }}
+      aria-label="filter-form"
     >
       <MainWrapper>
         {filterFields ? (
@@ -172,7 +188,7 @@ function FilterForm({
                       key={i}
                       style={{ flexBasis: `${input.basis}%` }}
                     >
-                      <label htmlFor="">{input.label}</label>
+                      <label htmlFor={input.name}>{input.label}</label>
                       <Controller
                         name={input.name}
                         control={control}
@@ -183,9 +199,9 @@ function FilterForm({
                               {...field}
                               className="react-select-container"
                               classNamePrefix="react-select"
+                              aria-label="select"
                               options={input.options}
                               isClearable
-                              defaultValue={" "}
                               styles={customStyles}
                               theme={(themes) => ({
                                 ...themes,
@@ -218,11 +234,12 @@ function FilterForm({
                       key={i}
                       style={{ flexBasis: `${input.basis}%` }}
                     >
-                      <label htmlFor="">{input.label}</label>
+                      <label htmlFor={input.name}>{input.label}</label>
                       <input
                         {...(register && register(input.name))}
                         required={input.required}
                         type={input.type}
+                        aria-label={input.name}
                         placeholder={input.placeholder}
                         name={input.name}
                       />
@@ -240,7 +257,26 @@ function FilterForm({
         )}
       </MainWrapper>
       {filterFields && (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: theme.spacing.s8,
+            justifyContent: "flex-end",
+          }}
+        >
+          {onReset && (
+            <Button
+              text="Reset"
+              disabled={isSubmitting || !onFilter}
+              style={{
+                padding: `${theme.spacing.s8} ${theme.spacing.s20}`,
+              }}
+              type="button"
+              onClick={() => {
+                onReset();
+              }}
+            />
+          )}
           <Button
             text="Filter"
             disabled={isSubmitting || !onFilter}

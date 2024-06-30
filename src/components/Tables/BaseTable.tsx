@@ -30,8 +30,9 @@ import Button from "../Button";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import FilterForm from "../FilterForm";
 import useFetchTable from "../../custom_hooks/useFetchTable";
-import { Resolver } from "react-hook-form";
 import { AdvanceFilter } from "../../models/misc";
+import { FieldValues, Resolver } from "react-hook-form";
+import { AnyObject, Lazy, ObjectSchema } from "yup";
 
 const Toolbar = styled.div`
   padding: ${({ theme }) => theme.spacing.s16};
@@ -177,7 +178,7 @@ const PaginationButton = styled.div<{ disabled: boolean }>`
     font-size: ${({ theme }) => theme.typography.fontSize.f24};
     border: 2px solid
       ${({ theme, disabled }) =>
-    disabled ? theme.palette.disabled.button : theme.palette.primary.main};
+        disabled ? theme.palette.disabled.button : theme.palette.primary.main};
     border-radius: ${({ theme }) => theme.borderRadius.container};
     cursor: pointer;
   }
@@ -195,9 +196,12 @@ type BaseTableProps<T> = {
   navigateOnRowClick?: (row: T) => void;
   filterFields?: AdvanceFilter[];
   onFilter?: (data: Record<string, any>) => void;
+  onReset?: () => void;
   showAdvanceFilters?: boolean;
   noDataMessage?: string;
-  validationSchema?: object;
+  validationSchema:
+    | ObjectSchema<FieldValues, AnyObject, any, "">
+    | Lazy<{ [x: string]: any }, AnyObject, any>;
 };
 
 const BaseTable = <T extends object>({
@@ -212,6 +216,7 @@ const BaseTable = <T extends object>({
   navigateOnRowClick,
   filterFields,
   onFilter,
+  onReset,
   showAdvanceFilters = true,
   noDataMessage = "No data found",
   validationSchema,
@@ -261,7 +266,7 @@ const BaseTable = <T extends object>({
       </div>
     );
   }
-  
+
   if (columns.length === 0) {
     return (
       <div
@@ -286,8 +291,8 @@ const BaseTable = <T extends object>({
           showFilters={showFilterForm}
           filterFields={filterFields}
           onFilter={onFilter}
+          onReset={onReset}
           validationSchema={validationSchema}
-          role="advance-filters-form"
         />
       )}
       <Toolbar>
@@ -321,11 +326,15 @@ const BaseTable = <T extends object>({
         <div style={{ display: "flex", gap: theme.spacing.s12 }}>
           {showAdvanceFilters && (
             <div>
-              <IconButton role="toggle-advance-filters"
+              <IconButton
+                role="toggle-advance-filters"
                 onClick={() => setShowFilterForm(!showFilterForm)}
               >
-                {showFilterForm ? <TbFilterEdit className="icon" /> : <TbFilter className="icon" />
-                }
+                {showFilterForm ? (
+                  <TbFilterEdit className="icon" />
+                ) : (
+                  <TbFilter className="icon" />
+                )}
               </IconButton>
             </div>
           )}
@@ -400,8 +409,9 @@ const BaseTable = <T extends object>({
                       <div
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`${header.column.getIsResizing() && "active"
-                          }`}
+                        className={`${
+                          header.column.getIsResizing() && "active"
+                        }`}
                         style={{
                           backgroundColor:
                             header.column.getIsResizing() &&
@@ -465,7 +475,7 @@ const BaseTable = <T extends object>({
                       fontWeight: theme.typography.fontWeight.semiBold,
                     }}
                   >
-                   No result found!
+                    No result found!
                   </p>
                 </LoadingWrapper>
               </div>
